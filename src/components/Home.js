@@ -1,6 +1,7 @@
 import {Card, Grid, List, ListItem, Tab, Tabs} from "@material-ui/core";
 import {flexComponents, listComponents, paddingComponents, sizeComponents} from "../style/components";
 import {announcements} from "../testData/announcements";
+import {Announcement} from "./Announcement";
 
 export const Home = () => {
 
@@ -17,7 +18,9 @@ export const Home = () => {
                         announcements.map(announcement=>{
                             return (
                                 <ListItem>
-                                    {announcement.title}
+                                    <Announcement
+                                        data={announcement}
+                                    />
                                 </ListItem>
                             )
                         })

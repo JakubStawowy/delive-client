@@ -40,3 +40,46 @@ export const listComponents = makeStyles(((theme)=>({
         overflow: 'auto'
     }
 })));
+
+export const rwdComponents = makeStyles(((theme)=>({
+    mobileComponent: {
+        display: 'none',
+        [theme.breakpoints.down('xs')]: {
+            display: 'block'
+        }
+    },
+    desktopComponent: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    },
+    menu: {
+        [theme.breakpoints.down('xs')]: {
+            position: 'absolute',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            top: '12vh',
+            background: 'red',
+            height: '88vh',
+            width: '100%',
+            zIndex: 1,
+            opacity: '80%',
+        },
+        '&:after': {
+            background: 'green'
+        }
+    },
+    visibleMobileFlexComponent: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex'
+        }
+    },
+    hiddenMobileComponent: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    },
+
+})));

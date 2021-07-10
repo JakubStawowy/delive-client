@@ -1,5 +1,6 @@
 import {Button, Card, Container, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
 import {flexComponents, paddingComponents, sizeComponents} from "../style/components";
+import {useHistory} from "react-router";
 
 export const LoginRegister = () => {
 
@@ -7,8 +8,11 @@ export const LoginRegister = () => {
     const padding = paddingComponents();
     const size = sizeComponents();
 
+    const history = useHistory();
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        history.push("/home");
     }
 
     return (
