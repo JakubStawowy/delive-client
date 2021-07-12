@@ -12,6 +12,18 @@ export const flexComponents = makeStyles(((theme)=>({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-around'
+    },
+    flexRowSpaceBetween: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    flexColumnSpaceBetween: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 })));
 
@@ -54,9 +66,11 @@ export const rwdComponents = makeStyles(((theme)=>({
         }
     },
     menu: {
+        width: '60%',
+        display: 'flex',
+        justifyContent: 'space-between',
         [theme.breakpoints.down('xs')]: {
             position: 'absolute',
-            display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-around',
             alignItems: 'center',

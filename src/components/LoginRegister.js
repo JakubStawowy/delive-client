@@ -1,8 +1,12 @@
 import {Button, Card, Container, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
 import {flexComponents, paddingComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
+import {statements} from "../data/i18n/statements";
 
 export const LoginRegister = () => {
+
+    const loginItems = statements[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].loginItems;
+    const registerItems = statements[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].registerItems;
 
     const flex = flexComponents();
     const padding = paddingComponents();
@@ -19,35 +23,35 @@ export const LoginRegister = () => {
         <Grid container className={`${flex.flexRowSpaceAround} ${size.bodyHeight}`}>
             <Card className={`${padding.padding}`}>
                 <Typography>
-                    Login
+                    {loginItems.label}
                 </Typography>
                 <form className={`${flex.flexColumnSpaceAround}`}>
-                    <TextField label={'email'}/>
-                    <TextField label={'password'}/>
+                    <TextField label={loginItems.email}/>
+                    <TextField label={loginItems.password}/>
                     <Button
                         type={'submit'}
                         variant={'contained'}
                         onClick={(e)=>handleSubmit(e)}
                     >
-                        Confirm
+                        {loginItems.buttonLabel}
                     </Button>
                 </form>
             </Card>
             <Card className={`${padding.padding}`}>
                 <Typography>
-                    Register
+                    {registerItems.label}
                 </Typography>
                 <form className={`${flex.flexColumnSpaceAround}`}>
-                    <TextField label={'nickname'}/>
-                    <TextField label={'email'}/>
-                    <TextField label={'password'}/>
-                    <TextField label={'confirm password'}/>
+                    <TextField label={registerItems.nickname}/>
+                    <TextField label={registerItems.email}/>
+                    <TextField label={registerItems.password}/>
+                    <TextField label={registerItems.confirmPassword}/>
                     <Button
                         type={'submit'}
                         variant={'contained'}
                         onClick={(e)=>handleSubmit(e)}
                     >
-                        Confirm
+                        {loginItems.buttonLabel}
                     </Button>
                 </form>
             </Card>
