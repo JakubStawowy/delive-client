@@ -26,6 +26,18 @@ export const statements = {
         announcement: {
             from: 'from',
             to: 'to'
+        },
+        announcementForm: {
+            destination: {
+                destinations: 'Destinations',
+                from: 'from',
+                to: 'to'
+            },
+            length: 'Length',
+            width: 'Width',
+            height: 'Height',
+            date: 'Date',
+            submit: 'post'
         }
     },
     pl: {
@@ -55,6 +67,18 @@ export const statements = {
         announcement: {
             from: 'Od',
             to: 'Do'
+        },
+        announcementForm: {
+            destination: {
+                destinations: 'Lokalizacje',
+                from: 'od',
+                to: 'do'
+            },
+            length: 'Długosć',
+            width: 'Szerokość',
+            height: 'Wysokość',
+            date: 'Data',
+            submit: 'opublikuj'
         }
     }
 };

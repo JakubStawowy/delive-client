@@ -5,7 +5,8 @@ import {sizeComponents} from "./style/components";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route} from "react-router";
 import {Home} from "./components/Home";
-import {AnnouncementForm} from "./components/AnnouncementForm";
+import {AddNormalAnnouncement} from "./components/AddNormalAnnouncement";
+import {AddDeliveryAnnouncement} from "./components/AddDeliveryAnnouncement";
 import {AnnouncementType} from "./components/AnnouncementType";
 
 import wallpaper from './uploads/wallpaper.png';
@@ -40,7 +41,8 @@ function App() {
           <Route path={'/login'} component={LoginRegister}/>
           <Route path={'/home'} component={Home}/>
           <Route path={'/test'} component={Test}/>
-          <Route path={'/addAnnouncement'} component={AnnouncementForm}/>
+          <Route path={'/addAnnouncement/normal'} component={AddNormalAnnouncement}/>
+          <Route path={'/addAnnouncement/delivery'} component={AddDeliveryAnnouncement}/>
           <Route path={'/announcementType'} component={AnnouncementType}/>
         </BrowserRouter>
     );

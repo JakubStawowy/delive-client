@@ -1,5 +1,5 @@
 import {Button, Card, Container, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
-import {flexComponents, paddingComponents, sizeComponents} from "../style/components";
+import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
 import {statements} from "../data/i18n/statements";
 
@@ -11,6 +11,7 @@ export const LoginRegister = () => {
     const flex = flexComponents();
     const padding = paddingComponents();
     const size = sizeComponents();
+    const rwd = rwdComponents();
 
     const history = useHistory();
 
@@ -21,7 +22,7 @@ export const LoginRegister = () => {
 
     return (
         <Grid container className={`${flex.flexRowSpaceAround} ${size.bodyHeight}`}>
-            <Card className={`${padding.padding}`}>
+            <Card className={`${padding.paddingMedium}`}>
                 <Typography>
                     {loginItems.label}
                 </Typography>
@@ -37,7 +38,7 @@ export const LoginRegister = () => {
                     </Button>
                 </form>
             </Card>
-            <Card className={`${padding.padding}`}>
+            <Card className={`${padding.paddingMedium}`}>
                 <Typography>
                     {registerItems.label}
                 </Typography>

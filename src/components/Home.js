@@ -1,5 +1,5 @@
 import {Card, Grid, List, ListItem, Tab, Tabs} from "@material-ui/core";
-import {flexComponents, listComponents, paddingComponents, sizeComponents} from "../style/components";
+import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {announcements} from "../testData/announcements";
 import {Announcement} from "./Announcement";
 import {useEffect, useState} from "react";
@@ -11,6 +11,7 @@ export const Home = () => {
     const padding = paddingComponents();
     const size = sizeComponents();
     const list = listComponents();
+    const rwd = rwdComponents();
 
     const [announcementsData, setAnnouncementsData] = useState([]);
 
@@ -29,7 +30,7 @@ export const Home = () => {
                         color={'red'}
                     />
                     :
-                    <Card className={`${padding.padding}`}>
+                    <Card className={`${padding.paddingMedium} ${rwd.mobileCard}`}>
                         <List className={`${list.announcementList}`}>
                             {
                                 announcementsData.map(announcement=>{

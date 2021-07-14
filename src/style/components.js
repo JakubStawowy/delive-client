@@ -5,7 +5,8 @@ export const flexComponents = makeStyles(((theme)=>({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        flexWrap: 'wrap'
     },
     flexColumnSpaceAround: {
         display: 'flex',
@@ -28,14 +29,20 @@ export const flexComponents = makeStyles(((theme)=>({
 })));
 
 export const paddingComponents = makeStyles(((theme)=>({
-    padding: {
+    paddingMedium: {
         padding: '2em'
+    },
+    paddingSmall: {
+        padding: '1em'
     },
 })));
 
 export const sizeComponents = makeStyles(((theme)=>({
     fullHeightWidth: {
         height: '100%',
+        width: '100%'
+    },
+    fullWidth: {
         width: '100%'
     },
     menuHeight: {
@@ -63,6 +70,17 @@ export const rwdComponents = makeStyles(((theme)=>({
     desktopComponent: {
         [theme.breakpoints.down('xs')]: {
             display: 'none'
+        }
+    },
+    singleMobileCard: {
+        width: '30vw',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%'
+        }
+    },
+    mobileCard: {
+        [theme.breakpoints.down('xs')]: {
+            width: '100%'
         }
     },
     menu: {
