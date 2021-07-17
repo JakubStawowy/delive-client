@@ -1,22 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, makeStyles, MenuItem, Select} from "@material-ui/core";
 import {flexComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
 import logo from "../uploads/menu-logo.png";
 import MenuIcon from '@material-ui/icons/Menu';
-import {animated, useSpring} from 'react-spring';
-import {statements} from "../data/i18n/statements";
+import {i18n} from "../data/i18n";
+import {useAnimationStyles} from "../style/animation";
+import {fadeInDown, fadeOutUp} from "react-animations";
+import {ANIMATION_TIME, XS_MEDIA_QUERY} from "../data/consts";
+import {StyleRoot} from "radium";
 
 export const Menu = (props) => {
 
-    const localeSet = Object.keys(statements);
-    const menuStatements = statements[props.locale].menuItems;
+    const localeSet = Object.keys(i18n);
+    const menuStatements = i18n[props.locale].menuItems;
+    const [menuOpened, setMenuOpened] = useState(false);
+    const [menuAnimated, setMenuAnimated] = useState(false);
+    const history = useHistory();
 
     const useStyles = makeStyles(({
         container: {
             background: 'red',
             width: '100%',
-            // height: '12vh'
         },
         logo: {
             height: '80%',
@@ -32,50 +37,49 @@ export const Menu = (props) => {
     const flex = flexComponents();
     const size = sizeComponents();
     const rwd = rwdComponents();
-    const history = useHistory();
-
-    const [menuOpened, setMenuOpened] = useState(false);
+    const fadeInAnimationStyles = useAnimationStyles(fadeInDown, ANIMATION_TIME / 2);
+    const fadeOutAnimationStyles = useAnimationStyles(fadeOutUp, ANIMATION_TIME / 2);
 
     const handleLogin = () => {
         history.push("/login");
-        setMenuOpened(false);
+        closeMenu();
     }
 
     const handleAnnouncementRequest = () => {
         history.push("/announcementType");
-        setMenuOpened(false);
+        closeMenu();
     }
 
     const handleHome = () => {
         history.push('/home');
-        setMenuOpened(false);
+        menuOpened && closeMenu();
     }
 
-    const springStyles = useSpring({
-       from: {
-           opacity: 0
-       },
-       to: {
-           opacity: menuOpened ? 1 : 0,
-           display: menuOpened ? 'flex' : 'none'
-       }
-    });
+    const closeMenu = () => {
+        const state = !menuAnimated;
+        window.matchMedia(XS_MEDIA_QUERY).matches && setMenuAnimated(state);
+        menuOpened ? setTimeout(()=>setMenuOpened(state), ANIMATION_TIME / 2) : setMenuOpened(state);
+    }
 
     const handleChangeLocale = (e) => {
         const locale = e.target.value;
         props.action(locale);
         localStorage.setItem('locale', locale);
-        // history.go(0);
     }
 
     return (
-        <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
-            <img src={logo} alt={''} className={classes.logo} onClick={()=>handleHome()}/>
-            {/*<Button variant={'contained'} className={`${rwd.desktopComponent}`}>*/}
-                <animated.div
+        <StyleRoot>
+            <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
+                <img src={logo} alt={''} className={classes.logo} onClick={()=>handleHome()}/>
+                <div
                     className={`${rwd.menu} ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
-                    // className={`${rwd.menu} ${rwd.visibleMobileFlexComponent}`}
-                    // style={springStyles}
+                    style={menuAnimated
+                        ?
+                        (window.matchMedia(XS_MEDIA_QUERY).matches
+                            ? fadeInAnimationStyles.animation : null)
+                        :
+                        (window.matchMedia(XS_MEDIA_QUERY).matches
+                            ? fadeOutAnimationStyles.animation : null)}
                 >
                     <Button variant={'contained'} onClick={()=>handleAnnouncementRequest()}>
                         {menuStatements.newOffer}
@@ -102,11 +106,11 @@ export const Menu = (props) => {
                             })
                         }
                     </Select>
-                </animated.div>
-            <Button className={`${rwd.mobileComponent}`} onClick={()=>setMenuOpened(!menuOpened)}>
-                <MenuIcon fontSize={'large'} className={`${classes.icon}`}/>
-            </Button>
-
-        </div>
+                </div>
+                <Button className={`${rwd.mobileComponent}`} onClick={()=>closeMenu()}>
+                    <MenuIcon fontSize={'large'} className={`${classes.icon}`}/>
+                </Button>
+            </div>
+        </StyleRoot>
     )
 }

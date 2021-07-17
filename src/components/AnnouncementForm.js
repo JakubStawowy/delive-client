@@ -1,27 +1,28 @@
-import {Button, Card, Fab, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
+import {Button, Card, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
 import {
     flexComponents,
-    listComponents,
-    marginComponents,
     paddingComponents,
     rwdComponents,
     sizeComponents
 } from "../style/components";
 
 import RoomIcon from '@material-ui/icons/Room';
-import {useState} from "react";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import {statements} from "../data/i18n/statements";
+import {i18n} from "../data/i18n";
+import {StyleRoot} from "radium";
+import {bounceInRight, bounceOutLeft} from "react-animations";
+import {useAnimationStyles} from "../style/animation";
+import {useState} from "react";
+import {useHistory} from "react-router";
+import {ANIMATION_TIME} from "../data/consts";
 
-export const AnnouncementForm = (props) => {
+export const AnnouncementForm = () => {
 
-    const announcementFormItems = statements[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].announcementForm;
-    const flex = flexComponents();
-    const padding = paddingComponents();
-    const size = sizeComponents();
-    const list = listComponents();
-    const rwd = rwdComponents();
-    const styles = makeStyles(((theme)=>({
+    const announcementFormItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].announcementForm;
+    const [bounce, setBounce] = useState(false);
+    const history = useHistory();
+
+    const styles = makeStyles((()=>({
         datePicker: {
             borderRadius: '10px',
         },
@@ -30,44 +31,58 @@ export const AnnouncementForm = (props) => {
         },
     })))
     const classes = styles();
+    const flexClasses = flexComponents();
+    const paddingClasses = paddingComponents();
+    const sizeClasses = sizeComponents();
+    const rwdClasses = rwdComponents();
+    const bounceInAnimationStyles = useAnimationStyles(bounceInRight, ANIMATION_TIME);
+    const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
-    const [startDate, setStartDate] = useState();
+    const handleSubmit = () => {
+        setBounce(true);
+        setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
+    };
 
     return (
-        <Grid container className={`${flex.flexRowSpaceAround} ${size.bodyHeight}`}>
-            <Card className={`${padding.paddingMedium} ${flex.flexColumnSpaceBetween} ${classes.card} ${rwd.singleMobileCard}`}>
-                <Typography variant={'h5'} className={`${flex.flexRowSpaceAround} ${size.fullWidth}`}>
-                    {announcementFormItems.destination.destinations}
-                    <Button variant={'contained'}>
-                        <RoomIcon color={'secondary'}/>
-                        {announcementFormItems.destination.from}
-                    </Button>
-                    <Button variant={'contained'}>
-                        <RoomIcon color={'secondary'}/>
-                        {announcementFormItems.destination.to}
-                    </Button>
-                </Typography>
-                <Typography variant={'h5'} className={`${flex.flexRowSpaceAround} ${size.fullWidth}`}>
-                    {announcementFormItems.length}
-                    <TextField label={'x'} />
-                </Typography>
-                <Typography variant={'h5'} className={`${flex.flexRowSpaceAround} ${size.fullWidth}`}>
-                    {announcementFormItems.width}
-                    <TextField label={'x'} />
-                </Typography>
-                <Typography variant={'h5'} className={`${flex.flexRowSpaceAround} ${size.fullWidth}`}>
-                    {announcementFormItems.height}
-                    <TextField label={'x'} />
-                </Typography>
-                <Typography variant={'h5'} className={`${flex.flexRowSpaceAround} ${size.fullWidth}`}>
-                    {announcementFormItems.date}
-                    <input type={'date'} className={`${classes.datePicker} ${padding.paddingSmall}`}/>
-                </Typography>
-                <Button variant={'contained'}>
-                    {announcementFormItems.submit}
-                    <ArrowForwardIcon fontSize={'large'}/>
-                </Button>
-            </Card>
-        </Grid>
+        <StyleRoot>
+            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation}>
+                <Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                    <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceBetween} ${classes.card} ${rwdClasses.singleMobileCard}`}>
+                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
+                            {announcementFormItems.destination.destinations}
+                            <Button variant={'contained'}>
+                                <RoomIcon color={'secondary'}/>
+                                {announcementFormItems.destination.from}
+                            </Button>
+                            <Button variant={'contained'}>
+                                <RoomIcon color={'secondary'}/>
+                                {announcementFormItems.destination.to}
+                            </Button>
+                        </Typography>
+                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
+                            {announcementFormItems.length}
+                            <TextField label={'x'} />
+                        </Typography>
+                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
+                            {announcementFormItems.width}
+                            <TextField label={'x'} />
+                        </Typography>
+                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
+                            {announcementFormItems.height}
+                            <TextField label={'x'} />
+                        </Typography>
+                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
+                            {announcementFormItems.date}
+                            <input type={'date'} className={`${classes.datePicker} ${paddingClasses.paddingSmall}`}/>
+                            <input type={'time'} className={`${classes.datePicker} ${paddingClasses.paddingSmall}`}/>
+                        </Typography>
+                        <Button variant={'contained'} onClick={()=>handleSubmit()}>
+                            {announcementFormItems.submit}
+                            <ArrowForwardIcon fontSize={'large'}/>
+                        </Button>
+                    </Card>
+                </Grid>
+            </div>
+        </StyleRoot>
     )
 }

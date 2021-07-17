@@ -1,4 +1,4 @@
-export const statements = {
+export const i18n = {
     en: {
         menuItems: {
             newOffer: 'Post new offer',

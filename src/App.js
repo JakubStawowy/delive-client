@@ -1,7 +1,6 @@
 import {Menu} from "./components/Menu";
-import {Container, makeStyles} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./components/LoginRegister";
-import {sizeComponents} from "./style/components";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route} from "react-router";
 import {Home} from "./components/Home";
@@ -11,7 +10,7 @@ import {AnnouncementType} from "./components/AnnouncementType";
 
 import wallpaper from './uploads/wallpaper.png';
 import {Test} from "./components/Test";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 function App() {
 
@@ -27,9 +26,7 @@ function App() {
             height: '100%'
         }
     }));
-
     const classes = useStyles();
-    const size = sizeComponents();
 
     return (
         <BrowserRouter className={classes.container}>

@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core";
 
-export const flexComponents = makeStyles(((theme)=>({
+export const flexComponents = makeStyles((()=>({
     flexRowSpaceAround: {
         display: 'flex',
         flexDirection: 'row',
@@ -28,7 +28,7 @@ export const flexComponents = makeStyles(((theme)=>({
     }
 })));
 
-export const paddingComponents = makeStyles(((theme)=>({
+export const paddingComponents = makeStyles((()=>({
     paddingMedium: {
         padding: '2em'
     },
@@ -37,7 +37,7 @@ export const paddingComponents = makeStyles(((theme)=>({
     },
 })));
 
-export const sizeComponents = makeStyles(((theme)=>({
+export const sizeComponents = makeStyles((()=>({
     fullHeightWidth: {
         height: '100%',
         width: '100%'
@@ -53,7 +53,7 @@ export const sizeComponents = makeStyles(((theme)=>({
     }
 })));
 
-export const listComponents = makeStyles(((theme)=>({
+export const listComponents = makeStyles((()=>({
     announcementList: {
         maxHeight: '70vh',
         overflow: 'auto'
@@ -96,8 +96,7 @@ export const rwdComponents = makeStyles(((theme)=>({
             background: 'red',
             height: '88vh',
             width: '100%',
-            zIndex: 1,
-            opacity: '80%',
+            zIndex: 1
         },
         '&:after': {
             background: 'green'
