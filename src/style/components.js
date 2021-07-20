@@ -63,19 +63,17 @@ export const listComponents = makeStyles((()=>({
 export const rwdComponents = makeStyles(((theme)=>({
     mobileComponent: {
         display: 'none',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             display: 'block'
-        }
-    },
-    desktopComponent: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'none'
         }
     },
     singleMobileCard: {
         width: '30vw',
         [theme.breakpoints.down('xs')]: {
             width: '100%'
+        },
+        [theme.breakpoints.between('sm', 'md')]: {
+            width: '60vw'
         }
     },
     mobileCard: {
@@ -87,7 +85,7 @@ export const rwdComponents = makeStyles(((theme)=>({
         width: '60%',
         display: 'flex',
         justifyContent: 'space-between',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             position: 'absolute',
             flexDirection: 'column',
             justifyContent: 'space-around',
@@ -97,18 +95,15 @@ export const rwdComponents = makeStyles(((theme)=>({
             height: '88vh',
             width: '100%',
             zIndex: 1
-        },
-        '&:after': {
-            background: 'green'
         }
     },
     visibleMobileFlexComponent: {
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             display: 'flex'
         }
     },
     hiddenMobileComponent: {
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             display: 'none'
         }
     },

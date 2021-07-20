@@ -1,31 +1,39 @@
 import {flexComponents, sizeComponents} from "../style/components";
-import {GoogleMap, withGoogleMap, withScriptjs} from "react-google-maps";
+import {GoogleMap, useLoadScript, Marker, InfoWindow} from "@react-google-maps/api";
 
-const Map = () => {
-    return (
-        <GoogleMap
-            defaultZoom={10}
-            defaultCenter={{lat: 45.421532, lng: -75.697189 }}
-        />
-    )
+const libraries = ["places"];
+const mapContainerStyle = {
+    width: '70vw',
+    height: '70vh'
 }
-const WrappedMap = withScriptjs(withGoogleMap(Map));
+const center = {
+    lat: 43.653225,
+    lng: -79.38186
+}
 
 export const Test = () => {
 
     const flex = flexComponents();
     const size = sizeComponents();
 
+    const {isLoaded, loadError} = useLoadScript({
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+        libraries,
+
+    });
+
+    if (loadError) return "Error";
+    if (!isLoaded) return "Loading Maps";
+
     return (
         <div className={`${flex.flexColumnSpaceAround} ${size.fullHeightWidth}`}>
-            <WrappedMap
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
-                    process.env.REACT_APP_GOOGLE_KEY
-                }`}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-            />
+            <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                zoom={8}
+                center={center}
+            >
+
+            </GoogleMap>
         </div>
     )
 }

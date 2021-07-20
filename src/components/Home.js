@@ -29,7 +29,8 @@ export const Home = () => {
 
     return (
         <StyleRoot>
-            <Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+            {/*<Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>*/}
+            <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                 {
                     announcementsData.length === 0 ?
                         <div style={loaderAnimationStyles.animation}>
@@ -57,7 +58,7 @@ export const Home = () => {
                             </Card>
                         </div>
                 }
-            </Grid>
+            </div>
         </StyleRoot>
     )
 }

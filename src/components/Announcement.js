@@ -21,7 +21,7 @@ export const Announcement = (props) => {
     const flexClasses = flexComponents();
 
     return (
-        <Card className={`${paddingClasses.padding} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
+        <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
             <div>
                 <Typography variant={'h4'}>
                     {props.data.title}
