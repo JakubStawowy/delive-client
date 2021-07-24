@@ -6,7 +6,10 @@ import {i18n} from "../data/i18n";
 
 export const Announcement = (props) => {
 
-    const announcementItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].announcement;
+    const announcementItems = i18n[
+        localStorage.getItem('locale') !== undefined
+        && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'].announcement;
 
     const useStyles = makeStyles(((theme)=>({
         announcement: {

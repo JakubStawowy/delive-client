@@ -14,7 +14,10 @@ import {ANIMATION_TIME} from "../data/consts";
 
 export const AnnouncementType = () => {
 
-    const newOfferItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].newOffer;
+    const newOfferItems = i18n[
+        localStorage.getItem('locale') !== undefined
+        && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'].newOffer;
     const history = useHistory();
     const [bounce, setBounce] = useState(false);
 

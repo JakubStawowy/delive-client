@@ -14,7 +14,10 @@ import {useState} from "react";
 
 function App() {
 
-    const [locale, setLocale] = useState(localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en');
+    const [locale, setLocale] = useState(
+        localStorage.getItem('locale') !== undefined && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'
+    );
 
     const useStyles = makeStyles(({
         container: {
@@ -23,7 +26,8 @@ function App() {
         wallpaper: {
             position: 'fixed',
             zIndex: -1,
-            height: '100%'
+            height: '100vh',
+            top: 0
         }
     }));
     const classes = useStyles();
@@ -35,12 +39,12 @@ function App() {
           <Route exact path={'/'}>
               <Redirect to={'/login'}/>
           </Route>
-          <Route path={'/login'} component={LoginRegister}/>
-          <Route path={'/home'} component={Home}/>
+          <Route path={'/login'} component={LoginRegister} locale={locale}/>
+          <Route path={'/home'} component={Home} locale={locale}/>
           <Route path={'/test'} component={Test}/>
-          <Route path={'/addAnnouncement/normal'} component={AddNormalAnnouncement}/>
-          <Route path={'/addAnnouncement/delivery'} component={AddDeliveryAnnouncement}/>
-          <Route path={'/announcementType'} component={AnnouncementType}/>
+          <Route path={'/addAnnouncement/normal'} component={AddNormalAnnouncement} locale={locale}/>
+          <Route path={'/addAnnouncement/delivery'} component={AddDeliveryAnnouncement} locale={locale}/>
+          <Route path={'/announcementType'} component={AnnouncementType} locale={locale}/>
         </BrowserRouter>
     );
 }

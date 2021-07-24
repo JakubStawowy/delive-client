@@ -1,4 +1,4 @@
-import {Card, Grid, List, ListItem} from "@material-ui/core";
+import {Card, List, ListItem} from "@material-ui/core";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {announcements} from "../testData/announcements";
 import {Announcement} from "./Announcement";

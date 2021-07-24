@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, makeStyles, MenuItem, Select} from "@material-ui/core";
 import {flexComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {i18n} from "../data/i18n";
 import {useAnimationStyles} from "../style/animation";
 import {fadeInDown, fadeOutUp} from "react-animations";
-import {ANIMATION_TIME, XS_MEDIA_QUERY} from "../data/consts";
+import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
 
 export const Menu = (props) => {
@@ -57,7 +57,7 @@ export const Menu = (props) => {
 
     const closeMenu = () => {
         const state = !menuAnimated;
-        window.matchMedia(XS_MEDIA_QUERY).matches && setMenuAnimated(state);
+        window.matchMedia(SM_MEDIA_QUERY).matches && setMenuAnimated(state);
         menuOpened ? setTimeout(()=>setMenuOpened(state), ANIMATION_TIME / 2) : setMenuOpened(state);
     }
 
@@ -75,10 +75,10 @@ export const Menu = (props) => {
                     className={`${rwd.menu} ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
                     style={menuAnimated
                         ?
-                        (window.matchMedia(XS_MEDIA_QUERY).matches
+                        (window.matchMedia(SM_MEDIA_QUERY).matches
                             ? fadeInAnimationStyles.animation : null)
                         :
-                        (window.matchMedia(XS_MEDIA_QUERY).matches
+                        (window.matchMedia(SM_MEDIA_QUERY).matches
                             ? fadeOutAnimationStyles.animation : null)}
                 >
                     <Button variant={'contained'} onClick={()=>handleAnnouncementRequest()}>

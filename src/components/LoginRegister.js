@@ -10,8 +10,15 @@ import {useState} from "react";
 
 export const LoginRegister = () => {
 
-    const loginItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].loginItems;
-    const registerItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].registerItems;
+    const loginItems = i18n[
+        localStorage.getItem('locale') !== undefined
+        && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'].loginItems;
+    const registerItems = i18n[
+        localStorage.getItem('locale') !== undefined
+        && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'].registerItems;
+
     const [bounce, setBounce] = useState(false);
     const history = useHistory();
 

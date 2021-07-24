@@ -1,4 +1,4 @@
-import {Button, Card, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
+import {Button, Card, Grid, makeStyles, Modal, TextField, Typography} from "@material-ui/core";
 import {
     flexComponents,
     paddingComponents,
@@ -15,11 +15,16 @@ import {useAnimationStyles} from "../style/animation";
 import {useState} from "react";
 import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
+import {MapModal} from "./MapModal";
 
 export const AnnouncementForm = () => {
 
-    const announcementFormItems = i18n[localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : 'en'].announcementForm;
+    const announcementFormItems = i18n[
+        localStorage.getItem('locale') !== undefined
+        && localStorage.getItem('locale') !== null
+            ? localStorage.getItem('locale') : 'en'].announcementForm;
     const [bounce, setBounce] = useState(false);
+    const [modalOpened, setModalOpened] = useState(false);
     const history = useHistory();
 
     const styles = makeStyles((()=>({
@@ -29,6 +34,11 @@ export const AnnouncementForm = () => {
         card: {
             height: '70vh'
         },
+        modal: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }
     })))
     const classes = styles();
     const flexClasses = flexComponents();
@@ -46,15 +56,18 @@ export const AnnouncementForm = () => {
     return (
         <StyleRoot>
             <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation}>
+
                 <Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                    <Modal className={classes.modal} centered open={modalOpened} children={<MapModal setModalOpened={setModalOpened}/>} onClose={()=>setModalOpened(!modalOpened)}/>
                     <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceBetween} ${classes.card} ${rwdClasses.singleMobileCard}`}>
                         <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
                             {announcementFormItems.destination.destinations}
-                            <Button variant={'contained'}>
+                            <Button variant={'contained'} onClick={()=>setModalOpened(true)}>
                                 <RoomIcon color={'secondary'}/>
                                 {announcementFormItems.destination.from}
                             </Button>
-                            <Button variant={'contained'}>
+
+                            <Button variant={'contained'} onClick={()=>setModalOpened(true)}>
                                 <RoomIcon color={'secondary'}/>
                                 {announcementFormItems.destination.to}
                             </Button>
