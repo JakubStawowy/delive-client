@@ -107,5 +107,13 @@ export const rwdComponents = makeStyles(((theme)=>({
             display: 'none'
         }
     },
-
 })));
+
+export const validatedComponents = makeStyles({
+    correctTextField: {
+        borderBottom: 'none'
+    },
+    wrongTextField: {
+        borderBottom: '1px solid red'
+    }
+});
