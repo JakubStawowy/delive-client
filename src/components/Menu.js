@@ -9,6 +9,7 @@ import {useAnimationStyles} from "../style/animation";
 import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
+import {logoutUser} from "../actions/restActions";
 
 export const Menu = (props) => {
 
@@ -40,9 +41,14 @@ export const Menu = (props) => {
     const fadeInAnimationStyles = useAnimationStyles(fadeInDown, ANIMATION_TIME / 2);
     const fadeOutAnimationStyles = useAnimationStyles(fadeOutUp, ANIMATION_TIME / 2);
 
-    const handleLogin = () => {
-        history.push("/login");
-        closeMenu();
+    const handleLogout = () => {
+        logoutUser({
+            'id': localStorage.getItem('userId')
+        }).then(() => {
+            localStorage.clear();
+            history.push("/login");
+            closeMenu();
+        }).catch((error) => alert(error));
     }
 
     const handleAnnouncementRequest = () => {
@@ -87,7 +93,7 @@ export const Menu = (props) => {
                     <Button variant={'contained'} onClick={()=>handleHome()}>
                         {menuStatements.allOffers}
                     </Button>
-                    <Button variant={'contained'} onClick={()=>handleLogin()} >
+                    <Button variant={'contained'} onClick={()=>handleLogout()} >
                         {menuStatements.login}
                     </Button>
                     <Select

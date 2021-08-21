@@ -25,6 +25,12 @@ export const flexComponents = makeStyles((()=>({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    flexRowCenter: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })));
 
@@ -110,9 +116,6 @@ export const rwdComponents = makeStyles(((theme)=>({
 })));
 
 export const validatedComponents = makeStyles({
-    correctTextField: {
-        borderBottom: 'none'
-    },
     wrongTextField: {
         borderBottom: '1px solid red'
     }

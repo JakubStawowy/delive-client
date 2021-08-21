@@ -8,9 +8,10 @@ import {i18n} from "../data/i18n";
 import {StyleRoot} from "radium";
 import {bounceOutLeft, bounceInRight} from "react-animations";
 import {useHistory} from "react-router";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
+import {handleItemAccessAttempt} from "../actions/handlers";
 
 export const AnnouncementType = () => {
 
@@ -38,10 +39,14 @@ export const AnnouncementType = () => {
     const bounceInAnimationStyles = useAnimationStyles(bounceInRight, ANIMATION_TIME);
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
-    const navToAnnouncementForm = () => {
+    const navToAnnouncementForm = (type) => {
         setBounce(true);
-        setTimeout(()=>history.push('/addAnnouncement/normal'), ANIMATION_TIME / 2);
+        setTimeout(()=>history.push('/addAnnouncement/' + type), ANIMATION_TIME / 2);
     }
+
+    useEffect(() => {
+        handleItemAccessAttempt(history);
+    }, []);
 
     return (
         <StyleRoot>
@@ -52,7 +57,7 @@ export const AnnouncementType = () => {
                             {newOfferItems.normalOffer}
                         </Typography>
                         <img src={boxIcon} alt={''} className={styles.icon}/>
-                        <Button onClick={()=>navToAnnouncementForm()}>
+                        <Button onClick={()=>navToAnnouncementForm('normal')}>
                             <ArrowForwardIcon fontSize={'large'}/>
                         </Button>
                     </Card>
@@ -61,7 +66,7 @@ export const AnnouncementType = () => {
                             {newOfferItems.deliveryOffer}
                         </Typography>
                         <img src={deliveryTruckIcon} alt={''} className={styles.icon}/>
-                        <Button onClick={()=>navToAnnouncementForm()}>
+                        <Button onClick={()=>navToAnnouncementForm('delivery')}>
                             <ArrowForwardIcon fontSize={'large'}/>
                         </Button>
                     </Card>

@@ -7,8 +7,9 @@ import {bounceInRight, bounceOutLeft} from "react-animations";
 import {ANIMATION_TIME} from "../data/consts";
 import {StyleRoot} from "radium";
 import {useState} from "react";
-import {checkIfEmailExists, checkIfNicknameExists, registerUser} from "../actions/restActions";
+import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../actions/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
+import {ROLE, TOKEN, USER_ID} from "../consts/ApplicationConsts";
 
 export const LoginRegister = () => {
 
@@ -21,10 +22,12 @@ export const LoginRegister = () => {
         && localStorage.getItem('locale') !== null
             ? localStorage.getItem('locale') : 'en'].registerItems;
 
+    const [loginEmail, setLoginEmail] = useState('');
+    const [loginPassword, setLoginPassword] = useState('');
     const [bounce, setBounce] = useState(false);
     const [nickname, setNickname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [registeredEmail, setRegisteredEmail] = useState('');
+    const [registeredPassword, setRegisteredPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
 
     const [validatedEmail, setValidatedEmail] = useState(true);
@@ -41,6 +44,7 @@ export const LoginRegister = () => {
             overflow: 'wrap'
         }
     })));
+
     const classes = useStyles();
     const flexClasses = flexComponents();
     const paddingClasses = paddingComponents();
@@ -49,18 +53,18 @@ export const LoginRegister = () => {
     const bounceInAnimationStyles = useAnimationStyles(bounceInRight, ANIMATION_TIME);
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME);
 
-    const handleSubmit = (event) => {
+    const handleRegisterSubmit = (event) => {
         event.preventDefault();
         validatedEmail && validatedPassword && validatedConfirmedPassword && !emailExists && !nicknameExists ?
         registerUser({
-            'email': email,
-            'password': password,
-            'userDetails': {
-                'nickname': nickname,
-                'name': null,
-                'surname': null,
-                'phone': null,
-                'image': 'no-image'
+            email: registeredEmail,
+            password: registeredPassword,
+            userDetails: {
+                nickname: nickname,
+                name: null,
+                surname: null,
+                phone: null,
+                image: 'no-image'
             }
         }).then(() => {
             alert('User registered successfully');
@@ -72,6 +76,22 @@ export const LoginRegister = () => {
 
     }
 
+    const handleLoginSubmit = (event) => {
+
+        event.preventDefault();
+        loginUser({
+            email: loginEmail,
+            password: loginPassword
+        }).then((response)=> {
+            localStorage.setItem(TOKEN, response.data.token);
+            localStorage.setItem(USER_ID, response.data.userId);
+            localStorage.setItem(ROLE, response.data.role);
+
+            history.push('/home');
+        })
+            .catch((error) => alert(error));
+    }
+
     return (
         <StyleRoot>
             <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation}>
@@ -81,12 +101,21 @@ export const LoginRegister = () => {
                             {loginItems.label}
                         </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
-                            <TextField label={loginItems.email}/>
-                            <TextField label={loginItems.password}/>
+                            <TextField
+                                label={loginItems.email}
+                                value={loginEmail}
+                                onChange={(e) => setLoginEmail(e.target.value)}
+                            />
+                            <TextField
+                                label={loginItems.password}
+                                value={loginPassword}
+                                type={'password'}
+                                onChange={(e) => setLoginPassword(e.target.value)}
+                            />
                             <Button
                                 type={'submit'}
                                 variant={'contained'}
-                                onClick={(e)=>handleSubmit(e)}
+                                onClick={(e)=>handleLoginSubmit(e)}
                             >
                                 {loginItems.buttonLabel}
                             </Button>
@@ -103,8 +132,8 @@ export const LoginRegister = () => {
                             }}
                             className={ nicknameExists && validationClasses.wrongTextField }
                             />
-                            <TextField label={registerItems.email} value={email} onChange={e=> {
-                                setEmail(e.target.value);
+                            <TextField label={registerItems.email} value={registeredEmail} onChange={e=> {
+                                setRegisteredEmail(e.target.value);
                                 setTimeout(()=>setValidatedEmail(validateEmail(e.target.value)), 500);
                                 checkIfEmailExists(e.target.value).then((response)=> {
                                     setEmailExists(response.data);
@@ -112,9 +141,9 @@ export const LoginRegister = () => {
                             }}
                             className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
                             />
-                            <TextField label={registerItems.password} value={password} type={'password'} onChange={e=> {
-                                setPassword(e.target.value);
-                                setTimeout(()=> {
+                            <TextField label={registerItems.password} value={registeredPassword} type={'password'} onChange={e=> {
+                                setRegisteredPassword(e.target.value);
+                                setTimeout(() => {
                                     setValidatedPassword(validatePassword(e.target.value));
                                     setValidatedConfirmedPassword(validateConfirmedPassword(e.target.value, confirmedPassword));
                                 }, 500);
@@ -123,14 +152,14 @@ export const LoginRegister = () => {
                             />
                             <TextField label={registerItems.confirmPassword} value={confirmedPassword} type={'password'} onChange={e=> {
                                 setConfirmedPassword(e.target.value);
-                                setTimeout(()=>setValidatedConfirmedPassword(validateConfirmedPassword(password, e.target.value)), 500);
+                                setTimeout(()=>setValidatedConfirmedPassword(validateConfirmedPassword(registeredPassword, e.target.value)), 500);
                             }}
                            className={ !validatedConfirmedPassword && validationClasses.wrongTextField }
                             />
                             <Button
                                 type={'submit'}
                                 variant={'contained'}
-                                onClick={(e)=>handleSubmit(e)}
+                                onClick={(e)=>handleRegisterSubmit(e)}
                             >
                                 {loginItems.buttonLabel}
                             </Button>

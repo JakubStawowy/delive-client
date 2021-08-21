@@ -31,10 +31,6 @@ export const i18n = {
             deliveryOffer: 'Delivery offer'
         },
         announcement: {
-            from: 'from',
-            to: 'to'
-        },
-        announcementForm: {
             destination: {
                 destinations: 'Destinations',
                 from: 'from',
@@ -79,10 +75,6 @@ export const i18n = {
             deliveryOffer: 'Oferta dostawy'
         },
         announcement: {
-            from: 'Od',
-            to: 'Do'
-        },
-        announcementForm: {
             destination: {
                 destinations: 'Lokalizacje',
                 from: 'od',
