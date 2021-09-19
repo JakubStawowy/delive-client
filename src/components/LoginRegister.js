@@ -10,6 +10,7 @@ import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../actions/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN, USER_ID} from "../consts/ApplicationConsts";
+import {handleError} from "../actions/handlers";
 
 export const LoginRegister = () => {
 
@@ -66,11 +67,7 @@ export const LoginRegister = () => {
                 phone: null,
                 image: 'no-image'
             }
-        }).then(() => {
-            alert('User registered successfully');
-            setBounce(true);
-            setTimeout(()=>history.push("/home"), ANIMATION_TIME / 2);
-        }).catch(error => alert(error))
+        }).then((response) => alert(response.data.message)).catch(error => handleError(error, history))
             :
             alert("Nope")
 
@@ -83,13 +80,19 @@ export const LoginRegister = () => {
             email: loginEmail,
             password: loginPassword
         }).then((response)=> {
-            localStorage.setItem(TOKEN, response.data.token);
-            localStorage.setItem(USER_ID, response.data.userId);
-            localStorage.setItem(ROLE, response.data.role);
 
-            history.push('/home');
-        })
-            .catch((error) => alert(error));
+            if (response.data.operationSuccess) {
+                localStorage.setItem(TOKEN, response.data.token);
+                localStorage.setItem(USER_ID, response.data.userId);
+                localStorage.setItem(ROLE, response.data.role);
+
+                history.push('/home');
+            }
+            else {
+                alert(response.data.message);
+            }
+        }).catch((error) => handleError(error, history));
+        // }).catch((error) => alert('xd'));
     }
 
     return (

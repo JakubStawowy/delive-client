@@ -1,11 +1,11 @@
-import {Button, Card, Grid, makeStyles, Modal, TextField, Typography} from "@material-ui/core";
+import {Button, Card, Grid, makeStyles, Modal, Typography, List, ListItem} from "@material-ui/core";
 import {
-    flexComponents,
+    flexComponents, listComponents,
     paddingComponents,
     rwdComponents,
-    sizeComponents, validatedComponents
+    sizeComponents
 } from "../style/components";
-
+import IndeterminateCheckBoxSharpIcon from '@material-ui/icons/IndeterminateCheckBoxSharp';
 import RoomIcon from '@material-ui/icons/Room';
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import {i18n} from "../data/i18n";
@@ -20,11 +20,11 @@ import {handleItemAccessAttempt} from "../actions/handlers";
 import {addDeliveryAnnouncement, addNormalAnnouncement} from "../actions/restActions";
 import {USER_ID} from "../consts/ApplicationConsts";
 import CheckIcon from "@material-ui/icons/Check";
+import AddIcon from '@material-ui/icons/Add';
 import {
-    validateDateTimeFormat,
-    validateNotEmptyStrings,
-    validateNumberFormat
+    validateDateTimeFormat, validateEmptyString
 } from "../actions/validators";
+import {PackageForm} from "./PackageForm";
 
 export const AnnouncementForm = (props) => {
 
@@ -33,19 +33,15 @@ export const AnnouncementForm = (props) => {
         && localStorage.getItem('locale') !== null
             ? localStorage.getItem('locale') : 'en'].announcement;
     const [bounce, setBounce] = useState(false);
+    const [packages, setPackages] = useState([]);
     const [localizationFromModalOpened, setLocalizationFromModalOpened] = useState(false);
     const [localizationToModalOpened, setLocalizationToModalOpened] = useState(false);
+    const [packageFormOpened, setPackageFormOpened] = useState(false);
 
     const [fromLatitude, setFromLatitude] = useState('');
     const [fromLongitude, setFromLongitude] = useState('');
     const [toLatitude, setToLatitude] = useState('');
     const [toLongitude, setToLongitude] = useState('');
-    const [packageLength, setPackageLength] = useState('');
-    const [packageLengthValidated, setPackageLengthValidated] = useState(true);
-    const [packageWidth, setPackageWidth] = useState('');
-    const [packageWidthValidated, setPackageWidthValidated] = useState(true);
-    const [packageHeight, setPackageHeight] = useState('');
-    const [packageHeightValidated, setPackageHeightValidated] = useState(true);
     const [dateDay, setDateDay] = useState('');
     const [dateHour, setDateHour] = useState('');
 
@@ -60,32 +56,34 @@ export const AnnouncementForm = (props) => {
         },
         check: {
             color: "green"
-        }
+        },
+        package: {
+            background: '#FFE4C4'
+        },
+
     })))
     const classes = styles();
     const flexClasses = flexComponents();
     const paddingClasses = paddingComponents();
     const sizeClasses = sizeComponents();
     const rwdClasses = rwdComponents();
-    const validationClasses = validatedComponents();
+    const listClasses = listComponents();
     const bounceInAnimationStyles = useAnimationStyles(bounceInRight, ANIMATION_TIME);
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
         if (props.delivery) {
-            validateNotEmptyStrings([
-                fromLatitude,
-                fromLongitude,
-                toLatitude,
-                toLongitude
-            ]) &&
+            validateEmptyString(fromLatitude) &&
+            validateEmptyString(fromLongitude) &&
+            validateEmptyString(toLatitude) &&
+            validateEmptyString(toLongitude) &&
                 validateDateTimeFormat(dateDay + " " + dateHour)
             ?
             addDeliveryAnnouncement({
-                fromLatitude: fromLatitude,
-                fromLongitude: fromLongitude,
-                toLatitude: toLatitude,
-                toLongitude: toLongitude,
+                fromLatitude,
+                fromLongitude,
+                toLatitude,
+                toLongitude,
                 authorId: localStorage.getItem(USER_ID),
                 date: dateDay + " " + dateHour
             }).then(() => {
@@ -96,23 +94,16 @@ export const AnnouncementForm = (props) => {
                 alert("ValidationError");
         }
         else {
-            validateNotEmptyStrings([
+            validateEmptyString(fromLatitude) &&
+            validateEmptyString(fromLongitude) &&
+            validateEmptyString(toLatitude) &&
+            validateEmptyString(toLongitude) && packages.length > 0 ?
+            addNormalAnnouncement({
                 fromLatitude,
                 fromLongitude,
                 toLatitude,
-                toLongitude
-            ]) &&
-                validateNumberFormat(packageWidth) &&
-                validateNumberFormat(packageHeight) &&
-                validateNumberFormat(packageLength) ?
-            addNormalAnnouncement({
-                fromLatitude: fromLatitude,
-                fromLongitude: fromLongitude,
-                toLatitude: toLatitude,
-                toLongitude: toLongitude,
-                packageLength: packageLength,
-                packageHeight: packageHeight,
-                packageWidth: packageWidth,
+                toLongitude,
+                packages: packages,
                 authorId: localStorage.getItem(USER_ID)
             }).then(() => {
                 setBounce(true);
@@ -122,6 +113,23 @@ export const AnnouncementForm = (props) => {
                 alert("ValidationError");
         }
     };
+
+    const addPackage = data => {
+        packages.push(data);
+        setPackageFormOpened(false);
+    }
+
+    const removePackage = (id) => {
+        let index;
+        for (index = 0 ; index < packages.length ; index++) {
+            if (packages[index].id === id) {
+                break;
+            }
+        }
+        packages.splice(index, 1);
+        const packagesCopy = [...packages];
+        setPackages(packagesCopy);
+    }
 
     useEffect(() => {
         handleItemAccessAttempt(history);
@@ -151,6 +159,17 @@ export const AnnouncementForm = (props) => {
                         />}
                         onClose={()=>setLocalizationToModalOpened(!localizationToModalOpened)}
                     />
+                    <Modal
+                        className={flexClasses.flexRowCenter}
+                        centered open={packageFormOpened}
+                        children={<PackageForm
+                            announcementFormItems={announcementFormItems}
+                            setPackageFormOpened={setPackageFormOpened}
+                            addPackage={addPackage}
+                            packagesLength={packages.length}
+                        />}
+                        onClose={()=>setPackageFormOpened(!packageFormOpened)}
+                    />
                     <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceAround} ${classes.card} ${rwdClasses.singleMobileCard}`}>
                         <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
                             {announcementFormItems.destination.destinations}
@@ -177,46 +196,25 @@ export const AnnouncementForm = (props) => {
 
                         {
                             !props.delivery &&
-                            <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
-                                {announcementFormItems.length}
-                                <TextField
-                                    className={!packageLengthValidated && validationClasses.wrongTextField}
-                                    value={packageLength}
-                                    onChange={(e)=> {
-                                        setPackageLength(e.target.value);
-                                        setTimeout(()=>setPackageLengthValidated(validateNumberFormat(e.target.value)), 500);
-                                    }}
-                                    label={'x'} />
-                            </Typography>
+                                <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)}>
+                                    <AddIcon fontSize={'large'}/>
+                                    Add package
+                                </Button>
                         }
                         {
-                            !props.delivery &&
-                            <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
-                                {announcementFormItems.width}
-                                <TextField
-                                    className={!packageWidthValidated && validationClasses.wrongTextField}
-                                    value={packageWidth}
-                                    onChange={(e)=> {
-                                        setPackageWidth(e.target.value);
-                                        setTimeout(()=>setPackageWidthValidated(validateNumberFormat(e.target.value)), 500);
-                                    }}
-                                    label={'y'}
-                                />
-                            </Typography>
-                        }
-                        {
-                            !props.delivery &&
-                            <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
-                                {announcementFormItems.height}
-                                <TextField
-                                    className={!packageHeightValidated && validationClasses.wrongTextField}
-                                    value={packageHeight}
-                                    onChange={(e)=> {
-                                        setPackageHeight(e.target.value);
-                                        setTimeout(()=>setPackageHeightValidated(validateNumberFormat(e.target.value)), 500);
-                                    }}
-                                    label={'z'} />
-                            </Typography>
+                            !props.delivery && packages.length > 0 &&
+                                <List className={`${flexClasses.flexRowSpaceBetween} ${listClasses.horizontalList}`}>
+                                    {
+                                        packages.map(deliveryPackage => <ListItem>
+                                            <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
+                                                <Button onClick={() => removePackage(deliveryPackage.id)}>
+                                                    <IndeterminateCheckBoxSharpIcon />
+                                                </Button>
+                                                {`${deliveryPackage.packageWidth} x ${deliveryPackage.packageLength} x ${deliveryPackage.packageHeight}`}
+                                            </Card>
+                                        </ListItem>)
+                                    }
+                                </List>
                         }
                         {
                             props.delivery &&

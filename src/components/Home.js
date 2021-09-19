@@ -5,7 +5,7 @@ import {Announcement} from "./Announcement";
 import {useEffect, useState} from "react";
 import {BounceLoader} from "react-spinners";
 import {StyleRoot} from "radium";
-import {fadeInDown, fadeIn} from "react-animations";
+import {fadeInDown, fadeIn, fadeOutLeft} from "react-animations";
 import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
 import {handleItemAccessAttempt} from "../actions/handlers";
@@ -17,6 +17,7 @@ export const Home = () => {
     const [normalAnnouncements, setNormalAnnouncements] = useState([]);
     const [deliveryAnnouncements, setDeliveryAnnouncements] = useState([]);
     const [announcementFlag, setAnnouncementFlag] = useState(true);
+    const [bounce, setBounce] = useState(false);
 
     const history = useHistory();
 
@@ -36,6 +37,7 @@ export const Home = () => {
     const rwdClasses = rwdComponents();
     const animationStyles = useAnimationStyles(fadeInDown, ANIMATION_TIME);
     const loaderAnimationStyles = useAnimationStyles(fadeIn, ANIMATION_TIME);
+    const fadeOutStyles = useAnimationStyles(fadeOutLeft, ANIMATION_TIME / 2);
 
     useEffect(()=>{
         handleItemAccessAttempt(history);
@@ -50,6 +52,11 @@ export const Home = () => {
         setAnnouncementFlag(false);
     };
 
+    const navToCommissionForm = type => {
+        setBounce(true);
+        setTimeout(() => history.push('/commission/' + type), ANIMATION_TIME / 2);
+    }
+
     return (
         <StyleRoot>
             <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
@@ -62,7 +69,7 @@ export const Home = () => {
                             />
                         </div>
                         :
-                        <div style={animationStyles.animation} className={`${rwdClasses.mobileCard}`}>
+                        <div style={bounce ? fadeOutStyles.animation : animationStyles.animation} className={`${rwdClasses.mobileCard}`}>
                             <Card className={`${paddingClasses.paddingMedium}`}>
                                 <div className={`${flexClasses.flexRowCenter} ${classes.bar}`}>
                                     <Button onClick={() => loadNormalAnnouncements()} className={announcementFlag && classes.selected}>
@@ -72,7 +79,7 @@ export const Home = () => {
                                         Delivery
                                     </Button>
                                 </div>
-                                    <List className={`${listClasses.announcementList}`}>
+                                    <List className={`${listClasses.verticalList}`}>
                                         {
                                             announcementFlag ?
                                             normalAnnouncements.map(announcement=>{
@@ -80,6 +87,8 @@ export const Home = () => {
                                                     <ListItem>
                                                         <Announcement
                                                             data={announcement}
+                                                            action={navToCommissionForm}
+                                                            delivery={false}
                                                         />
                                                     </ListItem>
                                                 )
@@ -90,6 +99,8 @@ export const Home = () => {
                                                     <ListItem>
                                                         <Announcement
                                                             data={announcement}
+                                                            action={navToCommissionForm}
+                                                            dalivery={true}
                                                         />
                                                     </ListItem>
                                                 )

@@ -2,11 +2,5 @@ export const validateEmail = email => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;
 export const validatePassword = password =>/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(password);
 export const validateConfirmedPassword = (password, confirmedPassword) => password === confirmedPassword;
 export const validateNumberFormat = number => /^\d+(\.\d*)?\d?$/.test(number);
-export const validateNotEmptyStrings = strings => {
-    strings.forEach(string => {
-        if (string === '')
-            return false;
-    })
-    return true;
-}
+export const validateEmptyString = string => string !== '';
 export const validateDateTimeFormat = dateTime => /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/.test(dateTime);

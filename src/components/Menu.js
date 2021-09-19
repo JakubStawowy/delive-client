@@ -61,6 +61,11 @@ export const Menu = (props) => {
         menuOpened && closeMenu();
     }
 
+    const handleMessages = () => {
+        history.push('/messages');
+        menuOpened && closeMenu();
+    }
+
     const closeMenu = () => {
         const state = !menuAnimated;
         window.matchMedia(SM_MEDIA_QUERY).matches && setMenuAnimated(state);
@@ -92,6 +97,9 @@ export const Menu = (props) => {
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleHome()}>
                         {menuStatements.allOffers}
+                    </Button>
+                    <Button variant={'contained'} onClick={()=>handleMessages()}>
+                        Messages
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleLogout()} >
                         {menuStatements.login}

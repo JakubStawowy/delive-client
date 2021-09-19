@@ -2,10 +2,15 @@ import axios from 'axios';
 
 import {
     ADD_DELIVERY_ANNOUNCEMENT_URL,
-    ADD_NORMAL_ANNOUNCEMENT_URL, GET_DELIVERY_ANNOUNCEMENTS_URL, GET_HALFWAY_POINT_URL, GET_NORMAL_ANNOUNCEMENTS_URL,
+    ADD_NORMAL_ANNOUNCEMENT_URL,
+    GET_DELIVERY_ANNOUNCEMENTS_URL,
+    GET_HALFWAY_POINT_URL,
+    GET_NORMAL_ANNOUNCEMENTS_URL, LOAD_MESSAGES_ARCHIVED_URL, LOAD_MESSAGES_RECEIVED_URL,
+    LOAD_MESSAGES_SENT_URL,
     LOGIN_USER_URL,
     LOGOUT_USER_URL,
-    REGISTER_USER_URL,
+    REGISTER_DELIVERY_URL, REGISTER_MESSAGE_DELIVERY_URL, REGISTER_MESSAGE_NORMAL_URL, REGISTER_MESSAGE_URL,
+    REGISTER_USER_URL, REPLY_MESSAGE_URL,
     VALIDATE_EMAIL_URL,
     VALIDATE_NICKNAME_URL
 } from "../consts/UrlConsts";
@@ -28,6 +33,13 @@ export const getHalfwayPoint = (data) => axios.get(
         .replace(":toLongitude", data.toLongitude)
         .replace(":mapWidth", data.mapWidth)
     , getConfig());
+export const registerDelivery = (data) => axios.post(
+    REGISTER_DELIVERY_URL.replace(':userId', data.userId).replace(':announcementId', data.announcementId), null, getConfig());
+export const getMessagesSent = (data) => axios.get(LOAD_MESSAGES_SENT_URL.replace(':userId', data.userId), getConfig());
+export const getMessagesReceived = (data) => axios.get(LOAD_MESSAGES_RECEIVED_URL.replace(':userId', data.userId), getConfig());
+export const replyMessage = (data) => axios.post(REPLY_MESSAGE_URL, data, getConfig());
+export const registerMessageNormal = (data) => axios.post(REGISTER_MESSAGE_NORMAL_URL, data, getConfig());
+export const registerMessageDelivery = (data) => axios.post(REGISTER_MESSAGE_DELIVERY_URL, data, getConfig());
 const getConfig = () => {
     return {
         headers: {

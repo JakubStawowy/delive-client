@@ -31,7 +31,7 @@ export const flexComponents = makeStyles((()=>({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
 })));
 
 export const paddingComponents = makeStyles((()=>({
@@ -59,10 +59,20 @@ export const sizeComponents = makeStyles((()=>({
     }
 })));
 
-export const listComponents = makeStyles((()=>({
-    announcementList: {
+export const listComponents = makeStyles(((theme)=>({
+    verticalList: {
         maxHeight: '70vh',
         overflow: 'auto'
+    },
+    horizontalList: {
+        maxWidth: '30vw',
+        overflow: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '100vw',
+        },
+        [theme.breakpoints.between('sm', 'md')]: {
+            maxWidth: '60vw',
+        }
     }
 })));
 

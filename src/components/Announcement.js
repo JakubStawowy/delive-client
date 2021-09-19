@@ -1,4 +1,4 @@
-import {Button, Card, Grid, makeStyles, Modal, Typography} from "@material-ui/core";
+import {Button, Card, makeStyles, Modal, Typography} from "@material-ui/core";
 import {flexComponents, paddingComponents} from "../style/components";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -6,13 +6,17 @@ import {i18n} from "../data/i18n";
 import {USER_ID} from "../consts/ApplicationConsts";
 import MapIcon from '@material-ui/icons/Map';
 import {MapModal} from "./MapModal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import boxIcon from "../uploads/box.png";
 import deliveryTruckIcon from "../uploads/delivery-truck.png";
+import {useHistory} from "react-router";
+import {PackagesModal} from "./PackagesModal";
 
 export const Announcement = (props) => {
 
+    const history = useHistory();
     const [mapModalOpened, setMapModalOpened] = useState(false);
+    const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const announcementItems = i18n[
         localStorage.getItem('locale') !== undefined
         && localStorage.getItem('locale') !== null
@@ -34,11 +38,13 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const flexClasses = flexComponents();
 
+    const handleRegisterCommission = () => props.action(props.data.date !== undefined ?
+        'delivery/' + props.data.announcementId + '/' + props.data.authorId : 'normal/' + props.data.announcementId + '/' + props.data.authorId);
+
     return (
         <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
 
             <Modal
-                // className={classes.modal}
                 className={flexClasses.flexRowCenter}
                 centered open={mapModalOpened}
                 children={<MapModal
@@ -50,26 +56,24 @@ export const Announcement = (props) => {
                         toLongitude: parseFloat(props.data.toLongitude),
                     }}
                 />}
-                onClose={()=>setMapModalOpened(!mapModalOpened)}
+                onClose={()=>setMapModalOpened(false)}
+            />
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={packagesModalOpened}
+                children={<PackagesModal
+                    packages={props.data.packages}
+                    setPackagesModalOpened={setPackagesModalOpened}
+                />}
+                onClose={()=>setPackagesModalOpened(false)}
             />
             <Typography variant={'body2'}>
                 {
-                    props.data.packageLength !== undefined &&
-                    props.data.packageWidth !== undefined &&
-                    props.data.packageHeight !== undefined &&
-                    // props.data.date !== undefined &&
+                    props.data.date ===undefined &&
                     <div className={flexClasses.flexRowSpaceAround}>
                         <img src={boxIcon} alt={''}  className={classes.icon}/>
                         <div>
-                            <div>
-                                {`${announcementItems.length}: ${props.data.packageLength}`}
-                            </div>
-                            <div>
-                                {`${announcementItems.width}: ${props.data.packageWidth}`}
-                            </div>
-                            <div>
-                                {`${announcementItems.height}: ${props.data.packageHeight}`}
-                            </div>
+                            Number of packages: {props.data.packages.length}
                         </div>
                     </div>
                 }
@@ -85,7 +89,13 @@ export const Announcement = (props) => {
             </Typography>
 
             <div>
-                <Button onClick={() => setMapModalOpened(!mapModalOpened)}>
+                {
+                    !props.delivery &&
+                        <Button onClick={() => setPackagesModalOpened(true)}>
+                            Packages
+                        </Button>
+                }
+                <Button onClick={() => setMapModalOpened(true)}>
                     <MapIcon />
                 </Button>
                 {
@@ -96,7 +106,7 @@ export const Announcement = (props) => {
                 }
                 {
                     props.data.authorId !== parseInt(localStorage.getItem(USER_ID)) &&
-                    <Button>
+                    <Button onClick={() => handleRegisterCommission()}>
                         <ArrowForwardIcon />
                     </Button>
                 }

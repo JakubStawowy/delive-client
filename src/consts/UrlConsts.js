@@ -1,6 +1,7 @@
 // const BASE_API_URL = 'http://localhost:8080/api';
 // const BASE_API_URL = "http://192.168.0.115:8080/api";
-const BASE_API_URL = "http://192.168.2.103:8080/api";
+// const BASE_API_URL = "http://192.168.2.103:8080/api";
+const BASE_API_URL = "http://localhost:8080/api";
 const BASE_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements';
 
 export const REGISTER_USER_URL = BASE_API_URL + '/register';
@@ -13,3 +14,9 @@ export const ADD_DELIVERY_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/deli
 export const GET_NORMAL_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/normal';
 export const GET_DELIVERY_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/delivery';
 export const GET_HALFWAY_POINT_URL = BASE_API_URL + "/maps/middle?fromLatitude=:fromLatitude&toLatitude=:toLatitude&fromLongitude=:fromLongitude&toLongitude=:toLongitude&mapWidth=:mapWidth";
+export const REGISTER_DELIVERY_URL = BASE_API_URL + "/delivery/register?userId=:userId&announcementId=:announcementId";
+export const LOAD_MESSAGES_SENT_URL = BASE_API_URL + "/messages/sent?userId=:userId";
+export const LOAD_MESSAGES_RECEIVED_URL = BASE_API_URL + "/messages/received?userId=:userId";
+export const REPLY_MESSAGE_URL = BASE_API_URL + "/messages/reply";
+export const REGISTER_MESSAGE_NORMAL_URL = BASE_API_URL + "/messages/register/normal";
+export const REGISTER_MESSAGE_DELIVERY_URL = BASE_API_URL + "/messages/register/delivery";
