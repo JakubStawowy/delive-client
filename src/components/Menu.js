@@ -51,21 +51,11 @@ export const Menu = (props) => {
         }).catch((error) => alert(error));
     }
 
-    const handleAnnouncementRequest = () => {
-        history.push("/announcementType");
-        closeMenu();
-    }
-
-    const handleHome = () => {
-        history.push('/home');
+    const handleNav = url => {
+        history.push(url);
         menuOpened && closeMenu();
     }
-
-    const handleMessages = () => {
-        history.push('/messages');
-        menuOpened && closeMenu();
-    }
-
+    
     const closeMenu = () => {
         const state = !menuAnimated;
         window.matchMedia(SM_MEDIA_QUERY).matches && setMenuAnimated(state);
@@ -81,7 +71,7 @@ export const Menu = (props) => {
     return (
         <StyleRoot>
             <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
-                <img src={logo} alt={''} className={classes.logo} onClick={()=>handleHome()}/>
+                <img src={logo} alt={''} className={classes.logo} onClick={()=>handleNav('/home')}/>
                 <div
                     className={`${rwd.menu} ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
                     style={menuAnimated
@@ -92,14 +82,17 @@ export const Menu = (props) => {
                         (window.matchMedia(SM_MEDIA_QUERY).matches
                             ? fadeOutAnimationStyles.animation : null)}
                 >
-                    <Button variant={'contained'} onClick={()=>handleAnnouncementRequest()}>
+                    <Button variant={'contained'} onClick={()=>handleNav('/announcementType')}>
                         {menuStatements.newOffer}
                     </Button>
-                    <Button variant={'contained'} onClick={()=>handleHome()}>
+                    <Button variant={'contained'} onClick={()=>handleNav('/home')}>
                         {menuStatements.allOffers}
                     </Button>
-                    <Button variant={'contained'} onClick={()=>handleMessages()}>
+                    <Button variant={'contained'} onClick={()=>handleNav('/messages')}>
                         Messages
+                    </Button>
+                    <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
+                        Delivery
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleLogout()} >
                         {menuStatements.login}

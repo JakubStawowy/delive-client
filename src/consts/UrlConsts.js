@@ -20,3 +20,6 @@ export const LOAD_MESSAGES_RECEIVED_URL = BASE_API_URL + "/messages/received?use
 export const REPLY_MESSAGE_URL = BASE_API_URL + "/messages/reply";
 export const REGISTER_MESSAGE_NORMAL_URL = BASE_API_URL + "/messages/register/normal";
 export const REGISTER_MESSAGE_DELIVERY_URL = BASE_API_URL + "/messages/register/delivery";
+export const LOAD_DELIVERY_BY_DELIVERER_URL = BASE_API_URL + "/delivery/deliverer?userId=:userId";
+export const LOAD_DELIVERY_BY_PRINCIPAL_URL = BASE_API_URL + "/delivery/principal?userId=:userId";
+export const CHANGE_DELIVERY_STATE_URL = BASE_API_URL + '/delivery/change?actionName=:actionName&deliveryId=:deliveryId';

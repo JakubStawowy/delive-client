@@ -80,10 +80,14 @@ export const AnnouncementForm = (props) => {
                 validateDateTimeFormat(dateDay + " " + dateHour)
             ?
             addDeliveryAnnouncement({
-                fromLatitude,
-                fromLongitude,
-                toLatitude,
-                toLongitude,
+                destinationFrom: {
+                    longitude: fromLongitude,
+                    latitude: fromLatitude
+                },
+                destinationTo: {
+                    longitude: toLongitude,
+                    latitude: toLatitude
+                },
                 authorId: localStorage.getItem(USER_ID),
                 date: dateDay + " " + dateHour
             }).then(() => {
@@ -99,10 +103,14 @@ export const AnnouncementForm = (props) => {
             validateEmptyString(toLatitude) &&
             validateEmptyString(toLongitude) && packages.length > 0 ?
             addNormalAnnouncement({
-                fromLatitude,
-                fromLongitude,
-                toLatitude,
-                toLongitude,
+                destinationFrom: {
+                    longitude: fromLongitude,
+                    latitude: fromLatitude
+                },
+                destinationTo: {
+                    longitude: toLongitude,
+                    latitude: toLatitude
+                },
                 packages: packages,
                 authorId: localStorage.getItem(USER_ID)
             }).then(() => {

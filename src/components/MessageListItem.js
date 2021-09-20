@@ -30,7 +30,10 @@ export const MessageListItem = (props) => {
         senderId: localStorage.getItem(USER_ID),
         receiverId: props.message.senderId,
         consent
-    }).then(() => alert("Message sent")).catch((error) => handleError(error, history));
+    }).then(() => {
+        alert("Message sent");
+        props.refresh();
+    }).catch((error) => handleError(error, history));
 
     return (
         <ListItem>

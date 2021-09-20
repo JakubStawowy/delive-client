@@ -111,6 +111,7 @@ export const Messages = () => {
                                                     <MessageListItem
                                                         message={message}
                                                         received={true}
+                                                        refresh={refresh}
                                                     />
                                                 )
                                             })

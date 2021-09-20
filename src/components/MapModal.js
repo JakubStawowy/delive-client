@@ -59,7 +59,7 @@ export const MapModal = (props) => {
     }
 
     useEffect(()=>{
-        props.coordinates !== undefined ?
+        if (props.fromLatitude !== undefined && props.toLatitude !== undefined) {
             getHalfwayPoint({
                 fromLatitude: props.coordinates.fromLatitude,
                 toLatitude: props.coordinates.toLatitude,
@@ -74,9 +74,19 @@ export const MapModal = (props) => {
                     height: '80vh',
                     zoom: response.data.zoomLevel
                 });
-            }).catch((error)=>alert(error))
-        :
-        navigator.geolocation.getCurrentPosition(position => {
+            }).catch((error)=>alert(error));
+        }
+        else if (props.latitude !== undefined && props.longitude !== undefined) {
+            setViewport({
+                latitude: props.latitude,
+                longitude: props.longitude,
+                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '80vw',
+                height: '80vh',
+                zoom: 15
+            });
+        }
+        else {
+            navigator.geolocation.getCurrentPosition(position => {
                 setViewport({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
@@ -85,6 +95,7 @@ export const MapModal = (props) => {
                     zoom: 15,
                 });
             }, ()=>handleLocationError());
+        }
     }, []);
 
     const handleConfirm = () => {
@@ -131,7 +142,7 @@ export const MapModal = (props) => {
                                 }
                             </ReactMapGl>
                             {
-                                props.coordinates !== undefined ?
+                                props.longitude !== undefined || props.coordinates !== undefined ?
                                     <Button variant={'contained'} className={classes.singleButton} onClick={()=>handleClose()}>
                                         <CheckIcon className={classes.check}/>
                                     </Button>
