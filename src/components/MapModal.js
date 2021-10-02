@@ -126,7 +126,7 @@ export const MapModal = (props) => {
                                 mapStyle={'mapbox://styles/mapbox/streets-v11'}
                             >
                                 {
-                                    props.coordinates !== undefined ?
+                                    props.coordinates !== undefined && props.longitude === undefined &&
                                         <div>
                                             <Marker longitude={props.coordinates.fromLongitude} latitude={props.coordinates.fromLatitude}>
                                                 <RoomIcon fontSize={'large'} className={classes.pin}/>
@@ -135,26 +135,40 @@ export const MapModal = (props) => {
                                                 <RoomIcon fontSize={'large'} className={classes.pin}/>
                                             </Marker>
                                         </div>
-                                        :
+                                }
+                                {
+
+                                    props.coordinates === undefined && props.longitude === undefined &&
                                         <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
+                                            <RoomIcon fontSize={'large'} className={classes.pin}/>
+                                        </Marker>
+                                }
+                                {
+                                    props.longitude !== undefined && props.coordinates === undefined &&
+                                        <Marker longitude={props.longitude} latitude={props.latitude}>
                                             <RoomIcon fontSize={'large'} className={classes.pin}/>
                                         </Marker>
                                 }
                             </ReactMapGl>
                             {
-                                props.longitude !== undefined || props.coordinates !== undefined ?
-                                    <Button variant={'contained'} className={classes.singleButton} onClick={()=>handleClose()}>
-                                        <CheckIcon className={classes.check}/>
-                                    </Button>
-                                    :
-                                    <div>
-                                        <Button variant={'contained'} className={classes.button} onClick={()=>handleConfirm()}>
-                                            <CheckIcon className={classes.check}/>
-                                        </Button>
-                                        <Button variant={'contained'} className={classes.button} onClick={()=>handleClose()}>
-                                            <ClearIcon className={classes.clear}/>
-                                        </Button>
-                                    </div>
+                                props.setModalOpened !== undefined &&
+                                <div>
+                                    {
+                                        (props.longitude !== undefined || props.coordinates !== undefined) ?
+                                            <Button variant={'contained'} className={classes.singleButton} onClick={()=>handleClose()}>
+                                                <CheckIcon className={classes.check}/>
+                                            </Button>
+                                            :
+                                            <div>
+                                                <Button variant={'contained'} className={classes.button} onClick={()=>handleConfirm()}>
+                                                    <CheckIcon className={classes.check}/>
+                                                </Button>
+                                                <Button variant={'contained'} className={classes.button} onClick={()=>handleClose()}>
+                                                    <ClearIcon className={classes.clear}/>
+                                                </Button>
+                                            </div>
+                                    }
+                                </div>
                             }
                         </div>
                 }

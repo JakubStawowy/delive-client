@@ -35,9 +35,12 @@ export const PackagesModal = (props) => {
                     </ListItem>)
                 }
             </List>
-            <Button variant={'contained'} className={classes.singleButton} onClick={()=>handleClose()}>
-                <CheckIcon className={classes.check}/>
-            </Button>
+            {
+                props.setPackagesModalOpened !== undefined &&
+                    <Button variant={'contained'} className={classes.singleButton} onClick={()=>handleClose()}>
+                        <CheckIcon className={classes.check}/>
+                    </Button>
+            }
         </Card>
     )
 }

@@ -13,7 +13,7 @@ import {
     getMessagesReceived,
     getMessagesSent
 } from "../actions/restActions";
-import {USER_ID} from "../consts/ApplicationConsts";
+import {USER_ID} from "../consts/applicationConsts";
 import {MessageListItem} from "./MessageListItem";
 
 export const Messages = () => {

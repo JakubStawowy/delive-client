@@ -10,6 +10,7 @@ import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
 import {logoutUser} from "../actions/restActions";
+import {USER_ID} from "../consts/applicationConsts";
 
 export const Menu = (props) => {
 
@@ -55,7 +56,7 @@ export const Menu = (props) => {
         history.push(url);
         menuOpened && closeMenu();
     }
-    
+
     const closeMenu = () => {
         const state = !menuAnimated;
         window.matchMedia(SM_MEDIA_QUERY).matches && setMenuAnimated(state);
@@ -93,6 +94,9 @@ export const Menu = (props) => {
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
                         Delivery
+                    </Button>
+                    <Button variant={'contained'} onClick={()=>handleNav('/profile/' + localStorage.getItem(USER_ID))}>
+                        Profile
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleLogout()} >
                         {menuStatements.login}

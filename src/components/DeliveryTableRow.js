@@ -1,10 +1,10 @@
 import {Button, Card, Modal, TableCell, TableRow} from "@material-ui/core";
-import {getNextActionName, trimDate} from "../actions/functions";
+import {getNextActionName, trimDate} from "../actions/commonFunctions";
 import {PackagesModal} from "./PackagesModal";
 import {MapModal} from "./MapModal";
 import {flexComponents} from "../style/components";
 import {useEffect, useState} from "react";
-import {USER_ID, WAITING} from "../consts/ApplicationConsts";
+import {USER_ID, WAITING} from "../consts/applicationConsts";
 import {changeDeliveryState} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
@@ -18,6 +18,9 @@ export const DeliveryTableRow = (props) => {
     const flexClasses = flexComponents();
     const actionName = getNextActionName(props.delivery.deliveryState,
         parseInt(localStorage.getItem(USER_ID)) === props.delivery.announcement.authorId);
+    const openAnnouncement = () => {
+        history.push('/announcement/' + props.delivery.announcement.announcementId);
+    }
 
     return (
         <TableRow>
@@ -51,7 +54,13 @@ export const DeliveryTableRow = (props) => {
                 onClose={()=>setToLocalizationModalOpened(false)}
             />
             <TableCell align={"center"}>
-                {props.delivery.announcement.announcementId}
+                <Button
+                    variant={"contained"}
+                    onClick={() => openAnnouncement()}
+                >
+                    Check
+                </Button>
+
             </TableCell>
             <TableCell align={"center"}>
                 {trimDate(props.delivery.registeredAt)}

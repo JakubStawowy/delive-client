@@ -18,7 +18,7 @@ import {ANIMATION_TIME} from "../data/consts";
 import {MapModal} from "./MapModal";
 import {handleItemAccessAttempt} from "../actions/handlers";
 import {addDeliveryAnnouncement, addNormalAnnouncement} from "../actions/restActions";
-import {USER_ID} from "../consts/ApplicationConsts";
+import {USER_ID} from "../consts/applicationConsts";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
 import {

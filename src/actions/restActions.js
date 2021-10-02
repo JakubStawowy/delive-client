@@ -2,14 +2,14 @@ import axios from 'axios';
 
 import {
     ADD_DELIVERY_ANNOUNCEMENT_URL,
-    ADD_NORMAL_ANNOUNCEMENT_URL, CHANGE_DELIVERY_STATE_URL,
+    ADD_NORMAL_ANNOUNCEMENT_URL, CHANGE_DELIVERY_STATE_URL, GET_ANNOUNCEMENT_URL,
     GET_DELIVERY_ANNOUNCEMENTS_URL,
     GET_HALFWAY_POINT_URL,
     GET_NORMAL_ANNOUNCEMENTS_URL,
-    LOAD_DELIVERY_BY_DELIVERER_URL, LOAD_DELIVERY_BY_PRINCIPAL_URL,
+    LOAD_DELIVERY_BY_DELIVERER_URL, LOAD_DELIVERY_BY_PRINCIPAL_URL, LOAD_FEEDBACK_URL,
     LOAD_MESSAGES_ARCHIVED_URL,
     LOAD_MESSAGES_RECEIVED_URL,
-    LOAD_MESSAGES_SENT_URL,
+    LOAD_MESSAGES_SENT_URL, LOAD_USER_URL,
     LOGIN_USER_URL,
     LOGOUT_USER_URL,
     REGISTER_DELIVERY_URL,
@@ -20,8 +20,8 @@ import {
     REPLY_MESSAGE_URL,
     VALIDATE_EMAIL_URL,
     VALIDATE_NICKNAME_URL
-} from "../consts/UrlConsts";
-import {TOKEN} from "../consts/ApplicationConsts";
+} from "../consts/urlConsts";
+import {TOKEN} from "../consts/applicationConsts";
 
 export const registerUser = (data) => axios.post(REGISTER_USER_URL, data);
 export const checkIfEmailExists = (email) => axios.get(VALIDATE_EMAIL_URL.replace(':email', email));
@@ -51,6 +51,11 @@ export const loadDeliveriesByDeliverer = userId => axios.get(LOAD_DELIVERY_BY_DE
 export const loadDeliveriesByPrincipal = userId => axios.get(LOAD_DELIVERY_BY_PRINCIPAL_URL.replace(':userId', userId), getConfig());
 export const changeDeliveryState = (actionName, deliveryId) => axios.put(CHANGE_DELIVERY_STATE_URL.replace(':actionName', actionName)
     .replace(":deliveryId", deliveryId), null, getConfig());
+export const loadUser = userId => axios.get(LOAD_USER_URL.replace(':userId', userId), getConfig());
+export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(':userId', userId), getConfig());
+export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(':announcementId', announcementId), getConfig());
+
+
 const getConfig = () => {
     return {
         headers: {

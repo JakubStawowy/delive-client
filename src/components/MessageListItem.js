@@ -2,8 +2,8 @@ import {Button, Card, ListItem, makeStyles, Modal} from "@material-ui/core";
 import {replyMessage} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
-import {USER_ID} from "../consts/ApplicationConsts";
-import {trimDate} from "../actions/functions";
+import {USER_ID} from "../consts/applicationConsts";
+import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
@@ -35,6 +35,9 @@ export const MessageListItem = (props) => {
         props.refresh();
     }).catch((error) => handleError(error, history));
 
+    const handleOpenProfile = userId => history.push('/profile/' + userId);
+    const handleOpenAnnouncement = announcementId => history.push('/announcement/' + announcementId);
+
     return (
         <ListItem>
             {
@@ -56,16 +59,16 @@ export const MessageListItem = (props) => {
                             props.message.message !== undefined && props.message.message
                         }
                     </div>
-                    <Button variant={"contained"}>
+                    <Button variant={"contained"} onClick={() => handleOpenAnnouncement(props.message.announcementId)}>
                         Announcement
                     </Button>
                     {
                         props.received ?
-                            <Button variant={"contained"}>
+                            <Button variant={"contained"} onClick={() => handleOpenProfile(props.message.senderId)}>
                                 Sender
                             </Button>
                             :
-                            <Button variant={"contained"}>
+                            <Button variant={"contained"} onClick={() => handleOpenProfile(props.message.receiverId)}>
                                 Receiver
                             </Button>
 

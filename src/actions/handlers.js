@@ -1,4 +1,4 @@
-import {ROLE, TOKEN, USER_ID} from "../consts/ApplicationConsts";
+import {ROLE, TOKEN, USER_ID} from "../consts/applicationConsts";
 
 export const handleItemAccessAttempt = history => {
     const logout = () => {

@@ -3,7 +3,7 @@ import {flexComponents, paddingComponents} from "../style/components";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {i18n} from "../data/i18n";
-import {USER_ID} from "../consts/ApplicationConsts";
+import {USER_ID} from "../consts/applicationConsts";
 import MapIcon from '@material-ui/icons/Map';
 import {MapModal} from "./MapModal";
 import {useEffect, useState} from "react";
@@ -38,8 +38,7 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const flexClasses = flexComponents();
 
-    const handleRegisterCommission = () => props.action(props.data.date !== undefined ?
-        'delivery/' + props.data.announcementId + '/' + props.data.authorId : 'normal/' + props.data.announcementId + '/' + props.data.authorId);
+     const handleRegisterCommission = () => history.push('/announcement/' + props.data.announcementId);
 
     return (
         <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
@@ -69,22 +68,20 @@ export const Announcement = (props) => {
             />
             <Typography variant={'body2'}>
                 {
-                    props.data.date ===undefined &&
+                    props.data.date === null ?
                     <div className={flexClasses.flexRowSpaceAround}>
                         <img src={boxIcon} alt={''}  className={classes.icon}/>
                         <div>
                             Number of packages: {props.data.packages.length}
                         </div>
                     </div>
-                }
-                {
-                    props.data.date !== undefined &&
-                        <div className={flexClasses.flexRowSpaceAround}>
-                            <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
-                            {
-                                props.data.date.replace('T', ' ')
-                            }
-                        </div>
+                        :
+                    <div className={flexClasses.flexRowSpaceAround}>
+                        <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
+                        {
+                            props.data.date.replace('T', ' ')
+                        }
+                    </div>
                 }
             </Typography>
 

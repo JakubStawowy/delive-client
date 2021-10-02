@@ -5,10 +5,12 @@ import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Router, Switch} from "react-router";
 import {Home} from "./components/Home";
 import {DeliveryPage} from "./components/DeliveryPage";
+import {Profile} from "./components/Profile";
 import {Messages} from "./components/Messages";
 import {AddNormalAnnouncement} from "./components/AddNormalAnnouncement";
 import {ErrorPage} from "./components/ErrorPage";
 import {NormalCommission} from "./components/NormalCommission";
+import {AnnouncementPage} from "./components/AnnouncementPage";
 import {DeliveryCommission} from "./components/DeliveryCommission";
 import {AddDeliveryAnnouncement} from "./components/AddDeliveryAnnouncement";
 import {AnnouncementType} from "./components/AnnouncementType";
@@ -55,6 +57,8 @@ function App() {
               <Route path={'/addAnnouncement/delivery'} component={AddDeliveryAnnouncement} locale={locale}/>
               <Route path={'/announcementType'} component={AnnouncementType} locale={locale}/>
               <Route path={'/delivery'} component={DeliveryPage} locale={locale}/>
+              <Route path={'/profile/:userId'} component={Profile} />
+              <Route path={'/announcement/:announcementId'} component={AnnouncementPage} />
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
               </Route>

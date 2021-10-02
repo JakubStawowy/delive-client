@@ -22,7 +22,7 @@ import {
     registerMessageDelivery,
     registerMessageNormal
 } from "../actions/restActions";
-import {USER_ID} from "../consts/ApplicationConsts";
+import {USER_ID} from "../consts/applicationConsts";
 import {PackageForm} from "./PackageForm";
 import {PackagesForm} from "./PackagesForm";
 import {Test} from "./Test";
@@ -79,10 +79,6 @@ export const CommissionForm = (props) => {
             <div style={fadeInClasses.animation} className={`${flexClasses.flexRowCenter} ${sizeClasses.bodyHeight}`}>
                 <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
                     <Typography className={flexClasses.flexRowSpaceBetween}>
-                        <div>
-                            <PersonIcon fontSize={'large'}/>
-                            User
-                        </div>
                         {
                             props.delivery ?
                                 <div>

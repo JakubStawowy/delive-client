@@ -9,7 +9,7 @@ import {StyleRoot} from "radium";
 import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../actions/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
-import {ROLE, TOKEN, USER_ID} from "../consts/ApplicationConsts";
+import {ROLE, TOKEN, USER_ID} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
 
 export const LoginRegister = () => {
