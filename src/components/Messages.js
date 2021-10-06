@@ -21,18 +21,19 @@ export const Messages = () => {
     const [messagesSent, setMessagesSent] = useState([]);
     const [messagesReceived, setMessagesReceived] = useState([]);
     const [messagesFlag, setMessagesFlag] = useState(true);
-    const [messagesReceivedOpened, setMessagesReceivedOpened] = useState(false);
-    const [messagesArchivedOpened, setMessagesArchivedOpened] = useState(false);
     const [bounce, setBounce] = useState(false);
 
     const history = useHistory();
 
-    const useStyles = makeStyles((()=>({
+    const useStyles = makeStyles(((theme)=>({
         selected: {
             background: '#DCDCDC'
         },
-        bar: {
-            marginBottom: '1em'
+        rwdList: {
+            [theme.breakpoints.down('xs')]: {
+                paddingLeft: 0,
+                paddingRight: 0
+            }
         }
     })));
     const classes = useStyles();
@@ -85,13 +86,16 @@ export const Messages = () => {
                         </div>
                         :
                         <div style={bounce ? fadeOutStyles.animation : animationStyles.animation} className={`${rwdClasses.mobileCard}`}>
-                            <Card className={`${paddingClasses.paddingMedium}`}>
-                                <div className={`${flexClasses.flexRowCenter} ${classes.bar}`}>
+                            <Card className={`${paddingClasses.paddingMedium} ${sizeClasses.componentHeight} ${classes.rwdList} ${flexClasses.flexColumnSpaceBetween}`}>
+                                <div className={`${flexClasses.flexRowCenter}`}>
                                     <Button onClick={() => setMessagesFlag(true)} className={messagesFlag && classes.selected}>
                                         sent
                                     </Button>
                                     <Button onClick={() => setMessagesFlag(false)} className={!messagesFlag && classes.selected}>
                                         received
+                                    </Button>
+                                    <Button onClick={() => refresh()}>
+                                        <LoopIcon />
                                     </Button>
                                 </div>
                                 <List className={`${listClasses.verticalList}`}>
@@ -117,11 +121,6 @@ export const Messages = () => {
                                             })
                                     }
                                 </List>
-                                <div className={flexClasses.flexRowCenter}>
-                                    <Button onClick={() => refresh()}>
-                                        <LoopIcon />
-                                    </Button>
-                                </div>
                             </Card>
                         </div>
                 }

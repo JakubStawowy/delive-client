@@ -59,7 +59,7 @@ export const MapModal = (props) => {
     }
 
     useEffect(()=>{
-        if (props.fromLatitude !== undefined && props.toLatitude !== undefined) {
+        if (props.coordinates !== undefined) {
             getHalfwayPoint({
                 fromLatitude: props.coordinates.fromLatitude,
                 toLatitude: props.coordinates.toLatitude,

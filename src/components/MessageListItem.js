@@ -4,7 +4,7 @@ import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {USER_ID} from "../consts/applicationConsts";
 import {trimDate} from "../actions/commonFunctions";
-import {flexComponents, paddingComponents, rwdComponents} from "../style/components";
+import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import {PackagesModal} from "./PackagesModal";
@@ -17,6 +17,16 @@ export const MessageListItem = (props) => {
     const useClasses = makeStyles(((theme)=>({
         marginComponent: {
             marginTop: '1em'
+        },
+        messageButton: {
+            height: '2em',
+            marginBottom: '.5em'
+        },
+        root: {
+            padding: 0
+        },
+        check: {
+            color: "green"
         }
     })));
     const classes = useClasses();
@@ -25,7 +35,7 @@ export const MessageListItem = (props) => {
     const flexClasses = flexComponents();
 
     const handleReplyMessage = consent => replyMessage({
-        replyMessageId: props.message.messageId,
+        replyMessageId: props.message.id,
         announcementId: props.message.announcementId,
         senderId: localStorage.getItem(USER_ID),
         receiverId: props.message.senderId,
@@ -39,7 +49,7 @@ export const MessageListItem = (props) => {
     const handleOpenAnnouncement = announcementId => history.push('/announcement/' + announcementId);
 
     return (
-        <ListItem>
+        <ListItem className={classes.root}>
             {
                 props.message.packages.length > 0 &&
                     <Modal
@@ -52,35 +62,57 @@ export const MessageListItem = (props) => {
                         onClose={()=>setPackagesModalOpened(false)}
                     />
             }
-            <Card className={`${paddingClasses.paddingMedium} ${rwdClasses.singleMobileCard}`}>
-                <div>
+            <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.singleMobileCard}`}>
+                <div className={flexClasses.flexRowSpaceBetween}>
                     <div>
+                        <Button
+                            variant={"contained"}
+                            onClick={() => handleOpenAnnouncement(props.message.announcementId)}
+                            className={classes.messageButton}
+                        >
+                            Announcement
+                        </Button>
                         {
-                            props.message.message !== undefined && props.message.message
+                            props.received ?
+                                <Button
+                                    variant={"contained"}
+                                    onClick={() => handleOpenProfile(props.message.senderId)}
+                                    className={classes.messageButton}
+                                >
+                                    Sender
+                                </Button>
+                                :
+                                <Button
+                                    variant={"contained"}
+                                    onClick={() => handleOpenProfile(props.message.receiverId)}
+                                    className={classes.messageButton}
+                                >
+                                    Receiver
+                                </Button>
+
+                        }
+                        {
+                            props.message.packages.length > 0 &&
+                            <Button
+                                onClick={() => setPackagesModalOpened(true)}
+                                variant={"contained"}
+                                className={classes.messageButton}
+                            >
+                                Packages
+                            </Button>
                         }
                     </div>
-                    <Button variant={"contained"} onClick={() => handleOpenAnnouncement(props.message.announcementId)}>
-                        Announcement
-                    </Button>
-                    {
-                        props.received ?
-                            <Button variant={"contained"} onClick={() => handleOpenProfile(props.message.senderId)}>
-                                Sender
-                            </Button>
-                            :
-                            <Button variant={"contained"} onClick={() => handleOpenProfile(props.message.receiverId)}>
-                                Receiver
-                            </Button>
-
-                    }
+                    {trimDate(props.message.createdAt)}
                 </div>
                 {
                     props.received && props.message.messageType === 'REQUEST' &&
-                        <div className={classes.marginComponent}>
+                        // <div className={classes.marginComponent}>
+                        <div>
                             <Button
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(true)}
                                 disabled={props.message.replied}
+                                className={classes.messageButton}
                             >
                                 Agree
                             </Button>
@@ -88,30 +120,30 @@ export const MessageListItem = (props) => {
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(false)}
                                 disabled={props.message.replied}
+                                className={classes.messageButton}
                             >
                                 Disagree
                             </Button>
                         </div>
                 }
-                {
-                    props.message.packages.length > 0 &&
-                        <Button onClick={() => setPackagesModalOpened(true)} variant={"contained"}>
-                            Packages
-                        </Button>
-                }
-                <div className={classes.marginComponent}>
-                    {trimDate(props.message.createdAt)}
+                <div>
+                    {
+                        props.message.message !== undefined && props.message.message
+                    }
                 </div>
-                <div className={classes.marginComponent}>
-                    {props.message.messageType}
-                </div>
-                {
-                    props.message.replied && props.received &&
+                <div className={flexClasses.flexRowSpaceBetween}>
+                    {/*<div className={classes.marginComponent}>*/}
+                    <div>
+                        {props.message.messageType}
+                    </div>
+                    {
+                        props.message.replied && props.received &&
                         <div>
                             Replied
-                            <CheckIcon />
+                            <CheckIcon className={classes.check}/>
                         </div>
-                }
+                    }
+                </div>
             </Card>
         </ListItem>
     )

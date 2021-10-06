@@ -3,9 +3,7 @@ import React, {useEffect, useState} from "react";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {Button, Card, List, makeStyles, Typography} from "@material-ui/core";
 import {MapModal} from "./MapModal";
-import {MapComponent} from "./MapComponent";
 import {getAnnouncementById} from "../actions/restActions";
-import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {PackagesModal} from "./PackagesModal";
 import {ANIMATION_TIME} from "../data/consts";
@@ -15,12 +13,6 @@ export const AnnouncementPage = (props) => {
 
     const [announcement, setAnnouncement] = useState(null);
     const history = useHistory();
-    const useClasses = makeStyles(((theme)=>({
-        map: {
-            width: '30vw'
-        }
-    })));
-    const classes = useClasses();
     const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
     const sizeClasses = sizeComponents();
@@ -31,8 +23,8 @@ export const AnnouncementPage = (props) => {
         setTimeout(() => history.push('/commission/' + type), ANIMATION_TIME / 2);
     }
 
-    const handleRegisterCommission = () => navToCommissionForm(announcement.date !== undefined ?
-            'delivery/' + announcement.announcementId + '/' + announcement.authorId : 'normal/' + announcement.announcementId + '/' + announcement.authorId);
+    const handleRegisterCommission = () => navToCommissionForm(announcement.date !== null ?
+            'delivery/' + announcement.id + '/' + announcement.authorId : 'normal/' + announcement.id + '/' + announcement.authorId);
 
     const handleOpenProfile = userId => history.push('/profile/' + userId);
     useEffect(() => {

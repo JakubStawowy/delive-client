@@ -1,4 +1,4 @@
-import {Button, Card, Grid, makeStyles, Modal, Typography, List, ListItem} from "@material-ui/core";
+import {Button, Card, Grid, makeStyles, Modal, Typography, List, ListItem, TextField} from "@material-ui/core";
 import {
     flexComponents, listComponents,
     paddingComponents,
@@ -44,6 +44,7 @@ export const AnnouncementForm = (props) => {
     const [toLongitude, setToLongitude] = useState('');
     const [dateDay, setDateDay] = useState('');
     const [dateHour, setDateHour] = useState('');
+    const [amount, setAmount] = useState(null);
 
     const history = useHistory();
 
@@ -112,6 +113,7 @@ export const AnnouncementForm = (props) => {
                     latitude: toLatitude
                 },
                 packages: packages,
+                amount,
                 authorId: localStorage.getItem(USER_ID)
             }).then(() => {
                 setBounce(true);
@@ -204,10 +206,17 @@ export const AnnouncementForm = (props) => {
 
                         {
                             !props.delivery &&
-                                <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)}>
-                                    <AddIcon fontSize={'large'}/>
-                                    Add package
-                                </Button>
+                                <div>
+                                    <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)}>
+                                        <AddIcon fontSize={'large'}/>
+                                        Add package
+                                    </Button>
+                                    <TextField
+                                        label={"amount"}
+                                        value={amount}
+                                        onChange={e => setAmount(e.target.value)}
+                                    />
+                                </div>
                         }
                         {
                             !props.delivery && packages.length > 0 &&

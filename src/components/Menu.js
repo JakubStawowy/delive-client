@@ -44,7 +44,7 @@ export const Menu = (props) => {
 
     const handleLogout = () => {
         logoutUser({
-            'id': localStorage.getItem('userId')
+            'id': localStorage.getItem(USER_ID)
         }).then(() => {
             localStorage.clear();
             history.push("/login");

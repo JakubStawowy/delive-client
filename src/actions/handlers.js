@@ -16,5 +16,6 @@ export const isLogged = () => {
 }
 
 export const handleError = (error, history) => {
-    history.push('/error/' + error);
+    // history.push('/error/' + error);
+    alert(error);
 }

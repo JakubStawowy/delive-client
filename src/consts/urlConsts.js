@@ -26,3 +26,4 @@ export const CHANGE_DELIVERY_STATE_URL = BASE_API_URL + '/delivery/change?action
 export const LOAD_USER_URL = BASE_API_URL + '/users/details?userId=:userId';
 export const LOAD_FEEDBACK_URL = BASE_API_URL + '/feedback/user?userId=:userId';
 export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?announcementId=:announcementId';
+export const GET_REVERSE_GEOCODE_URL = BASE_API_URL + '/geocode/reverse?longitude=:longitude&latitude=:latitude';

@@ -5,7 +5,7 @@ import {
     ADD_NORMAL_ANNOUNCEMENT_URL, CHANGE_DELIVERY_STATE_URL, GET_ANNOUNCEMENT_URL,
     GET_DELIVERY_ANNOUNCEMENTS_URL,
     GET_HALFWAY_POINT_URL,
-    GET_NORMAL_ANNOUNCEMENTS_URL,
+    GET_NORMAL_ANNOUNCEMENTS_URL, GET_REVERSE_GEOCODE_URL,
     LOAD_DELIVERY_BY_DELIVERER_URL, LOAD_DELIVERY_BY_PRINCIPAL_URL, LOAD_FEEDBACK_URL,
     LOAD_MESSAGES_ARCHIVED_URL,
     LOAD_MESSAGES_RECEIVED_URL,
@@ -54,7 +54,8 @@ export const changeDeliveryState = (actionName, deliveryId) => axios.put(CHANGE_
 export const loadUser = userId => axios.get(LOAD_USER_URL.replace(':userId', userId), getConfig());
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(':userId', userId), getConfig());
 export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(':announcementId', announcementId), getConfig());
-
+export const getReverseGeocode = (longitude, latitude) => axios.get(GET_REVERSE_GEOCODE_URL
+    .replace(":logitude", longitude).replace(":latitude", latitude), getConfig());
 
 const getConfig = () => {
     return {

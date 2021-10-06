@@ -16,10 +16,9 @@ export const DeliveryTableRow = (props) => {
     const [fromLocalizationModalOpened, setFromLocalizationModalOpened] = useState(false);
     const [toLocalizationModalOpened, setToLocalizationModalOpened] = useState(false);
     const flexClasses = flexComponents();
-    const actionName = getNextActionName(props.delivery.deliveryState,
-        parseInt(localStorage.getItem(USER_ID)) === props.delivery.announcement.authorId);
+    const actionName = getNextActionName(props.delivery.deliveryState, props.delivery.announcement.authorId, props.delivery.delivererId);
     const openAnnouncement = () => {
-        history.push('/announcement/' + props.delivery.announcement.announcementId);
+        history.push('/announcement/' + props.delivery.announcement.id);
     }
 
     return (
@@ -63,7 +62,7 @@ export const DeliveryTableRow = (props) => {
 
             </TableCell>
             <TableCell align={"center"}>
-                {trimDate(props.delivery.registeredAt)}
+                {trimDate(props.delivery.createdAt)}
             </TableCell>
             <TableCell align={"center"}>
                 <Button
@@ -95,7 +94,7 @@ export const DeliveryTableRow = (props) => {
                 {
                     <Button variant={"contained"}
                         onClick={() => {
-                            changeDeliveryState(actionName, props.delivery.deliveryId)
+                            changeDeliveryState(actionName, props.delivery.id)
                                 .then(() => {
                                     alert("Delivery state changed");
                                     props.refresh();

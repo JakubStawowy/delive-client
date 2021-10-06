@@ -56,12 +56,15 @@ export const sizeComponents = makeStyles((()=>({
     },
     bodyHeight: {
         height: '88vh'
+    },
+    componentHeight: {
+        height: '70vh'
     }
 })));
 
 export const listComponents = makeStyles(((theme)=>({
     verticalList: {
-        maxHeight: '70vh',
+        height: '70vh',
         overflow: 'auto'
     },
     horizontalList: {

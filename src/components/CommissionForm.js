@@ -2,7 +2,7 @@ import {useHistory} from "react-router";
 import {useEffect, useState} from "react";
 import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {StyleRoot} from "radium";
-import {Button, Card, TextareaAutosize, TextField, Typography} from "@material-ui/core";
+import {Button, Card, TextareaAutosize, Typography} from "@material-ui/core";
 import {
     flexComponents,
     paddingComponents,
@@ -10,22 +10,16 @@ import {
     sizeComponents,
     validatedComponents
 } from "../style/components";
-import PersonIcon from '@material-ui/icons/Person';
 import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
 import {fadeInRight} from "react-animations";
-import {validateNumberFormat} from "../actions/validators";
 import {i18n} from "../data/i18n";
 import {
-    registerDelivery,
-    registerMessage,
     registerMessageDelivery,
     registerMessageNormal
 } from "../actions/restActions";
 import {USER_ID} from "../consts/applicationConsts";
-import {PackageForm} from "./PackageForm";
 import {PackagesForm} from "./PackagesForm";
-import {Test} from "./Test";
 
 export const CommissionForm = (props) => {
     const history = useHistory();

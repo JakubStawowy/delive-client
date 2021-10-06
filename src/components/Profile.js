@@ -1,21 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Button, Card, Container, List, ListItem, makeStyles, Typography} from "@material-ui/core";
+import {Avatar, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
 import userImage from '../uploads/user.png';
 import {useHistory} from "react-router";
-import {NavLink} from "react-router-dom";
 import {Feedback} from "./Feedback";
 import {handleError} from "../actions/handlers";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
 import {loadFeedback, loadUser} from "../actions/restActions";
+import {USER_ID} from "../consts/applicationConsts";
 
 export const Profile = props => {
 
     const history = useHistory();
-    const [userData, setUserData] = useState({
-        name: '',
-        surname: ''
-    });
+    const [userData, setUserData] = useState(null);
     const [feedback, setFeedback] = useState([]);
     const useClasses = makeStyles((theme) => ({
         img: {
@@ -28,7 +25,7 @@ export const Profile = props => {
             width: '100%'
         },
         button: {
-            background: '#4BBEBAE0',
+            background: 'rgba(75,190,186,0.88)',
             color: 'white'
         }
     }));
@@ -51,45 +48,50 @@ export const Profile = props => {
 
     return (
         <StyleRoot>
-            <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
-                <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
-                    <Avatar>
-                        <img className={classes.img} src={userImage} alt={''}/>
-                    </Avatar>
-                    <Typography variant={'h3'} gutterBottom={'true'}>
-                        {`${userData.name} ${userData.surname}`}
-                    </Typography>
-                    <Typography gutterBottom={'true'}>
-                        {/*<NavLink to={'/users/' + props.match.params.id + '/announcements'}>*/}
-                        {/*    <Button variant={'contained'} className={classes.button}>User announcements</Button>*/}
-                        {/*</NavLink>*/}
-                    </Typography>
-                    <Typography variant={'h4'} gutterBottom={'true'}>
-                        Feedback
-                    </Typography>
-                    <List className={classes.list}>
-                        {feedback.length !== 0 ? feedback.map(
-                            singleFeedback => {
-                                return (
-                                    <ListItem>
-                                        <Feedback
-                                            author={singleFeedback.authorName + ' ' + singleFeedback.authorSurname}
-                                            authorId={singleFeedback.authorId}
-                                            content={singleFeedback.content}
-                                            stars={singleFeedback.rate}
-                                        />
-                                    </ListItem>
-                                )
+            {
+                userData !== null &&
+                <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                    <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
+                        <Avatar>
+                            <img className={classes.img} src={userImage} alt={''}/>
+                        </Avatar>
+                        <Typography variant={'h3'} gutterBottom={'true'}>
+                            {`${userData.name} ${userData.surname}`}
+                        </Typography>
+                        <Typography gutterBottom={'true'}>
+                            {
+                                props.match.params.userId === localStorage.getItem(USER_ID) &&
+                                <div>
+                                    My wallet: {`${userData.userWallet.balance} ${userData.userWallet.currency}`}
+                                </div>
                             }
-                            )
-                            :
-                            <Typography variant={'h5'} gutterBottom={'true'}>
-                                {userData.name} does not have feedback yet
-                            </Typography>
-                        }
-                    </List>
-                </Card>
-            </div>
+                        </Typography>
+                        <Typography variant={'h4'} gutterBottom={'true'}>
+                            Feedback
+                        </Typography>
+                        <List className={classes.list}>
+                            {feedback.length !== 0 ? feedback.map(
+                                singleFeedback => {
+                                    return (
+                                        <ListItem>
+                                            <Feedback
+                                                author={singleFeedback.authorName + ' ' + singleFeedback.authorSurname}
+                                                authorId={singleFeedback.authorId}
+                                                content={singleFeedback.content}
+                                                stars={singleFeedback.rate}
+                                            />
+                                        </ListItem>
+                                    )
+                                })
+                                :
+                                <Typography variant={'h5'} gutterBottom={'true'}>
+                                    {userData.name} does not have feedback yet
+                                </Typography>
+                            }
+                        </List>
+                    </Card>
+                </div>
+            }
         </StyleRoot>
     );
 }

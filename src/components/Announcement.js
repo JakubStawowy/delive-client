@@ -38,7 +38,7 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const flexClasses = flexComponents();
 
-     const handleRegisterCommission = () => history.push('/announcement/' + props.data.announcementId);
+    const handleRegisterCommission = () => history.push('/announcement/' + props.data.id);
 
     return (
         <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
@@ -49,10 +49,10 @@ export const Announcement = (props) => {
                 children={<MapModal
                     setModalOpened={setMapModalOpened}
                     coordinates={{
-                        fromLatitude: parseFloat(props.data.fromLatitude),
-                        fromLongitude: parseFloat(props.data.fromLongitude),
-                        toLatitude: parseFloat(props.data.toLatitude),
-                        toLongitude: parseFloat(props.data.toLongitude),
+                        fromLatitude: parseFloat(props.data.destinationFrom.latitude),
+                        fromLongitude: parseFloat(props.data.destinationFrom.longitude),
+                        toLatitude: parseFloat(props.data.destinationTo.latitude),
+                        toLongitude: parseFloat(props.data.destinationTo.longitude),
                     }}
                 />}
                 onClose={()=>setMapModalOpened(false)}
@@ -69,12 +69,7 @@ export const Announcement = (props) => {
             <Typography variant={'body2'}>
                 {
                     props.data.date === null ?
-                    <div className={flexClasses.flexRowSpaceAround}>
-                        <img src={boxIcon} alt={''}  className={classes.icon}/>
-                        <div>
-                            Number of packages: {props.data.packages.length}
-                        </div>
-                    </div>
+                    <img src={boxIcon} alt={''}  className={classes.icon}/>
                         :
                     <div className={flexClasses.flexRowSpaceAround}>
                         <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
@@ -85,6 +80,16 @@ export const Announcement = (props) => {
                 }
             </Typography>
 
+            <Typography variant={'body2'}>
+                <div className={flexClasses.flexColumnSpaceBetween}>
+                    <div>
+                        from: {`${props.data.destinationFrom.address}, ${props.data.destinationFrom.locality}, ${props.data.destinationFrom.country}`}
+                    </div>
+                    <div>
+                        to: {`${props.data.destinationTo.address}, ${props.data.destinationTo.locality}, ${props.data.destinationTo.country}`}
+                    </div>
+                </div>
+            </Typography>
             <div>
                 {
                     !props.delivery &&

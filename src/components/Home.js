@@ -11,6 +11,7 @@ import {ANIMATION_TIME} from "../data/consts";
 import {handleItemAccessAttempt} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {getDeliveryAnnouncements, getNormalAnnouncements} from "../actions/restActions";
+import LoopIcon from "@material-ui/icons/Loop";
 
 export const Home = () => {
 
@@ -25,9 +26,6 @@ export const Home = () => {
         selected: {
             background: '#DCDCDC'
         },
-        bar: {
-            marginBottom: '1em'
-        }
     })));
     const classes = useStyles();
     const flexClasses = flexComponents();
@@ -41,10 +39,13 @@ export const Home = () => {
 
     useEffect(()=>{
         handleItemAccessAttempt(history);
-        getNormalAnnouncements().then(response => setNormalAnnouncements(response.data)).catch((error) => alert(error));
-        getDeliveryAnnouncements().then(response => setDeliveryAnnouncements(response.data)).catch((error) => alert(error));
+        loadAnnouncements();
     }, []);
 
+    const loadAnnouncements = () => {
+        getNormalAnnouncements().then(response => setNormalAnnouncements(response.data)).catch((error) => alert(error));
+        getDeliveryAnnouncements().then(response => setDeliveryAnnouncements(response.data)).catch((error) => alert(error));
+    }
     const loadNormalAnnouncements = () => {
         setAnnouncementFlag(true);
     };
@@ -57,11 +58,17 @@ export const Home = () => {
         setTimeout(() => history.push('/commission/' + type), ANIMATION_TIME / 2);
     }
 
+    const refresh = () => {
+        setNormalAnnouncements([]);
+        setDeliveryAnnouncements([]);
+        loadAnnouncements();
+    }
+
     return (
         <StyleRoot>
             <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                 {
-                    normalAnnouncements.length === 0 ?
+                    normalAnnouncements.length === 0 && deliveryAnnouncements.length === 0 ?
                         <div style={loaderAnimationStyles.animation}>
                             <BounceLoader
                                 loading
@@ -70,13 +77,16 @@ export const Home = () => {
                         </div>
                         :
                         <div style={bounce ? fadeOutStyles.animation : animationStyles.animation} className={`${rwdClasses.mobileCard}`}>
-                            <Card className={`${paddingClasses.paddingMedium}`}>
-                                <div className={`${flexClasses.flexRowCenter} ${classes.bar}`}>
+                            <Card className={`${paddingClasses.paddingMedium} ${sizeClasses.componentHeight} ${flexClasses.flexColumnSpaceBetween}`}>
+                                <div className={`${flexClasses.flexRowCenter}`}>
                                     <Button onClick={() => loadNormalAnnouncements()} className={announcementFlag && classes.selected}>
                                         Normal
                                     </Button>
                                     <Button onClick={() => loadDeliveryAnnouncements()} className={!announcementFlag && classes.selected}>
                                         Delivery
+                                    </Button>
+                                    <Button onClick={() => refresh()}>
+                                        <LoopIcon />
                                     </Button>
                                 </div>
                                     <List className={`${listClasses.verticalList}`}>
