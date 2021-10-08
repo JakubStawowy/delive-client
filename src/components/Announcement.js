@@ -68,15 +68,15 @@ export const Announcement = (props) => {
             />
             <Typography variant={'body2'}>
                 {
-                    props.data.date === null ?
+                    // props.data.date === null ?
                     <img src={boxIcon} alt={''}  className={classes.icon}/>
-                        :
-                    <div className={flexClasses.flexRowSpaceAround}>
-                        <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
-                        {
-                            props.data.date.replace('T', ' ')
-                        }
-                    </div>
+                    //     :
+                    // <div className={flexClasses.flexRowSpaceAround}>
+                    //     <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
+                    //     {
+                    //         props.data.date.replace('T', ' ')
+                    //     }
+                    // </div>
                 }
             </Typography>
 

@@ -11,7 +11,7 @@ export const VALIDATE_EMAIL_URL = BASE_API_URL + '/validate/email?email=:email';
 export const VALIDATE_NICKNAME_URL = BASE_API_URL + '/validate/nickname?nickname=:nickname';
 export const ADD_NORMAL_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/normal/add';
 export const ADD_DELIVERY_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/delivery/add';
-export const GET_NORMAL_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/normal';
+export const GET_NORMAL_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/all';
 export const GET_DELIVERY_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/delivery';
 export const GET_HALFWAY_POINT_URL = BASE_API_URL + "/maps/middle?fromLatitude=:fromLatitude&toLatitude=:toLatitude&fromLongitude=:fromLongitude&toLongitude=:toLongitude&mapWidth=:mapWidth";
 export const REGISTER_DELIVERY_URL = BASE_API_URL + "/delivery/register?userId=:userId&announcementId=:announcementId";

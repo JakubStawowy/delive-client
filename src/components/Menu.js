@@ -11,6 +11,7 @@ import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
 import {logoutUser} from "../actions/restActions";
 import {USER_ID} from "../consts/applicationConsts";
+import AddIcon from "@material-ui/icons/Add";
 
 export const Menu = (props) => {
 

@@ -26,7 +26,6 @@ export const LoginRegister = () => {
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [bounce, setBounce] = useState(false);
-    const [nickname, setNickname] = useState('');
     const [registeredEmail, setRegisteredEmail] = useState('');
     const [registeredPassword, setRegisteredPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -60,13 +59,10 @@ export const LoginRegister = () => {
         registerUser({
             email: registeredEmail,
             password: registeredPassword,
-            userDetails: {
-                nickname: nickname,
-                name: null,
-                surname: null,
-                phone: null,
-                image: 'no-image'
-            }
+            name: null,
+            surname: null,
+            phone: null,
+            image: 'no-image'
         }).then((response) => alert(response.data.message)).catch(error => handleError(error, history))
             :
             alert("Nope")
@@ -92,7 +88,6 @@ export const LoginRegister = () => {
                 alert(response.data.message);
             }
         }).catch((error) => handleError(error, history));
-        // }).catch((error) => alert('xd'));
     }
 
     return (
@@ -129,12 +124,6 @@ export const LoginRegister = () => {
                             {registerItems.label}
                         </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
-                            <TextField label={registerItems.nickname} value={nickname} onChange={e=> {
-                                setNickname(e.target.value);
-                                checkIfNicknameExists(e.target.value).then((response)=>setNicknameExists(response.data)).catch((error)=>alert(error));
-                            }}
-                            className={ nicknameExists && validationClasses.wrongTextField }
-                            />
                             <TextField label={registerItems.email} value={registeredEmail} onChange={e=> {
                                 setRegisteredEmail(e.target.value);
                                 setTimeout(()=>setValidatedEmail(validateEmail(e.target.value)), 500);

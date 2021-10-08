@@ -35,7 +35,7 @@ export const MapModal = (props) => {
             color: "red"
         },
         map: {
-            width: '80vw',
+            width: '60vw',
             height: '80vh'
         }
     })));
@@ -52,7 +52,7 @@ export const MapModal = (props) => {
         setViewport({
             latitude: 0,
             longitude: 0,
-            width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '80vw',
+            width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
             height: '80vh',
             zoom: 0,
         });
@@ -70,9 +70,10 @@ export const MapModal = (props) => {
                 setViewport({
                     latitude: response.data.latitude,
                     longitude: response.data.longitude,
-                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '80vw',
+                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '70vw',
                     height: '80vh',
                     zoom: response.data.zoomLevel
+                    // zoom: 15
                 });
             }).catch((error)=>alert(error));
         }
@@ -80,7 +81,7 @@ export const MapModal = (props) => {
             setViewport({
                 latitude: props.latitude,
                 longitude: props.longitude,
-                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '80vw',
+                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
                 height: '80vh',
                 zoom: 15
             });
@@ -90,7 +91,7 @@ export const MapModal = (props) => {
                 setViewport({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '80vw',
+                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
                     height: '80vh',
                     zoom: 15,
                 });

@@ -55,7 +55,7 @@ export const loadUser = userId => axios.get(LOAD_USER_URL.replace(':userId', use
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(':userId', userId), getConfig());
 export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(':announcementId', announcementId), getConfig());
 export const getReverseGeocode = (longitude, latitude) => axios.get(GET_REVERSE_GEOCODE_URL
-    .replace(":logitude", longitude).replace(":latitude", latitude), getConfig());
+    .replace(":longitude", longitude).replace(":latitude", latitude), getConfig());
 
 const getConfig = () => {
     return {

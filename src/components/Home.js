@@ -44,14 +44,8 @@ export const Home = () => {
 
     const loadAnnouncements = () => {
         getNormalAnnouncements().then(response => setNormalAnnouncements(response.data)).catch((error) => alert(error));
-        getDeliveryAnnouncements().then(response => setDeliveryAnnouncements(response.data)).catch((error) => alert(error));
+        // getDeliveryAnnouncements().then(response => setDeliveryAnnouncements(response.data)).catch((error) => alert(error));
     }
-    const loadNormalAnnouncements = () => {
-        setAnnouncementFlag(true);
-    };
-    const loadDeliveryAnnouncements = () => {
-        setAnnouncementFlag(false);
-    };
 
     const navToCommissionForm = type => {
         setBounce(true);
@@ -60,7 +54,7 @@ export const Home = () => {
 
     const refresh = () => {
         setNormalAnnouncements([]);
-        setDeliveryAnnouncements([]);
+        // setDeliveryAnnouncements([]);
         loadAnnouncements();
     }
 
@@ -79,19 +73,12 @@ export const Home = () => {
                         <div style={bounce ? fadeOutStyles.animation : animationStyles.animation} className={`${rwdClasses.mobileCard}`}>
                             <Card className={`${paddingClasses.paddingMedium} ${sizeClasses.componentHeight} ${flexClasses.flexColumnSpaceBetween}`}>
                                 <div className={`${flexClasses.flexRowCenter}`}>
-                                    <Button onClick={() => loadNormalAnnouncements()} className={announcementFlag && classes.selected}>
-                                        Normal
-                                    </Button>
-                                    <Button onClick={() => loadDeliveryAnnouncements()} className={!announcementFlag && classes.selected}>
-                                        Delivery
-                                    </Button>
                                     <Button onClick={() => refresh()}>
                                         <LoopIcon />
                                     </Button>
                                 </div>
                                     <List className={`${listClasses.verticalList}`}>
                                         {
-                                            announcementFlag ?
                                             normalAnnouncements.map(announcement=>{
                                                 return (
                                                     <ListItem>
@@ -99,18 +86,6 @@ export const Home = () => {
                                                             data={announcement}
                                                             action={navToCommissionForm}
                                                             delivery={false}
-                                                        />
-                                                    </ListItem>
-                                                )
-                                            })
-                                            :
-                                            deliveryAnnouncements.map(announcement=>{
-                                                return (
-                                                    <ListItem>
-                                                        <Announcement
-                                                            data={announcement}
-                                                            action={navToCommissionForm}
-                                                            dalivery={true}
                                                         />
                                                     </ListItem>
                                                 )
