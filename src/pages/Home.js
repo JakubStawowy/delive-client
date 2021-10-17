@@ -1,7 +1,6 @@
-import {AppBar, Button, Card, List, ListItem, makeStyles, Tab, Tabs} from "@material-ui/core";
+import {Button, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {announcements} from "../testData/announcements";
-import {Announcement} from "./Announcement";
+import {AnnouncementListItem} from "../components/AnnouncementListItem";
 import {useEffect, useState} from "react";
 import {BounceLoader} from "react-spinners";
 import {StyleRoot} from "radium";
@@ -10,14 +9,12 @@ import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
 import {handleItemAccessAttempt} from "../actions/handlers";
 import {useHistory} from "react-router";
-import {getDeliveryAnnouncements, getNormalAnnouncements} from "../actions/restActions";
+import {getNormalAnnouncements} from "../actions/restActions";
 import LoopIcon from "@material-ui/icons/Loop";
 
 export const Home = () => {
 
-    const [normalAnnouncements, setNormalAnnouncements] = useState([]);
-    const [deliveryAnnouncements, setDeliveryAnnouncements] = useState([]);
-    const [announcementFlag, setAnnouncementFlag] = useState(true);
+    const [announcements, setAnnouncements] = useState([]);
     const [bounce, setBounce] = useState(false);
 
     const history = useHistory();
@@ -43,8 +40,7 @@ export const Home = () => {
     }, []);
 
     const loadAnnouncements = () => {
-        getNormalAnnouncements().then(response => setNormalAnnouncements(response.data)).catch((error) => alert(error));
-        // getDeliveryAnnouncements().then(response => setDeliveryAnnouncements(response.data)).catch((error) => alert(error));
+        getNormalAnnouncements().then(response => setAnnouncements(response.data)).catch((error) => alert(error));
     }
 
     const navToCommissionForm = type => {
@@ -53,8 +49,7 @@ export const Home = () => {
     }
 
     const refresh = () => {
-        setNormalAnnouncements([]);
-        // setDeliveryAnnouncements([]);
+        setAnnouncements([]);
         loadAnnouncements();
     }
 
@@ -62,7 +57,7 @@ export const Home = () => {
         <StyleRoot>
             <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                 {
-                    normalAnnouncements.length === 0 && deliveryAnnouncements.length === 0 ?
+                    announcements === null ?
                         <div style={loaderAnimationStyles.animation}>
                             <BounceLoader
                                 loading
@@ -79,10 +74,11 @@ export const Home = () => {
                                 </div>
                                     <List className={`${listClasses.verticalList}`}>
                                         {
-                                            normalAnnouncements.map(announcement=>{
+                                            announcements.length > 0 ?
+                                            announcements.map(announcement=>{
                                                 return (
                                                     <ListItem>
-                                                        <Announcement
+                                                        <AnnouncementListItem
                                                             data={announcement}
                                                             action={navToCommissionForm}
                                                             delivery={false}
@@ -90,6 +86,10 @@ export const Home = () => {
                                                     </ListItem>
                                                 )
                                             })
+                                                :
+                                                <div>
+                                                    No announcements yet
+                                                </div>
                                         }
                                     </List>
                             </Card>

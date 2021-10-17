@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
+import {Avatar, Button, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
 import userImage from '../uploads/user.png';
 import {useHistory} from "react-router";
-import {Feedback} from "./Feedback";
+import {FeedbackListItem} from "../components/FeedbackListItem";
 import {handleError} from "../actions/handlers";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
@@ -14,6 +14,7 @@ export const Profile = props => {
     const history = useHistory();
     const [userData, setUserData] = useState(null);
     const [feedback, setFeedback] = useState([]);
+    const [userId, setUserId] = useState(null);
     const useClasses = makeStyles((theme) => ({
         img: {
             width: '10vw',
@@ -37,11 +38,13 @@ export const Profile = props => {
     const paddingClasses = paddingComponents();
 
     useEffect(  () => {
-        loadUser(props.match.params.userId).then(response => {
+        const uid = props.userId !== undefined ? props.userId : props.match.params.userId;
+        setUserId(uid);
+        loadUser(uid).then(response => {
             setUserData(response.data);
         }).catch((error) => handleError(error, history));
 
-        loadFeedback(props.match.params.userId).then(
+        loadFeedback(uid).then(
             response => setFeedback(response.data)
         ).catch((error) => handleError(error, history));
     }, []);
@@ -51,30 +54,38 @@ export const Profile = props => {
             {
                 userData !== null &&
                 <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
-                    <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
+                    <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceBetween}`}>
                         <Avatar>
                             <img className={classes.img} src={userImage} alt={''}/>
                         </Avatar>
                         <Typography variant={'h3'} gutterBottom={'true'}>
                             {`${userData.name} ${userData.surname}`}
                         </Typography>
-                        <Typography gutterBottom={'true'}>
-                            {
-                                props.match.params.userId === localStorage.getItem(USER_ID) &&
-                                <div>
-                                    My wallet: {`${userData.userWallet.balance} ${userData.userWallet.currency}`}
-                                </div>
-                            }
-                        </Typography>
+                        {
+                            userId === localStorage.getItem(USER_ID) &&
+                            <div>
+                                My wallet: {`${userData.userWallet.balance} ${userData.userWallet.currency}`}
+                            </div>
+                        }
+                        {
+                            userId === localStorage.getItem(USER_ID) &&
+                            <Button
+                                variant={"contained"}
+                                onClick={()=>alert('Function currently not supported')}
+                            >
+                                Withdraw money to bank account
+                            </Button>
+                        }
                         <Typography variant={'h4'} gutterBottom={'true'}>
                             Feedback
                         </Typography>
                         <List className={classes.list}>
-                            {feedback.length !== 0 ? feedback.map(
+                            {feedback.length !== 0 ?
+                                feedback.map(
                                 singleFeedback => {
                                     return (
                                         <ListItem>
-                                            <Feedback
+                                            <FeedbackListItem
                                                 author={singleFeedback.authorName + ' ' + singleFeedback.authorSurname}
                                                 authorId={singleFeedback.authorId}
                                                 content={singleFeedback.content}
@@ -84,9 +95,9 @@ export const Profile = props => {
                                     )
                                 })
                                 :
-                                <Typography variant={'h5'} gutterBottom={'true'}>
+                                <div className={flexClasses.flexRowCenter}>
                                     {userData.name} does not have feedback yet
-                                </Typography>
+                                </div>
                             }
                         </List>
                     </Card>

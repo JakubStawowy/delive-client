@@ -1,4 +1,4 @@
-import {CommissionForm} from "./CommissionForm";
+import {CommissionForm} from "../components/CommissionForm";
 
 export const DeliveryCommission = (props) => {
     return (

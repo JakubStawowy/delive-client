@@ -1,118 +1,132 @@
-import {Button, Card, makeStyles, Modal, Typography} from "@material-ui/core";
-import {flexComponents, paddingComponents} from "../style/components";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import SettingsIcon from '@material-ui/icons/Settings';
-import {i18n} from "../data/i18n";
-import {USER_ID} from "../consts/applicationConsts";
-import MapIcon from '@material-ui/icons/Map';
-import {MapModal} from "./MapModal";
-import {useEffect, useState} from "react";
-import boxIcon from "../uploads/box.png";
-import deliveryTruckIcon from "../uploads/delivery-truck.png";
+import {StyleRoot} from "radium";
+
+import React, {useEffect, useState} from "react";
+import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
+import {Button, Card, List, Modal, Typography} from "@material-ui/core";
+import {MapFormModal} from "./MapFormModal";
+import {getAnnouncementById} from "../actions/restActions";
 import {useHistory} from "react-router";
 import {PackagesModal} from "./PackagesModal";
+import {ANIMATION_TIME} from "../data/consts";
+import {LocationDetails} from "./LocationDetails";
+import {ModalTemplate} from "../templates/ModalTemplate";
+import {PackagesList} from "./PackagesList";
+import {MapItem} from "./MapItem";
 
 export const Announcement = (props) => {
 
+    const [announcement, setAnnouncement] = useState(null);
+    const [locationModalOpened, setLocationModalOpened] = useState(false);
+    const [currentLocationLongitude, setCurrentLocationLongitude] = useState(null);
+    const [currentLocationLatitude, setCurrentLocationLatitude] = useState(null);
+
     const history = useHistory();
-    const [mapModalOpened, setMapModalOpened] = useState(false);
-    const [packagesModalOpened, setPackagesModalOpened] = useState(false);
-    const announcementItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].announcement;
-
-    const useStyles = makeStyles(((theme)=>({
-        announcement: {
-            width: '50vw',
-            background: '#DCDCDC',
-            [theme.breakpoints.down('xs')]: {
-                width: '100%'
-            }
-        },
-        icon: {
-            width: '10vw'
-        },
-    })));
-    const classes = useStyles();
-    const paddingClasses = paddingComponents();
+    const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
+    const sizeClasses = sizeComponents();
+    const paddingClasses = paddingComponents();
+    const listClasses = listComponents();
 
-    const handleRegisterCommission = () => history.push('/announcement/' + props.data.id);
+    const navToCommissionForm = type => {
+        setTimeout(() => history.push('/commission/' + type), ANIMATION_TIME / 2);
+    }
+
+    const handleRegisterCommission = () => navToCommissionForm(
+        // announcement.date !== null ?
+        //     'delivery/' + announcement.id + '/' + announcement.authorId :
+        'normal/' + announcement.id + '/' + announcement.authorId);
+
+    const handleOpenProfile = userId => history.push('/profile/' + userId);
+
+    useEffect(() => {
+        props.announcementId !== undefined ?
+        getAnnouncementById(props.announcementId)
+            .then(response => setAnnouncement(response.data))
+            .catch(error => alert(error))
+            :
+        getAnnouncementById(props.match.params.announcementId)
+            .then(response => setAnnouncement(response.data))
+            .catch(error => alert(error));
+    }, []);
+
+    const openLocationFromDetails = () => {
+        setCurrentLocationLatitude(announcement.destinationFrom.latitude);
+        setCurrentLocationLongitude(announcement.destinationFrom.longitude);
+        setLocationModalOpened(true);
+    }
+
+    const openLocationToDetails = () => {
+        setCurrentLocationLatitude(announcement.destinationTo.latitude);
+        setCurrentLocationLongitude(announcement.destinationTo.longitude);
+        setLocationModalOpened(true);
+    }
 
     return (
-        <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
-
-            <Modal
-                className={flexClasses.flexRowCenter}
-                centered open={mapModalOpened}
-                children={<MapModal
-                    setModalOpened={setMapModalOpened}
-                    coordinates={{
-                        fromLatitude: parseFloat(props.data.destinationFrom.latitude),
-                        fromLongitude: parseFloat(props.data.destinationFrom.longitude),
-                        toLatitude: parseFloat(props.data.destinationTo.latitude),
-                        toLongitude: parseFloat(props.data.destinationTo.longitude),
-                    }}
-                />}
-                onClose={()=>setMapModalOpened(false)}
-            />
-            <Modal
-                className={flexClasses.flexRowCenter}
-                centered open={packagesModalOpened}
-                children={<PackagesModal
-                    packages={props.data.packages}
-                    setPackagesModalOpened={setPackagesModalOpened}
-                />}
-                onClose={()=>setPackagesModalOpened(false)}
-            />
-            <Typography variant={'body2'}>
-                {
-                    // props.data.date === null ?
-                    <img src={boxIcon} alt={''}  className={classes.icon}/>
-                    //     :
-                    // <div className={flexClasses.flexRowSpaceAround}>
-                    //     <img src={deliveryTruckIcon} alt={''} className={classes.icon}/>
-                    //     {
-                    //         props.data.date.replace('T', ' ')
-                    //     }
-                    // </div>
-                }
-            </Typography>
-
-            <Typography variant={'body2'}>
-                <div className={flexClasses.flexColumnSpaceBetween}>
-                    <div>
-                        from: {`${props.data.destinationFrom.address}, ${props.data.destinationFrom.locality}, ${props.data.destinationFrom.country}`}
-                    </div>
-                    <div>
-                        to: {`${props.data.destinationTo.address}, ${props.data.destinationTo.locality}, ${props.data.destinationTo.country}`}
-                    </div>
+        <StyleRoot>
+            {
+                announcement !== null &&
+                <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                    <Modal
+                        className={flexClasses.flexRowCenter}
+                        centered open={locationModalOpened}
+                        children={<ModalTemplate
+                            child={<LocationDetails
+                                    longitude={currentLocationLongitude}
+                                    latitude={currentLocationLatitude}
+                                />}
+                            action={setLocationModalOpened}
+                        />}
+                        onClose={()=>setLocationModalOpened(false)}
+                    />
+                    <Card
+                        className={`${rwdClasses.biggerMobileCard} 
+                        ${paddingClasses.paddingMedium}`}
+                    >
+                        <List className={`${listClasses.verticalList} 
+                        ${flexClasses.flexColumnSpaceBetween}`}>
+                            <div>
+                                <Button variant={"contained"} onClick={() => handleRegisterCommission()}>
+                                    Send request
+                                </Button>
+                                <Button variant={"contained"} onClick={() => handleOpenProfile(announcement.authorId)}>
+                                    Author
+                                </Button>
+                            </div>
+                            {
+                                announcement.packages.length !== 0 &&
+                                <div>
+                                    Packages to delivery
+                                    <PackagesList
+                                        packages={announcement.packages}
+                                    />
+                                </div>
+                            }
+                            <div>
+                                <Button variant={"contained"} onClick={() => openLocationFromDetails()}>
+                                    location from details
+                                </Button>
+                                <Button variant={"contained"} onClick={() => openLocationToDetails()}>
+                                    location to details
+                                </Button>
+                            </div>
+                            <div>
+                                Destinations
+                                <MapItem
+                                    coordinates={
+                                        {
+                                            fromLongitude: parseFloat(announcement.destinationFrom.longitude),
+                                            fromLatitude: parseFloat(announcement.destinationFrom.latitude),
+                                            toLongitude: parseFloat(announcement.destinationTo.longitude),
+                                            toLatitude: parseFloat(announcement.destinationTo.latitude)
+                                        }
+                                    }
+                                />
+                            </div>
+                        </List>
+                    </Card>
                 </div>
-            </Typography>
-            <div>
-                {
-                    !props.delivery &&
-                        <Button onClick={() => setPackagesModalOpened(true)}>
-                            Packages
-                        </Button>
-                }
-                <Button onClick={() => setMapModalOpened(true)}>
-                    <MapIcon />
-                </Button>
-                {
-                    props.data.authorId === parseInt(localStorage.getItem(USER_ID)) &&
-                    <Button>
-                        <SettingsIcon />
-                    </Button>
-                }
-                {
-                    props.data.authorId !== parseInt(localStorage.getItem(USER_ID)) &&
-                    <Button onClick={() => handleRegisterCommission()}>
-                        <ArrowForwardIcon />
-                    </Button>
-                }
-            </div>
-        </Card>
+            }
+        </StyleRoot>
+
     )
 }

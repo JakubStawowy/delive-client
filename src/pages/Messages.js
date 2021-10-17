@@ -14,12 +14,12 @@ import {
     getMessagesSent
 } from "../actions/restActions";
 import {USER_ID} from "../consts/applicationConsts";
-import {MessageListItem} from "./MessageListItem";
+import {MessageListItem} from "../components/MessageListItem";
 
 export const Messages = () => {
 
-    const [messagesSent, setMessagesSent] = useState([]);
-    const [messagesReceived, setMessagesReceived] = useState([]);
+    const [messagesSent, setMessagesSent] = useState(null);
+    const [messagesReceived, setMessagesReceived] = useState(null);
     const [messagesFlag, setMessagesFlag] = useState(true);
     const [bounce, setBounce] = useState(false);
 
@@ -77,7 +77,7 @@ export const Messages = () => {
         <StyleRoot>
             <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                 {
-                    messagesSent.length === 0 && messagesReceived.length === 0 ?
+                    messagesSent === null || messagesReceived === null ?
                         <div style={loaderAnimationStyles.animation}>
                             <BounceLoader
                                 loading
@@ -101,15 +101,22 @@ export const Messages = () => {
                                 <List className={`${listClasses.verticalList}`}>
                                     {
                                         messagesFlag ?
-                                            messagesSent.map(message=>{
-                                                return (
-                                                    <MessageListItem
-                                                        message={message}
-                                                        received={false}
-                                                    />
-                                                )
-                                            })
+                                                messagesSent.length > 0 ?
+                                                messagesSent.map(message=>{
+                                                    return (
+                                                        <MessageListItem
+                                                            message={message}
+                                                            received={false}
+                                                        />
+                                                    )
+                                                })
+                                                    :
+                                                    <div>
+                                                        No messages yet
+                                                    </div>
+
                                             :
+                                            messagesReceived.length > 0 ?
                                             messagesReceived.map(message=>{
                                                 return (
                                                     <MessageListItem
@@ -119,6 +126,11 @@ export const Messages = () => {
                                                     />
                                                 )
                                             })
+                                                :
+                                                <div>
+                                                    No messages yet
+                                                </div>
+
                                     }
                                 </List>
                             </Card>

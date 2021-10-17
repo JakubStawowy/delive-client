@@ -16,8 +16,7 @@ import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "
 import {loadDeliveriesByDeliverer, loadDeliveriesByPrincipal} from "../actions/restActions";
 import {USER_ID} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
-import {trimDate} from "../actions/commonFunctions";
-import {DeliveryTableRow} from "./DeliveryTableRow";
+import {DeliveryTableRow} from "../components/DeliveryTableRow";
 import {useHistory} from "react-router";
 
 export const DeliveryPage = (props) => {
@@ -33,7 +32,6 @@ export const DeliveryPage = (props) => {
         container: {
             marginTop: '2em',
             width: '60vw',
-            // height: '60vh',
             [theme.breakpoints.down('xs')]: {
                 width: '100%'
             }
@@ -52,7 +50,10 @@ export const DeliveryPage = (props) => {
         },
         returned: {
             background: "#32CD32"
-        }
+        },
+        selected: {
+            background: '#DCDCDC'
+        },
     }));
     const classes = useClasses();
     const flexClasses = flexComponents();
@@ -65,7 +66,6 @@ export const DeliveryPage = (props) => {
     }, []);
 
     const loadDeliveries = () => {
-
         loadDeliveriesByDeliverer(localStorage.getItem(USER_ID))
             .then(response => setDeliveries(response.data))
             .catch(error => handleError(error, history));
@@ -85,10 +85,10 @@ export const DeliveryPage = (props) => {
         <div className={`${flexClasses.flexColumnSpaceAround} ${rwdClasses.mobileCard}`}>
             <Card className={`${paddingClasses.paddingMedium} ${sizeClasses.componentHeight}`}>
                 <Tabs className={flexClasses.flexColumnSpaceAround}>
-                    <Button variant={"contained"} onClick={()=>setDeliveryFlag(true)}>
+                    <Button onClick={()=>setDeliveryFlag(true)} className={deliveryFlag && classes.selected}>
                         User
                     </Button>
-                    <Button variant={"contained"} onClick={()=>setDeliveryFlag(false)}>
+                    <Button onClick={()=>setDeliveryFlag(false)} className={!deliveryFlag && classes.selected}>
                         Realized by user
                     </Button>
                 </Tabs>

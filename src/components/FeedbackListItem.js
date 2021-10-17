@@ -4,7 +4,7 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {useHistory} from "react-router";
 
-export const Feedback = props => {
+export const FeedbackListItem = props => {
 
     const useClasses = makeStyles((theme) => ({
         paper: {

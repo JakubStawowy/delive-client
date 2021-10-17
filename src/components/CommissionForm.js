@@ -73,24 +73,9 @@ export const CommissionForm = (props) => {
             <div style={fadeInClasses.animation} className={`${flexClasses.flexRowCenter} ${sizeClasses.bodyHeight}`}>
                 <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
                     <Typography className={flexClasses.flexRowSpaceBetween}>
-                        {
-                            props.delivery ?
-                                <div>
-                                    <PackagesForm
-                                        packages={packages}
-                                        announcementFormItems={announcementFormItems}
-                                        setPackages={setPackages}
-                                    />
-                                    <Button onClick={()=>alert(packages.length)}>
-                                        Show number of packages
-                                    </Button>
-                                </div>
-
-                                :
-                                <div>
-                                    <TextareaAutosize className={paddingClasses.paddingSmall} value={message} onChange={(e)=>setMessage(e.target.value)}/>
-                                </div>
-                        }
+                        <div>
+                            <TextareaAutosize className={paddingClasses.paddingSmall} value={message} onChange={(e)=>setMessage(e.target.value)}/>
+                        </div>
                         <Button
                             onClick={()=>handleRegisterDelivery()}
                             variant={"contained"}

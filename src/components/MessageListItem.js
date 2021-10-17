@@ -1,4 +1,4 @@
-import {Button, Card, ListItem, makeStyles, Modal} from "@material-ui/core";
+import {Button, Card, ListItem, makeStyles, Modal, TableRow} from "@material-ui/core";
 import {replyMessage} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
@@ -8,11 +8,17 @@ import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "
 import {useEffect, useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import {PackagesModal} from "./PackagesModal";
+import {ModalTemplate} from "../templates/ModalTemplate";
+import {Announcement} from "./Announcement";
+import {Profile} from "../pages/Profile";
 
 export const MessageListItem = (props) => {
 
     const history = useHistory();
     const [packagesModalOpened, setPackagesModalOpened] = useState(false);
+    const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
+    const [profileModalOpened, setProfileModalOpened] = useState(false);
+    const [currentProfileUserId, setCurrentProfileUserId] = useState(localStorage.getItem(USER_ID));
 
     const useClasses = makeStyles(((theme)=>({
         marginComponent: {
@@ -45,8 +51,10 @@ export const MessageListItem = (props) => {
         props.refresh();
     }).catch((error) => handleError(error, history));
 
-    const handleOpenProfile = userId => history.push('/profile/' + userId);
-    const handleOpenAnnouncement = announcementId => history.push('/announcement/' + announcementId);
+    const handleOpenProfile = userId => {
+        setCurrentProfileUserId(userId);
+        setProfileModalOpened(true);
+    }
 
     return (
         <ListItem className={classes.root}>
@@ -62,12 +70,45 @@ export const MessageListItem = (props) => {
                         onClose={()=>setPackagesModalOpened(false)}
                     />
             }
+
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={announcementModalOpened}
+                children={
+                    <ModalTemplate
+                        action={setAnnouncementModalOpened}
+                        child={
+                            <Announcement
+                                announcementId={props.message.announcementId}
+                            />
+                        }
+                    />
+                }
+                onClose={()=>setAnnouncementModalOpened(false)}
+            />
+
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={profileModalOpened}
+                children={
+                    <ModalTemplate
+                        action={setProfileModalOpened}
+                        child={
+                            <Profile
+                                userId={currentProfileUserId}
+                            />
+                        }
+                    />
+                }
+                onClose={()=>setProfileModalOpened(false)}
+            />
+
             <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.singleMobileCard}`}>
                 <div className={flexClasses.flexRowSpaceBetween}>
                     <div>
                         <Button
                             variant={"contained"}
-                            onClick={() => handleOpenAnnouncement(props.message.announcementId)}
+                            onClick={() => setAnnouncementModalOpened(true)}
                             className={classes.messageButton}
                         >
                             Announcement

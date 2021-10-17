@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {
     ADD_DELIVERY_ANNOUNCEMENT_URL,
-    ADD_NORMAL_ANNOUNCEMENT_URL, CHANGE_DELIVERY_STATE_URL, GET_ANNOUNCEMENT_URL,
+    ADD_NORMAL_ANNOUNCEMENT_URL, CHANGE_DELIVERY_STATE_URL, FINISH_DELIVERY_URL, GET_ANNOUNCEMENT_URL,
     GET_DELIVERY_ANNOUNCEMENTS_URL,
     GET_HALFWAY_POINT_URL,
     GET_NORMAL_ANNOUNCEMENTS_URL, GET_REVERSE_GEOCODE_URL,
@@ -31,7 +31,6 @@ export const logoutUser = (data) => axios.put(LOGOUT_USER_URL.replace(':id', dat
 export const addNormalAnnouncement = (data) => axios.post(ADD_NORMAL_ANNOUNCEMENT_URL, data, getConfig());
 export const addDeliveryAnnouncement = (data) => axios.post(ADD_DELIVERY_ANNOUNCEMENT_URL, data, getConfig());
 export const getNormalAnnouncements = () => axios.get(GET_NORMAL_ANNOUNCEMENTS_URL, getConfig());
-export const getDeliveryAnnouncements = () => axios.get(GET_DELIVERY_ANNOUNCEMENTS_URL, getConfig());
 export const getHalfwayPoint = (data) => axios.get(
     GET_HALFWAY_POINT_URL
         .replace(":fromLatitude", data.fromLatitude)
@@ -51,6 +50,10 @@ export const loadDeliveriesByDeliverer = userId => axios.get(LOAD_DELIVERY_BY_DE
 export const loadDeliveriesByPrincipal = userId => axios.get(LOAD_DELIVERY_BY_PRINCIPAL_URL.replace(':userId', userId), getConfig());
 export const changeDeliveryState = (actionName, deliveryId) => axios.put(CHANGE_DELIVERY_STATE_URL.replace(':actionName', actionName)
     .replace(":deliveryId", deliveryId), null, getConfig());
+export const finishDelivery = (deliveryId, clientLongitude, clientLatitude) => axios.put(FINISH_DELIVERY_URL
+    .replace(":deliveryId", deliveryId)
+    .replace(':clientLongitude', clientLongitude)
+    .replace(':clientLatitude', clientLatitude), null, getConfig());
 export const loadUser = userId => axios.get(LOAD_USER_URL.replace(':userId', userId), getConfig());
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(':userId', userId), getConfig());
 export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(':announcementId', announcementId), getConfig());

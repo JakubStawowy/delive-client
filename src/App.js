@@ -1,19 +1,19 @@
 import {Menu} from "./components/Menu";
 import {makeStyles} from "@material-ui/core";
-import {LoginRegister} from "./components/LoginRegister";
+import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Router, Switch} from "react-router";
-import {Home} from "./components/Home";
-import {DeliveryPage} from "./components/DeliveryPage";
-import {Profile} from "./components/Profile";
-import {Messages} from "./components/Messages";
-import {AddNormalAnnouncement} from "./components/AddNormalAnnouncement";
-import {ErrorPage} from "./components/ErrorPage";
-import {NormalCommission} from "./components/NormalCommission";
-import {AnnouncementPage} from "./components/AnnouncementPage";
-import {DeliveryCommission} from "./components/DeliveryCommission";
-import {AddDeliveryAnnouncement} from "./components/AddDeliveryAnnouncement";
-import {AnnouncementType} from "./components/AnnouncementType";
+import {Home} from "./pages/Home";
+import {DeliveryPage} from "./pages/DeliveryPage";
+import {Profile} from "./pages/Profile";
+import {Messages} from "./pages/Messages";
+import {AddNormalAnnouncement} from "./pages/AddNormalAnnouncement";
+import {ErrorPage} from "./pages/ErrorPage";
+import {NormalCommission} from "./pages/NormalCommission";
+import {Announcement} from "./components/Announcement";
+import {DeliveryCommission} from "./pages/DeliveryCommission";
+import {AddDeliveryAnnouncement} from "./pages/AddDeliveryAnnouncement";
+import {AnnouncementType} from "./pages/AnnouncementType";
 
 import wallpaper from './uploads/wallpaper.png';
 import {Test} from "./components/Test";
@@ -58,7 +58,7 @@ function App() {
               <Route path={'/announcementType'} component={AnnouncementType} locale={locale}/>
               <Route path={'/delivery'} component={DeliveryPage} locale={locale}/>
               <Route path={'/profile/:userId'} component={Profile} />
-              <Route path={'/announcement/:announcementId'} component={AnnouncementPage} />
+              <Route path={'/announcement/:announcementId'} component={Announcement} />
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
               </Route>

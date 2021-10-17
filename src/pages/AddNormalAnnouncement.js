@@ -1,4 +1,4 @@
-import {AnnouncementForm} from "./AnnouncementForm";
+import {AnnouncementForm} from "../components/AnnouncementForm";
 
 export const AddNormalAnnouncement = () => {
     return (

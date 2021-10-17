@@ -1,24 +1,54 @@
-import {Button, Card, Modal, TableCell, TableRow} from "@material-ui/core";
+import {Button, Card, makeStyles, Modal, TableCell, TableRow} from "@material-ui/core";
 import {getNextActionName, trimDate} from "../actions/commonFunctions";
-import {PackagesModal} from "./PackagesModal";
-import {MapModal} from "./MapModal";
 import {flexComponents} from "../style/components";
-import {useEffect, useState} from "react";
-import {USER_ID, WAITING} from "../consts/applicationConsts";
-import {changeDeliveryState} from "../actions/restActions";
+import {useState} from "react";
+import {WAITING} from "../consts/applicationConsts";
+import {changeDeliveryState, finishDelivery} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
+import {ModalTemplate} from "../templates/ModalTemplate";
+import {Announcement} from "./Announcement";
+import {PackagesList} from "./PackagesList";
+import {MapItem} from "./MapItem";
 
 export const DeliveryTableRow = (props) => {
 
     const history = useHistory();
+    const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
     const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const [fromLocalizationModalOpened, setFromLocalizationModalOpened] = useState(false);
     const [toLocalizationModalOpened, setToLocalizationModalOpened] = useState(false);
+
+    const useStyles = makeStyles((()=>({
+        package: {
+            background: '#FFE4C4'
+        },
+        modalChild: {
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0
+        }
+    })));
+    const classes = useStyles();
     const flexClasses = flexComponents();
     const actionName = getNextActionName(props.delivery.deliveryState, props.delivery.announcement.authorId, props.delivery.delivererId);
-    const openAnnouncement = () => {
-        history.push('/announcement/' + props.delivery.announcement.id);
+
+    const handleChangeDeliveryState = () => {
+        if (actionName === 'finish') {
+
+            navigator.geolocation.getCurrentPosition(position => {
+                finishDelivery(props.delivery.id, position.coords.longitude, position.coords.latitude)
+                    .then(() => {
+                        alert("Delivery state changed __");
+                        props.refresh();
+                    }).catch(error => handleError(error, history));
+            }, ()=>alert('Problems with geolocation occurred'));
+        } else {
+            changeDeliveryState(actionName, props.delivery.id)
+                .then(() => {
+                    alert("Delivery state changed");
+                    props.refresh();
+                }).catch(error => handleError(error, history));
+        }
     }
 
     return (
@@ -26,36 +56,67 @@ export const DeliveryTableRow = (props) => {
             <Modal
                 className={flexClasses.flexRowCenter}
                 centered open={packagesModalOpened}
-                children={<PackagesModal
-                    packages={props.delivery.announcement.packages}
-                    setPackagesModalOpened={setPackagesModalOpened}
+                children={<ModalTemplate
+                    child={<Card className={classes.modalChild}>
+                        <PackagesList
+                            packages={props.delivery.announcement.packages}
+                        />
+                    </Card>}
+                    action={setPackagesModalOpened}
                 />}
                 onClose={()=>setPackagesModalOpened(false)}
             />
             <Modal
                 className={flexClasses.flexRowCenter}
                 centered open={fromLocalizationModalOpened}
-                children={<MapModal
-                    setModalOpened={setFromLocalizationModalOpened}
-                    latitude={props.delivery.announcement.destinationFrom.latitude}
-                    longitude={props.delivery.announcement.destinationFrom.longitude}
-                />}
+                children={
+                    <ModalTemplate
+                        child={
+                            <MapItem
+                                latitude={props.delivery.announcement.destinationFrom.latitude}
+                                longitude={props.delivery.announcement.destinationFrom.longitude}
+                            />
+                        }
+                        action={setFromLocalizationModalOpened}
+                    />
+                }
                 onClose={()=>setFromLocalizationModalOpened(false)}
             />
             <Modal
                 className={flexClasses.flexRowCenter}
                 centered open={toLocalizationModalOpened}
-                children={<MapModal
-                    setModalOpened={setToLocalizationModalOpened}
-                    latitude={props.delivery.announcement.destinationTo.latitude}
-                    longitude={props.delivery.announcement.destinationTo.longitude}
-                />}
+                children={
+                    <ModalTemplate
+                        child={
+                            <MapItem
+                                latitude={props.delivery.announcement.destinationTo.latitude}
+                                longitude={props.delivery.announcement.destinationTo.longitude}
+                            />
+                        }
+                        action={setToLocalizationModalOpened}
+                    />
+                }
                 onClose={()=>setToLocalizationModalOpened(false)}
+            />
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={announcementModalOpened}
+                children={
+                    <ModalTemplate
+                        action={setAnnouncementModalOpened}
+                        child={
+                            <Announcement
+                                announcementId={props.delivery.announcement.id}
+                            />
+                        }
+                    />
+                }
+                onClose={()=>setAnnouncementModalOpened(false)}
             />
             <TableCell align={"center"}>
                 <Button
                     variant={"contained"}
-                    onClick={() => openAnnouncement()}
+                    onClick={() => setAnnouncementModalOpened(true)}
                 >
                     Check
                 </Button>
@@ -93,13 +154,7 @@ export const DeliveryTableRow = (props) => {
             <TableCell align={"center"}>
                 {
                     <Button variant={"contained"}
-                        onClick={() => {
-                            changeDeliveryState(actionName, props.delivery.id)
-                                .then(() => {
-                                    alert("Delivery state changed");
-                                    props.refresh();
-                                }).catch(error => handleError(error, history));
-                        }}
+                        onClick={() => handleChangeDeliveryState()}
                         disabled={actionName === WAITING || actionName === '-'}
                     >
                         {actionName}

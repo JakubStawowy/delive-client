@@ -1,4 +1,15 @@
-import {Button, Card, Grid, makeStyles, Modal, Typography, List, ListItem, TextField} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    Grid,
+    makeStyles,
+    Modal,
+    Typography,
+    List,
+    ListItem,
+    TextField,
+    FormControlLabel, Checkbox
+} from "@material-ui/core";
 import {
     flexComponents, listComponents,
     paddingComponents,
@@ -15,15 +26,13 @@ import {useAnimationStyles} from "../style/animation";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
-import {MapModal} from "./MapModal";
+import {MapFormModal} from "./MapFormModal";
 import {handleItemAccessAttempt} from "../actions/handlers";
 import {addDeliveryAnnouncement, addNormalAnnouncement} from "../actions/restActions";
 import {USER_ID} from "../consts/applicationConsts";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
-import {
-    validateDateTimeFormat, validateEmptyString
-} from "../actions/validators";
+import {validateEmptyString} from "../actions/validators";
 import {PackageForm} from "./PackageForm";
 
 export const AnnouncementForm = (props) => {
@@ -37,13 +46,12 @@ export const AnnouncementForm = (props) => {
     const [localizationFromModalOpened, setLocalizationFromModalOpened] = useState(false);
     const [localizationToModalOpened, setLocalizationToModalOpened] = useState(false);
     const [packageFormOpened, setPackageFormOpened] = useState(false);
+    const [transportWithTheClient, setTransportWithTheClient] = useState(false);
 
     const [fromLatitude, setFromLatitude] = useState('');
     const [fromLongitude, setFromLongitude] = useState('');
     const [toLatitude, setToLatitude] = useState('');
     const [toLongitude, setToLongitude] = useState('');
-    const [dateDay, setDateDay] = useState('');
-    const [dateHour, setDateHour] = useState('');
     const [amount, setAmount] = useState(null);
 
     const history = useHistory();
@@ -73,55 +81,30 @@ export const AnnouncementForm = (props) => {
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
-        if (props.delivery) {
-            validateEmptyString(fromLatitude) &&
-            validateEmptyString(fromLongitude) &&
-            validateEmptyString(toLatitude) &&
-            validateEmptyString(toLongitude) &&
-                validateDateTimeFormat(dateDay + " " + dateHour)
-            ?
-            addDeliveryAnnouncement({
-                destinationFrom: {
-                    longitude: fromLongitude,
-                    latitude: fromLatitude
-                },
-                destinationTo: {
-                    longitude: toLongitude,
-                    latitude: toLatitude
-                },
-                authorId: localStorage.getItem(USER_ID),
-                date: dateDay + " " + dateHour
-            }).then(() => {
-                setBounce(true);
-                setTimeout(() => history.push('/home'), ANIMATION_TIME / 2);
-            }).catch((error) => alert(error))
-                :
-                alert("ValidationError");
-        }
-        else {
-            validateEmptyString(fromLatitude) &&
-            validateEmptyString(fromLongitude) &&
-            validateEmptyString(toLatitude) &&
-            validateEmptyString(toLongitude) && packages.length > 0 ?
-            addNormalAnnouncement({
-                destinationFrom: {
-                    longitude: fromLongitude,
-                    latitude: fromLatitude
-                },
-                destinationTo: {
-                    longitude: toLongitude,
-                    latitude: toLatitude
-                },
-                packages: packages,
-                amount,
-                authorId: localStorage.getItem(USER_ID)
-            }).then(() => {
-                setBounce(true);
-                setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
-            }).catch((error) => alert(error))
-                :
-                alert("ValidationError");
-        }
+        alert(transportWithTheClient);
+        validateEmptyString(fromLatitude) &&
+        validateEmptyString(fromLongitude) &&
+        validateEmptyString(toLatitude) &&
+        validateEmptyString(toLongitude) && packages.length > 0 ?
+        addNormalAnnouncement({
+            destinationFrom: {
+                longitude: fromLongitude,
+                latitude: fromLatitude
+            },
+            destinationTo: {
+                longitude: toLongitude,
+                latitude: toLatitude
+            },
+            packages: packages,
+            amount,
+            requireTransportWithClient: transportWithTheClient,
+            authorId: localStorage.getItem(USER_ID)
+        }).then(() => {
+            setBounce(true);
+            setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
+        }).catch((error) => alert(error))
+            :
+            alert("ValidationError");
     };
 
     const addPackage = data => {
@@ -152,17 +135,19 @@ export const AnnouncementForm = (props) => {
                     <Modal
                         className={flexClasses.flexRowCenter}
                         centered open={localizationFromModalOpened}
-                        children={<MapModal
-                            setModalOpened={setLocalizationFromModalOpened}
-                            setLongitude={setFromLongitude}
-                            setLatitude={setFromLatitude}
-                        />}
+                        children={
+                            <MapFormModal
+                                setModalOpened={setLocalizationFromModalOpened}
+                                setLongitude={setFromLongitude}
+                                setLatitude={setFromLatitude}
+                            />
+                        }
                         onClose={()=>setLocalizationFromModalOpened(!localizationFromModalOpened)}
                     />
                     <Modal
                         className={flexClasses.flexRowCenter}
                         centered open={localizationToModalOpened}
-                        children={<MapModal
+                        children={<MapFormModal
                             setModalOpened={setLocalizationToModalOpened}
                             setLongitude={setToLongitude}
                             setLatitude={setToLatitude}
@@ -203,58 +188,46 @@ export const AnnouncementForm = (props) => {
                                 {announcementFormItems.destination.to}
                             </Button>
                         </Typography>
-
-                        {
-                            !props.delivery &&
-                                <div>
-                                    <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)}>
+                        <div className={flexClasses.flexRowSpaceBetween}>
+                            <List className={`${flexClasses.flexRowSpaceBetween} ${listClasses.horizontalList}`}>
+                                {
+                                    packages.map(deliveryPackage => <ListItem>
+                                        <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
+                                            <Button onClick={() => removePackage(deliveryPackage.id)}>
+                                                <IndeterminateCheckBoxSharpIcon />
+                                            </Button>
+                                            {`${deliveryPackage.packageWidth} x ${deliveryPackage.packageLength} x ${deliveryPackage.packageHeight}`}
+                                        </Card>
+                                    </ListItem>)
+                                }
+                                <ListItem>
+                                    <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)} className={classes.package}>
                                         <AddIcon fontSize={'large'}/>
-                                        Add package
                                     </Button>
-                                    <TextField
-                                        label={"amount"}
-                                        value={amount}
-                                        onChange={e => setAmount(e.target.value)}
-                                    />
-                                </div>
-                        }
-                        {
-                            !props.delivery && packages.length > 0 &&
-                                <List className={`${flexClasses.flexRowSpaceBetween} ${listClasses.horizontalList}`}>
-                                    {
-                                        packages.map(deliveryPackage => <ListItem>
-                                            <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
-                                                <Button onClick={() => removePackage(deliveryPackage.id)}>
-                                                    <IndeterminateCheckBoxSharpIcon />
-                                                </Button>
-                                                {`${deliveryPackage.packageWidth} x ${deliveryPackage.packageLength} x ${deliveryPackage.packageHeight}`}
-                                            </Card>
-                                        </ListItem>)
-                                    }
-                                </List>
-                        }
-                        {
-                            props.delivery &&
-                            <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
-                                {announcementFormItems.date}
-                                <input
-                                    type={'date'}
-                                    className={`${classes.datePicker} ${paddingClasses.paddingSmall}`}
-                                    value={dateDay}
-                                    onChange={(e) => setDateDay(e.target.value)}
+                                </ListItem>
+                            </List>
+                        </div>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={transportWithTheClient}
+                                    color={"secondary"}
+                                    onChange={() => setTransportWithTheClient(!transportWithTheClient)}
                                 />
-                                <input
-                                    type={'time'}
-                                    className={`${classes.datePicker} ${paddingClasses.paddingSmall}`}
-                                    value={dateHour}
-                                    onChange={(e) => setDateHour(e.target.value)}
-                                />
-                            </Typography>
-                        }
-                        <Button variant={'contained'} onClick={()=>handleSubmit()}>
-                            {announcementFormItems.submit}
-                            <ArrowForwardIcon fontSize={'large'}/>
-                        </Button>
+                            }
+                            label={'Transport with the client'}
+                        />
+                        <div className={flexClasses.flexRowSpaceBetween}>
+                            <TextField
+                                label={"salary"}
+                                value={amount}
+                                onChange={e => setAmount(e.target.value)}
+                            />
+                            <Button variant={'contained'} onClick={()=>handleSubmit()}>
+                                {announcementFormItems.submit}
+                                <ArrowForwardIcon fontSize={'large'}/>
+                            </Button>
+                        </div>
                     </Card>
                 </Grid>
             </div>

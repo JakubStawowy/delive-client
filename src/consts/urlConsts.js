@@ -1,7 +1,6 @@
-// const BASE_API_URL = 'http://localhost:8080/api';
+const BASE_API_URL = 'http://localhost:8080/api';
 // const BASE_API_URL = "http://192.168.0.115:8080/api";
-// const BASE_API_URL = "http://192.168.2.103:8080/api";
-const BASE_API_URL = "http://localhost:8080/api";
+// const BASE_API_URL = "http://192.168.2.104:8080/api";
 const BASE_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements';
 
 export const REGISTER_USER_URL = BASE_API_URL + '/register';
@@ -23,6 +22,7 @@ export const REGISTER_MESSAGE_DELIVERY_URL = BASE_API_URL + "/messages/register/
 export const LOAD_DELIVERY_BY_DELIVERER_URL = BASE_API_URL + "/delivery/deliverer?userId=:userId";
 export const LOAD_DELIVERY_BY_PRINCIPAL_URL = BASE_API_URL + "/delivery/principal?userId=:userId";
 export const CHANGE_DELIVERY_STATE_URL = BASE_API_URL + '/delivery/change?actionName=:actionName&deliveryId=:deliveryId';
+export const FINISH_DELIVERY_URL = BASE_API_URL + '/delivery/finish?deliveryId=:deliveryId&clientLatitude=:clientLatitude&clientLongitude=:clientLongitude';
 export const LOAD_USER_URL = BASE_API_URL + '/users/details?userId=:userId';
 export const LOAD_FEEDBACK_URL = BASE_API_URL + '/feedback/user?userId=:userId';
 export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?announcementId=:announcementId';

@@ -1,14 +1,12 @@
-import {StyleRoot} from "radium";
-import {Button, Card, makeStyles, Typography} from "@material-ui/core";
+import {Card, makeStyles, Typography} from "@material-ui/core";
 import {flexComponents, paddingComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import {getReverseGeocode} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {BounceLoader} from "react-spinners";
-import CheckIcon from "@material-ui/icons/Check";
 
-export const LocationData = props => {
+export const LocationDetails = props => {
 
     const [data, setData] = useState(null);
     const history = useHistory();
@@ -45,18 +43,15 @@ export const LocationData = props => {
     }, []);
 
     return (
-        <StyleRoot>
             <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceAround} ${classes.card}`}>
                 {
                     data === null && keys.length === 0 ?
-                        // <div style={loaderAnimationStyles.animation}>
-                            <BounceLoader
-                                loading
-                                color={'red'}
-                            />
-                        // </div>
+                        <BounceLoader
+                            loading
+                            color={'red'}
+                        />
                     :
-                        <Typography>
+                        <div>
                             {
                                 keys.map(key => {
                                     return (
@@ -71,16 +66,8 @@ export const LocationData = props => {
                                     )
                                 })
                             }
-                        </Typography>
+                        </div>
                 }
             </Card>
-            <Button
-                variant={"contained"}
-                className={classes.button}
-                onClick={() => props.action(false)}
-            >
-                <CheckIcon className={classes.pin}/>
-            </Button>
-        </StyleRoot>
     )
 }

@@ -84,7 +84,7 @@ export const Menu = (props) => {
                         (window.matchMedia(SM_MEDIA_QUERY).matches
                             ? fadeOutAnimationStyles.animation : null)}
                 >
-                    <Button variant={'contained'} onClick={()=>handleNav('/announcementType')}>
+                    <Button variant={'contained'} onClick={()=>handleNav('/addAnnouncement/normal')}>
                         {menuStatements.newOffer}
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleNav('/home')}>
