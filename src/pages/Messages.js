@@ -13,7 +13,6 @@ import {
     getMessagesReceived,
     getMessagesSent
 } from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
 import {MessageListItem} from "../components/MessageListItem";
 
 export const Messages = () => {
@@ -52,16 +51,12 @@ export const Messages = () => {
     }, []);
 
     const loadMessages = () => {
-        getMessagesSent({
-            userId: localStorage.getItem(USER_ID)
-        }).then(response => {
+        getMessagesSent().then(response => {
             setMessagesSent(response.data);
             console.log(response.data);
         }).catch((error) => alert(error));
 
-        getMessagesReceived({
-            userId: localStorage.getItem(USER_ID)
-        }).then(response => {
+        getMessagesReceived().then(response => {
             setMessagesReceived(response.data);
             console.log(response.data);
         }).catch((error) => alert(error));

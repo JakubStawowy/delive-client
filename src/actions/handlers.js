@@ -1,4 +1,4 @@
-import {ROLE, TOKEN, USER_ID} from "../consts/applicationConsts";
+import {ROLE, TOKEN} from "../consts/applicationConsts";
 
 export const handleItemAccessAttempt = history => {
     const logout = () => {
@@ -9,11 +9,8 @@ export const handleItemAccessAttempt = history => {
 }
 
 
-export const isLogged = () => {
-    return localStorage.getItem(USER_ID) !== null
-        && localStorage.getItem(TOKEN) !== null
-        && localStorage.getItem(ROLE) !== null
-}
+export const isLogged = () => localStorage.getItem(TOKEN) !== null && localStorage.getItem(ROLE) !== null;
+
 
 export const handleError = (error, history) => {
     // history.push('/error/' + error);

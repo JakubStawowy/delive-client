@@ -1,15 +1,15 @@
 import {Button, Card, makeStyles, Modal, TableCell, TableRow} from "@material-ui/core";
-import {getNextActionName, trimDate} from "../actions/commonFunctions";
 import {flexComponents} from "../style/components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {WAITING} from "../consts/applicationConsts";
-import {changeDeliveryState, finishDelivery} from "../actions/restActions";
+import {changeDeliveryState, getNextActionName} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {Announcement} from "./Announcement";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
+import {trimDate} from "../actions/commonFunctions";
 
 export const DeliveryTableRow = (props) => {
 
@@ -18,6 +18,7 @@ export const DeliveryTableRow = (props) => {
     const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const [fromLocalizationModalOpened, setFromLocalizationModalOpened] = useState(false);
     const [toLocalizationModalOpened, setToLocalizationModalOpened] = useState(false);
+    const [actionNames, setActionNames] = useState([]);
 
     const useStyles = makeStyles((()=>({
         package: {
@@ -30,13 +31,12 @@ export const DeliveryTableRow = (props) => {
     })));
     const classes = useStyles();
     const flexClasses = flexComponents();
-    const actionName = getNextActionName(props.delivery.deliveryState, props.delivery.announcement.authorId, props.delivery.delivererId);
 
-    const handleChangeDeliveryState = () => {
+    const handleChangeDeliveryState = (actionName) => {
+
         if (actionName === 'finish') {
-
             navigator.geolocation.getCurrentPosition(position => {
-                finishDelivery(props.delivery.id, position.coords.longitude, position.coords.latitude)
+                changeDeliveryState(actionName, props.delivery.id, position.coords.longitude, position.coords.latitude)
                     .then(() => {
                         alert("Delivery state changed __");
                         props.refresh();
@@ -50,6 +50,12 @@ export const DeliveryTableRow = (props) => {
                 }).catch(error => handleError(error, history));
         }
     }
+
+    useEffect(() => {
+        getNextActionName(props.delivery.deliveryState,
+            props.delivery.announcement.authorId,
+            props.delivery.delivererId).then(response => setActionNames(response.data)).catch(error => handleError(error, history));
+    }, []);
 
     return (
         <TableRow>
@@ -153,12 +159,16 @@ export const DeliveryTableRow = (props) => {
             </TableCell>
             <TableCell align={"center"}>
                 {
-                    <Button variant={"contained"}
-                        onClick={() => handleChangeDeliveryState()}
-                        disabled={actionName === WAITING || actionName === '-'}
-                    >
-                        {actionName}
-                    </Button>
+                    actionNames.map(actionName => {
+                        return (
+                            <Button variant={"contained"}
+                                    onClick={() => handleChangeDeliveryState(actionName)}
+                                    disabled={actionName === WAITING || actionName === '-'}
+                            >
+                                {actionName}
+                            </Button>
+                        )
+                    })
                 }
             </TableCell>
         </TableRow>

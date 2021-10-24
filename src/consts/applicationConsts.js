@@ -1,5 +1,5 @@
 export const TOKEN = 'token';
-export const USER_ID = 'userId';
+// export const USER_ID = 'userId';
 export const ROLE = 'role';
 export const START = 'start';
 export const FINISH = 'finish';

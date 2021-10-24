@@ -12,7 +12,6 @@ import {ErrorPage} from "./pages/ErrorPage";
 import {NormalCommission} from "./pages/NormalCommission";
 import {Announcement} from "./components/Announcement";
 import {DeliveryCommission} from "./pages/DeliveryCommission";
-import {AddDeliveryAnnouncement} from "./pages/AddDeliveryAnnouncement";
 import {AnnouncementType} from "./pages/AnnouncementType";
 
 import wallpaper from './uploads/wallpaper.png';
@@ -54,10 +53,10 @@ function App() {
               <Route path={'/commission/normal/:announcementId/:authorId'} component={NormalCommission} delivery={false}/>
               <Route path={'/commission/delivery/:announcementId/:authorId'} component={DeliveryCommission} delivery={true}/>
               <Route path={'/addAnnouncement/normal'} component={AddNormalAnnouncement} locale={locale}/>
-              <Route path={'/addAnnouncement/delivery'} component={AddDeliveryAnnouncement} locale={locale}/>
               <Route path={'/announcementType'} component={AnnouncementType} locale={locale}/>
               <Route path={'/delivery'} component={DeliveryPage} locale={locale}/>
               <Route path={'/profile/:userId'} component={Profile} />
+              <Route path={'/profile'} component={Profile} />
               <Route path={'/announcement/:announcementId'} component={Announcement} />
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}

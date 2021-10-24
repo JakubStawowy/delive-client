@@ -14,7 +14,7 @@ import {
 import {useEffect, useState} from "react";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {loadDeliveriesByDeliverer, loadDeliveriesByPrincipal} from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
+// import {USER_ID} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
 import {DeliveryTableRow} from "../components/DeliveryTableRow";
 import {useHistory} from "react-router";
@@ -66,11 +66,11 @@ export const DeliveryPage = (props) => {
     }, []);
 
     const loadDeliveries = () => {
-        loadDeliveriesByDeliverer(localStorage.getItem(USER_ID))
+        loadDeliveriesByDeliverer()
             .then(response => setDeliveries(response.data))
             .catch(error => handleError(error, history));
 
-        loadDeliveriesByPrincipal(localStorage.getItem(USER_ID))
+        loadDeliveriesByPrincipal()
             .then(response => setUserDeliveries(response.data))
             .catch(error => handleError(error, history));
     }

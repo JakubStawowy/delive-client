@@ -10,7 +10,7 @@ import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
 import {logoutUser} from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
+// import {USER_ID} from "../consts/applicationConsts";
 import AddIcon from "@material-ui/icons/Add";
 
 export const Menu = (props) => {
@@ -44,9 +44,7 @@ export const Menu = (props) => {
     const fadeOutAnimationStyles = useAnimationStyles(fadeOutUp, ANIMATION_TIME / 2);
 
     const handleLogout = () => {
-        logoutUser({
-            'id': localStorage.getItem(USER_ID)
-        }).then(() => {
+        logoutUser().then(() => {
             localStorage.clear();
             history.push("/login");
             closeMenu();
@@ -96,7 +94,8 @@ export const Menu = (props) => {
                     <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
                         Delivery
                     </Button>
-                    <Button variant={'contained'} onClick={()=>handleNav('/profile/' + localStorage.getItem(USER_ID))}>
+                    {/*<Button variant={'contained'} onClick={()=>handleNav('/profile/' + localStorage.getItem(USER_ID))}>*/}
+                    <Button variant={'contained'} onClick={()=>handleNav('/profile')}>
                         Profile
                     </Button>
                     <Button variant={'contained'} onClick={()=>handleLogout()} >

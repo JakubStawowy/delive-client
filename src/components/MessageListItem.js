@@ -2,7 +2,7 @@ import {Button, Card, ListItem, makeStyles, Modal, TableRow} from "@material-ui/
 import {replyMessage} from "../actions/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
-import {USER_ID} from "../consts/applicationConsts";
+// import {USER_ID} from "../consts/applicationConsts";
 import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useEffect, useState} from "react";
@@ -18,7 +18,7 @@ export const MessageListItem = (props) => {
     const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
     const [profileModalOpened, setProfileModalOpened] = useState(false);
-    const [currentProfileUserId, setCurrentProfileUserId] = useState(localStorage.getItem(USER_ID));
+    const [currentProfileUserId, setCurrentProfileUserId] = useState(null);
 
     const useClasses = makeStyles(((theme)=>({
         marginComponent: {
@@ -43,7 +43,7 @@ export const MessageListItem = (props) => {
     const handleReplyMessage = consent => replyMessage({
         replyMessageId: props.message.id,
         announcementId: props.message.announcementId,
-        senderId: localStorage.getItem(USER_ID),
+        // senderId: localStorage.getItem(USER_ID),
         receiverId: props.message.senderId,
         consent
     }).then(() => {
@@ -103,7 +103,7 @@ export const MessageListItem = (props) => {
                 onClose={()=>setProfileModalOpened(false)}
             />
 
-            <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.singleMobileCard}`}>
+            <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.listItem}`}>
                 <div className={flexClasses.flexRowSpaceBetween}>
                     <div>
                         <Button

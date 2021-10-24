@@ -96,6 +96,15 @@ export const rwdComponents = makeStyles(((theme)=>({
             width: '60vw'
         }
     },
+    listItem: {
+        width: '40vw',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%'
+        },
+        [theme.breakpoints.between('sm', 'md')]: {
+            width: '60vw'
+        }
+    },
     biggerMobileCard: {
         [theme.breakpoints.down('xs')]: {
             width: '100%'

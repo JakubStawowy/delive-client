@@ -18,7 +18,6 @@ import {
     registerMessageDelivery,
     registerMessageNormal
 } from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
 import {PackagesForm} from "./PackagesForm";
 
 export const CommissionForm = (props) => {
@@ -30,43 +29,34 @@ export const CommissionForm = (props) => {
             ? localStorage.getItem('locale') : 'en'].announcement;
     const [bounce, setBounce] = useState(false);
     const [message, setMessage] = useState('Hello! I can handle your delivery');
-    const [packages, setPackages] = useState([]);
+    // const [packages, setPackages] = useState([]);
 
-    const [packageWidth, setPackageWidth] = useState('');
-    const [packageWidthValidated, setPackageWidthValidated] = useState(true);
 
     const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
     const sizeClasses = sizeComponents();
     const paddingClasses = paddingComponents();
-    const validationClasses = validatedComponents();
     const fadeInClasses = useAnimationStyles(fadeInRight, ANIMATION_TIME);
 
     useEffect(()=> {
         handleItemAccessAttempt(history);
     });
 
-    const handleRegisterDelivery = () => {
-        props.delivery ?
-            registerMessageDelivery({
-                announcementId: props.params.announcementId,
-                senderId: localStorage.getItem(USER_ID),
-                receiverId: props.params.authorId,
-                message,
-                packages
-            }).then(()=>setTimeout(()=>{
-                history.push('/history');
-            }, ANIMATION_TIME / 2)).catch((error) => handleError(error, history))
-            :
+    const handleRegisterDelivery = () =>
         registerMessageNormal({
             announcementId: props.params.announcementId,
-            senderId: localStorage.getItem(USER_ID),
+            // senderId: localStorage.getItem(USER_ID),
             receiverId: props.params.authorId,
             message
-        }).then(()=>setTimeout(()=>{
-            history.push('/history');
-        }, ANIMATION_TIME / 2)).catch((error) => handleError(error, history));
-    }
+        }).then(response =>
+            response.data ?
+            setTimeout(() => {
+                history.push('/history');
+            }, ANIMATION_TIME / 2)
+                :
+                alert("You are already assigned to delivery")
+        ).catch((error) => handleError(error, history));
+
 
     return (
         <StyleRoot>

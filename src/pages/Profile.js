@@ -6,8 +6,8 @@ import {FeedbackListItem} from "../components/FeedbackListItem";
 import {handleError} from "../actions/handlers";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
-import {loadFeedback, loadUser} from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
+import {loadFeedback, loadLoggedUser, loadUser} from "../actions/restActions";
+// import {USER_ID} from "../consts/applicationConsts";
 
 export const Profile = props => {
 
@@ -39,14 +39,25 @@ export const Profile = props => {
 
     useEffect(  () => {
         const uid = props.userId !== undefined ? props.userId : props.match.params.userId;
-        setUserId(uid);
-        loadUser(uid).then(response => {
-            setUserData(response.data);
-        }).catch((error) => handleError(error, history));
 
-        loadFeedback(uid).then(
-            response => setFeedback(response.data)
-        ).catch((error) => handleError(error, history));
+        if (uid !== undefined) {
+            setUserId(uid);
+            loadUser(uid).then(response => {
+                setUserData(response.data);
+            }).catch((error) => handleError(error, history));
+
+            loadFeedback(uid).then(
+                response => setFeedback(response.data)
+            ).catch((error) => handleError(error, history));
+        }
+        else {
+            loadLoggedUser().then(response => {
+                setUserData(response.data);
+                loadFeedback(response.data.id).then(
+                    response => setFeedback(response.data)
+                ).catch((error) => handleError(error, history));
+            }).catch((error) => handleError(error, history));
+        }
     }, []);
 
     return (
@@ -62,13 +73,13 @@ export const Profile = props => {
                             {`${userData.name} ${userData.surname}`}
                         </Typography>
                         {
-                            userId === localStorage.getItem(USER_ID) &&
+                            userData.userWallet !== null &&
                             <div>
                                 My wallet: {`${userData.userWallet.balance} ${userData.userWallet.currency}`}
                             </div>
                         }
                         {
-                            userId === localStorage.getItem(USER_ID) &&
+                            userData.userWallet !== null &&
                             <Button
                                 variant={"contained"}
                                 onClick={()=>alert('Function currently not supported')}

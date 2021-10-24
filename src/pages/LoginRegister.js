@@ -9,7 +9,7 @@ import {StyleRoot} from "radium";
 import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../actions/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
-import {ROLE, TOKEN, USER_ID} from "../consts/applicationConsts";
+import {ROLE, TOKEN} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
 
 export const LoginRegister = () => {
@@ -79,7 +79,7 @@ export const LoginRegister = () => {
 
             if (response.data.operationSuccess) {
                 localStorage.setItem(TOKEN, response.data.token);
-                localStorage.setItem(USER_ID, response.data.userId);
+                // localStorage.setItem(USER_ID, response.data.userId);
                 localStorage.setItem(ROLE, response.data.role);
 
                 history.push('/home');

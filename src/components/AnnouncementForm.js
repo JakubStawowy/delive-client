@@ -29,7 +29,6 @@ import {ANIMATION_TIME} from "../data/consts";
 import {MapFormModal} from "./MapFormModal";
 import {handleItemAccessAttempt} from "../actions/handlers";
 import {addDeliveryAnnouncement, addNormalAnnouncement} from "../actions/restActions";
-import {USER_ID} from "../consts/applicationConsts";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
 import {validateEmptyString} from "../actions/validators";
@@ -81,7 +80,6 @@ export const AnnouncementForm = (props) => {
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
-        alert(transportWithTheClient);
         validateEmptyString(fromLatitude) &&
         validateEmptyString(fromLongitude) &&
         validateEmptyString(toLatitude) &&
@@ -98,7 +96,7 @@ export const AnnouncementForm = (props) => {
             packages: packages,
             amount,
             requireTransportWithClient: transportWithTheClient,
-            authorId: localStorage.getItem(USER_ID)
+            // authorId: localStorage.getItem(USER_ID)
         }).then(() => {
             setBounce(true);
             setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
