@@ -1,4 +1,4 @@
-import {Button, Card, makeStyles, Modal, Typography} from "@material-ui/core";
+import {Button, Card, makeStyles, Modal} from "@material-ui/core";
 import {flexComponents, paddingComponents} from "../style/components";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import SettingsIcon from '@material-ui/icons/Settings';

@@ -14,7 +14,7 @@ import {
     flexComponents, listComponents,
     paddingComponents,
     rwdComponents,
-    sizeComponents
+    sizeComponents, validatedComponents
 } from "../style/components";
 import IndeterminateCheckBoxSharpIcon from '@material-ui/icons/IndeterminateCheckBoxSharp';
 import RoomIcon from '@material-ui/icons/Room';
@@ -27,11 +27,11 @@ import {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
 import {MapFormModal} from "./MapFormModal";
-import {handleItemAccessAttempt} from "../actions/handlers";
-import {addDeliveryAnnouncement, addNormalAnnouncement} from "../actions/restActions";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
+import {addNormalAnnouncement, getAnnouncementById} from "../rest/restActions";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
-import {validateEmptyString} from "../actions/validators";
+import {validateEmptyString, validateNumberFormat} from "../actions/validators";
 import {PackageForm} from "./PackageForm";
 
 export const AnnouncementForm = (props) => {
@@ -41,16 +41,18 @@ export const AnnouncementForm = (props) => {
         && localStorage.getItem('locale') !== null
             ? localStorage.getItem('locale') : 'en'].announcement;
     const [bounce, setBounce] = useState(false);
+    const [announcementId, setAnnouncementId] = useState(null);
     const [packages, setPackages] = useState([]);
     const [localizationFromModalOpened, setLocalizationFromModalOpened] = useState(false);
     const [localizationToModalOpened, setLocalizationToModalOpened] = useState(false);
     const [packageFormOpened, setPackageFormOpened] = useState(false);
     const [transportWithTheClient, setTransportWithTheClient] = useState(false);
+    const [validatedSalary, setValidatedSalary] = useState(true);
 
-    const [fromLatitude, setFromLatitude] = useState('');
-    const [fromLongitude, setFromLongitude] = useState('');
-    const [toLatitude, setToLatitude] = useState('');
-    const [toLongitude, setToLongitude] = useState('');
+    const [fromLatitude, setFromLatitude] = useState(null);
+    const [fromLongitude, setFromLongitude] = useState(null);
+    const [toLatitude, setToLatitude] = useState(null);
+    const [toLongitude, setToLongitude] = useState(null);
     const [amount, setAmount] = useState(null);
 
     const history = useHistory();
@@ -76,15 +78,16 @@ export const AnnouncementForm = (props) => {
     const sizeClasses = sizeComponents();
     const rwdClasses = rwdComponents();
     const listClasses = listComponents();
+    const validationClasses = validatedComponents();
     const bounceInAnimationStyles = useAnimationStyles(bounceInRight, ANIMATION_TIME);
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
-        validateEmptyString(fromLatitude) &&
-        validateEmptyString(fromLongitude) &&
-        validateEmptyString(toLatitude) &&
-        validateEmptyString(toLongitude) && packages.length > 0 ?
-        addNormalAnnouncement({
+        const isGeolocationValid = validateGeolocation(fromLatitude, fromLongitude, toLatitude, toLongitude);
+        const isPackagesValid = packages.length > 0;
+        const isSalaryValid = validateSalary(amount);
+        const data = {
+            id: announcementId,
             destinationFrom: {
                 longitude: fromLongitude,
                 latitude: fromLatitude
@@ -96,14 +99,33 @@ export const AnnouncementForm = (props) => {
             packages: packages,
             amount,
             requireTransportWithClient: transportWithTheClient,
-            // authorId: localStorage.getItem(USER_ID)
-        }).then(() => {
+        };
+        console.log(data);
+        isGeolocationValid && isPackagesValid && isSalaryValid ?
+        addNormalAnnouncement(data).then(() => {
             setBounce(true);
             setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
-        }).catch((error) => alert(error))
+        }).catch((error) => handleError(error))
             :
-            alert("ValidationError");
+            handleValidationError(isGeolocationValid, isPackagesValid, isSalaryValid);
     };
+
+    const handleValidationError = (isGeolocationValid, isPackagesValid, isSalaryValidated) => {
+        let message = '';
+        !isGeolocationValid && (message = message + "Wrong geolocation\n");
+        !isPackagesValid && (message = message + "No packages set\n");
+        !isSalaryValidated && (message = message + "Wrong salary value\n");
+        alert(message);
+    }
+
+    const validateGeolocation = (fromLatitude, fromLongitude, toLatitude, toLongitude) =>
+        validateEmptyString(fromLatitude) &&
+        validateEmptyString(fromLongitude) &&
+        validateEmptyString(toLatitude) &&
+        validateEmptyString(toLongitude) &&
+        !(fromLatitude === toLatitude && fromLongitude === toLongitude);
+
+    const validateSalary = salary => validateNumberFormat(salary);
 
     const addPackage = data => {
         packages.push(data);
@@ -124,6 +146,21 @@ export const AnnouncementForm = (props) => {
 
     useEffect(() => {
         handleItemAccessAttempt(history);
+        props.announcementId !== null && props.announcementId !== undefined &&
+            getAnnouncementById(props.announcementId)
+                .then(response => {
+                    const data = response.data;
+                    setAnnouncementId(data.id);
+                    setPackages(data.packages);
+                    setTransportWithTheClient(data.requireTransportWithClient)
+                    setFromLatitude(data.destinationFrom.latitude);
+                    setFromLongitude(data.destinationFrom.longitude);
+                    setToLatitude(data.destinationTo.latitude);
+                    setToLongitude(data.destinationTo.longitude);
+                    setAmount(data.amount);
+                })
+                .catch(error => handleError(error, history));
+
     }, []);
 
     return (
@@ -138,6 +175,8 @@ export const AnnouncementForm = (props) => {
                                 setModalOpened={setLocalizationFromModalOpened}
                                 setLongitude={setFromLongitude}
                                 setLatitude={setFromLatitude}
+                                latitude={fromLatitude}
+                                longitude={fromLongitude}
                             />
                         }
                         onClose={()=>setLocalizationFromModalOpened(!localizationFromModalOpened)}
@@ -149,6 +188,8 @@ export const AnnouncementForm = (props) => {
                             setModalOpened={setLocalizationToModalOpened}
                             setLongitude={setToLongitude}
                             setLatitude={setToLatitude}
+                            latitude={toLatitude}
+                            longitude={toLongitude}
                         />}
                         onClose={()=>setLocalizationToModalOpened(!localizationToModalOpened)}
                     />
@@ -168,7 +209,7 @@ export const AnnouncementForm = (props) => {
                             {announcementFormItems.destination.destinations}
                             <Button variant={'contained'} onClick={()=>setLocalizationFromModalOpened(true)}>
                                 {
-                                    fromLatitude !== '' && fromLongitude !== '' ?
+                                    fromLatitude !== null && fromLongitude !== null ?
                                     <CheckIcon className={classes.check}/>
                                     :
                                     <RoomIcon color={'secondary'}/>
@@ -178,7 +219,7 @@ export const AnnouncementForm = (props) => {
 
                             <Button variant={'contained'} onClick={()=>setLocalizationToModalOpened(true)}>
                                 {
-                                    toLatitude !== '' && toLongitude !== '' ?
+                                    toLatitude !== null && toLongitude !== null ?
                                         <CheckIcon className={classes.check}/>
                                         :
                                         <RoomIcon color={'secondary'}/>
@@ -219,7 +260,11 @@ export const AnnouncementForm = (props) => {
                             <TextField
                                 label={"salary"}
                                 value={amount}
-                                onChange={e => setAmount(e.target.value)}
+                                onChange={e => {
+                                    setAmount(e.target.value);
+                                    setTimeout(()=>setValidatedSalary(validateSalary(e.target.value)), 500);
+                                }}
+                                className={!validatedSalary && validationClasses.wrongTextField}
                             />
                             <Button variant={'contained'} onClick={()=>handleSubmit()}>
                                 {announcementFormItems.submit}

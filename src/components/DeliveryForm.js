@@ -15,12 +15,10 @@ import {ANIMATION_TIME} from "../data/consts";
 import {fadeInRight} from "react-animations";
 import {i18n} from "../data/i18n";
 import {
-    registerMessageDelivery,
     registerMessageNormal
-} from "../actions/restActions";
-import {PackagesForm} from "./PackagesForm";
+} from "../rest/restActions";
 
-export const CommissionForm = (props) => {
+export const DeliveryForm = (props) => {
     const history = useHistory();
 
     const announcementFormItems = i18n[
@@ -29,7 +27,6 @@ export const CommissionForm = (props) => {
             ? localStorage.getItem('locale') : 'en'].announcement;
     const [bounce, setBounce] = useState(false);
     const [message, setMessage] = useState('Hello! I can handle your delivery');
-    // const [packages, setPackages] = useState([]);
 
 
     const rwdClasses = rwdComponents();
@@ -44,9 +41,8 @@ export const CommissionForm = (props) => {
 
     const handleRegisterDelivery = () =>
         registerMessageNormal({
-            announcementId: props.params.announcementId,
-            // senderId: localStorage.getItem(USER_ID),
-            receiverId: props.params.authorId,
+            announcementId: props.match.params.announcementId,
+            receiverId: props.match.params.authorId,
             message
         }).then(response =>
             response.data ?

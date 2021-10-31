@@ -7,12 +7,11 @@ import {Home} from "./pages/Home";
 import {DeliveryPage} from "./pages/DeliveryPage";
 import {Profile} from "./pages/Profile";
 import {Messages} from "./pages/Messages";
-import {AddNormalAnnouncement} from "./pages/AddNormalAnnouncement";
+import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
+import {EditAnnouncement} from "./pages/EditAnnouncement";
 import {ErrorPage} from "./pages/ErrorPage";
-import {NormalCommission} from "./pages/NormalCommission";
+import {DeliveryForm} from "./components/DeliveryForm";
 import {Announcement} from "./components/Announcement";
-import {DeliveryCommission} from "./pages/DeliveryCommission";
-import {AnnouncementType} from "./pages/AnnouncementType";
 
 import wallpaper from './uploads/wallpaper.png';
 import {Test} from "./components/Test";
@@ -50,10 +49,9 @@ function App() {
               <Route path={'/home'} component={Home} locale={locale}/>
               <Route path={'/messages'} component={Messages} locale={locale}/>
               <Route path={'/test'} component={Test}/>
-              <Route path={'/commission/normal/:announcementId/:authorId'} component={NormalCommission} delivery={false}/>
-              <Route path={'/commission/delivery/:announcementId/:authorId'} component={DeliveryCommission} delivery={true}/>
-              <Route path={'/addAnnouncement/normal'} component={AddNormalAnnouncement} locale={locale}/>
-              <Route path={'/announcementType'} component={AnnouncementType} locale={locale}/>
+              <Route path={'/delivery/register/:announcementId/:authorId'} component={DeliveryForm} delivery={false}/>
+              <Route path={'/addAnnouncement/normal'} component={RegisterAnnouncement} locale={locale}/>
+              <Route path={'/editAnnouncement/:announcementId'} component={EditAnnouncement} locale={locale}/>
               <Route path={'/delivery'} component={DeliveryPage} locale={locale}/>
               <Route path={'/profile/:userId'} component={Profile} />
               <Route path={'/profile'} component={Profile} />

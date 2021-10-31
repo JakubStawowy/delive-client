@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, makeStyles, MenuItem, Select} from "@material-ui/core";
 import {flexComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
@@ -9,9 +9,8 @@ import {useAnimationStyles} from "../style/animation";
 import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
-import {logoutUser} from "../actions/restActions";
-// import {USER_ID} from "../consts/applicationConsts";
-import AddIcon from "@material-ui/icons/Add";
+import {logoutUser} from "../rest/restActions";
+import {handleError} from "../actions/handlers";
 
 export const Menu = (props) => {
 
@@ -48,7 +47,7 @@ export const Menu = (props) => {
             localStorage.clear();
             history.push("/login");
             closeMenu();
-        }).catch((error) => alert(error));
+        }).catch((error) => handleError(error, history));
     }
 
     const handleNav = url => {

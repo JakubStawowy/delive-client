@@ -7,7 +7,7 @@ import {bounceInRight, bounceOutLeft} from "react-animations";
 import {ANIMATION_TIME} from "../data/consts";
 import {StyleRoot} from "radium";
 import {useState} from "react";
-import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../actions/restActions";
+import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../rest/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
@@ -70,16 +70,13 @@ export const LoginRegister = () => {
     }
 
     const handleLoginSubmit = (event) => {
-
         event.preventDefault();
         loginUser({
             email: loginEmail,
             password: loginPassword
         }).then((response)=> {
-
             if (response.data.operationSuccess) {
                 localStorage.setItem(TOKEN, response.data.token);
-                // localStorage.setItem(USER_ID, response.data.userId);
                 localStorage.setItem(ROLE, response.data.role);
 
                 history.push('/home');
@@ -129,7 +126,7 @@ export const LoginRegister = () => {
                                 setTimeout(()=>setValidatedEmail(validateEmail(e.target.value)), 500);
                                 checkIfEmailExists(e.target.value).then((response)=> {
                                     setEmailExists(response.data);
-                                }).catch((error)=>alert(error));
+                                }).catch((error)=>handleError(error));
                             }}
                             className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
                             />

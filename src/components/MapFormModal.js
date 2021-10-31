@@ -54,15 +54,25 @@ export const MapFormModal = (props) => {
     }
 
     useEffect(()=>{
-        navigator.geolocation.getCurrentPosition(position => {
+        props.longitude !== null && props.latitude !== null ?
+
             setViewport({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
+                latitude: props.latitude,
+                longitude: props.longitude,
                 width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
                 height: '80vh',
                 zoom: 15,
-            });
-        }, ()=>handleLocationError());
+            })
+            :
+            navigator.geolocation.getCurrentPosition(position => {
+                setViewport({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
+                    height: '80vh',
+                    zoom: 15,
+                });
+            }, ()=>handleLocationError());
     }, []);
 
     const handleConfirm = () => {
@@ -93,7 +103,7 @@ export const MapFormModal = (props) => {
                                 mapStyle={'mapbox://styles/mapbox/streets-v11'}
                             >
                                 {
-                                    props.coordinates === undefined && props.longitude === undefined &&
+                                    props.coordinates === undefined && /*props.longitude === undefined &&*/
                                         <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
                                             <RoomIcon fontSize={'large'} className={classes.pin}/>
                                         </Marker>

@@ -1,7 +1,7 @@
-import {Card, makeStyles, Typography} from "@material-ui/core";
+import {Card, makeStyles} from "@material-ui/core";
 import {flexComponents, paddingComponents} from "../style/components";
 import {useEffect, useState} from "react";
-import {getReverseGeocode} from "../actions/restActions";
+import {getReverseGeocode} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {BounceLoader} from "react-spinners";

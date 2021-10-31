@@ -6,7 +6,7 @@ import {FeedbackListItem} from "../components/FeedbackListItem";
 import {handleError} from "../actions/handlers";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
-import {loadFeedback, loadLoggedUser, loadUser} from "../actions/restActions";
+import {loadFeedback, loadLoggedUser, loadUser} from "../rest/restActions";
 // import {USER_ID} from "../consts/applicationConsts";
 
 export const Profile = props => {

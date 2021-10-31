@@ -4,7 +4,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import {makeStyles} from "@material-ui/core";
 import {useEffect, useState} from "react";
 import {XS_MEDIA_QUERY} from "../data/consts";
-import {getHalfwayPoint} from "../actions/restActions";
+import {getHalfwayPoint} from "../rest/restActions";
 
 export const MapItem = (props) => {
 

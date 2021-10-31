@@ -2,11 +2,9 @@ import {StyleRoot} from "radium";
 
 import React, {useEffect, useState} from "react";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {Button, Card, List, Modal, Typography} from "@material-ui/core";
-import {MapFormModal} from "./MapFormModal";
-import {getAnnouncementById, getLoggedUserId} from "../actions/restActions";
+import {Button, Card, List, makeStyles, Modal, TextField} from "@material-ui/core";
+import {getAnnouncementById, getLoggedUserId, deleteAnnouncement} from "../rest/restActions";
 import {useHistory} from "react-router";
-import {PackagesModal} from "./PackagesModal";
 import {ANIMATION_TIME} from "../data/consts";
 import {LocationDetails} from "./LocationDetails";
 import {ModalTemplate} from "../templates/ModalTemplate";
@@ -21,7 +19,15 @@ export const Announcement = (props) => {
     const [currentLocationLongitude, setCurrentLocationLongitude] = useState(null);
     const [currentLocationLatitude, setCurrentLocationLatitude] = useState(null);
     const [loggedUserId, setLoggedUserId] = useState(null);
+    const [isToRemove, setIsToRemove] = useState(false);
+    const [confirmDeleteLabel, setConfirmDeleteLabel] = useState('');
 
+    const useClasses = makeStyles(((theme) => ({
+        listItem: {
+            margin: '2em'
+        }
+    })));
+    const classes = useClasses();
     const history = useHistory();
     const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
@@ -29,16 +35,16 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const listClasses = listComponents();
 
-    const navToCommissionForm = type => {
-        setTimeout(() => history.push('/commission/' + type), ANIMATION_TIME / 2);
-    }
-
-    const handleRegisterCommission = () => navToCommissionForm(
-        // announcement.date !== null ?
-        //     'delivery/' + announcement.id + '/' + announcement.authorId :
-        'normal/' + announcement.id + '/' + announcement.authorId);
+    const handleRegisterCommission = () => setTimeout(() => history.push('/delivery/register/' + announcement.id + '/' + announcement.authorId),  ANIMATION_TIME / 2);
 
     const handleOpenProfile = userId => history.push('/profile/' + userId);
+
+    const handleDeleteAnnouncement = announcementId => {
+        deleteAnnouncement(announcementId).then(() => {
+            alert("Announcement removed successfully");
+            history.push('/home');
+        }).catch(error => handleError(error, history));
+    }
 
     useEffect(() => {
         getLoggedUserId().then(response => setLoggedUserId(response.data)).catch(error => handleError(error, history));
@@ -88,8 +94,8 @@ export const Announcement = (props) => {
                         <List className={`${listClasses.verticalList} 
                         ${flexClasses.flexColumnSpaceBetween}`}>
                             {
-                                loggedUserId === announcement.authorId ?
-                                <div>
+                                loggedUserId !== announcement.authorId ?
+                                <div className={classes.listItem}>
                                     <Button variant={"contained"} onClick={() => handleRegisterCommission()}>
                                         Send request
                                     </Button>
@@ -98,21 +104,50 @@ export const Announcement = (props) => {
                                     </Button>
                                 </div>
                                     :
-                                    // TODO
-                                    <Button variant={"contained"}>
-                                        Edit
-                                    </Button>
+                                <div className={classes.listItem}>
+                                    {
+                                        !isToRemove ?
+                                            <div>
+                                                <Button variant={"contained"} onClick={() => history.push('/editAnnouncement/' + announcement.id)}>
+                                                    Edit
+                                                </Button>
+                                                <Button variant={"contained"} onClick={() => setIsToRemove(true)}>
+                                                    Remove
+                                                </Button>
+                                            </div>
+                                        :
+                                            <div className={flexClasses.flexColumnSpaceBetween}>
+                                                Type REMOVE and confirm to remove announcement:
+                                                <div className={flexClasses.flexRowSpaceBetween}>
+                                                    <TextField
+                                                        label={"REMOVE"}
+                                                        value={confirmDeleteLabel}
+                                                        onChange={e => setConfirmDeleteLabel(e.target.value)}
+                                                    />
+                                                    <Button
+                                                        variant={"contained"}
+                                                        disabled={confirmDeleteLabel !== "REMOVE"}
+                                                        onClick={() => handleDeleteAnnouncement(announcement.id)}>
+                                                        confirm
+                                                    </Button>
+                                                    <Button variant={"contained"} onClick={() => setIsToRemove(false)}>
+                                                        cancel
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                    }
+                                </div>
                             }
                             {
                                 announcement.packages.length !== 0 &&
-                                <div>
+                                <div className={classes.listItem}>
                                     Packages to delivery
                                     <PackagesList
                                         packages={announcement.packages}
                                     />
                                 </div>
                             }
-                            <div>
+                            <div className={classes.listItem}>
                                 <Button variant={"contained"} onClick={() => openLocationFromDetails()}>
                                     location from details
                                 </Button>
@@ -120,7 +155,7 @@ export const Announcement = (props) => {
                                     location to details
                                 </Button>
                             </div>
-                            <div>
+                            <div className={classes.listItem}>
                                 Destinations
                                 <MapItem
                                     coordinates={

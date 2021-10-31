@@ -1,5 +1,5 @@
 import {Button, Card, ListItem, makeStyles, Modal, TableRow} from "@material-ui/core";
-import {replyMessage} from "../actions/restActions";
+import {replyMessage} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 // import {USER_ID} from "../consts/applicationConsts";

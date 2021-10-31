@@ -7,9 +7,9 @@ import {StyleRoot} from "radium";
 import {fadeInDown, fadeIn, fadeOutLeft} from "react-animations";
 import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
-import {handleItemAccessAttempt} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {useHistory} from "react-router";
-import {getNormalAnnouncements} from "../actions/restActions";
+import {getNormalAnnouncements} from "../rest/restActions";
 import LoopIcon from "@material-ui/icons/Loop";
 
 export const Home = () => {
@@ -40,7 +40,7 @@ export const Home = () => {
     }, []);
 
     const loadAnnouncements = () => {
-        getNormalAnnouncements().then(response => setAnnouncements(response.data)).catch((error) => alert(error));
+        getNormalAnnouncements().then(response => setAnnouncements(response.data)).catch((error) => handleError(error, history));
     }
 
     const navToCommissionForm = type => {

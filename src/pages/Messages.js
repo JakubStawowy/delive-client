@@ -6,13 +6,13 @@ import {StyleRoot} from "radium";
 import {fadeInDown, fadeIn, fadeOutLeft} from "react-animations";
 import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
-import {handleItemAccessAttempt} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {useHistory} from "react-router";
 import LoopIcon from '@material-ui/icons/Loop';
 import {
     getMessagesReceived,
     getMessagesSent
-} from "../actions/restActions";
+} from "../rest/restActions";
 import {MessageListItem} from "../components/MessageListItem";
 
 export const Messages = () => {
@@ -54,12 +54,12 @@ export const Messages = () => {
         getMessagesSent().then(response => {
             setMessagesSent(response.data);
             console.log(response.data);
-        }).catch((error) => alert(error));
+        }).catch((error) => handleError(error, history));
 
         getMessagesReceived().then(response => {
             setMessagesReceived(response.data);
             console.log(response.data);
-        }).catch((error) => alert(error));
+        }).catch((error) => handleError(error, history));
     }
 
     const refresh = () => {

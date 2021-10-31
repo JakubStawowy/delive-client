@@ -2,7 +2,7 @@ import {Button, Card, makeStyles, Modal, TableCell, TableRow} from "@material-ui
 import {flexComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import {WAITING} from "../consts/applicationConsts";
-import {changeDeliveryState, getNextActionName} from "../actions/restActions";
+import {changeDeliveryState, getNextActionName} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {ModalTemplate} from "../templates/ModalTemplate";
@@ -36,7 +36,7 @@ export const DeliveryTableRow = (props) => {
 
         if (actionName === 'finish') {
             navigator.geolocation.getCurrentPosition(position => {
-                changeDeliveryState(actionName, props.delivery.id, position.coords.longitude, position.coords.latitude)
+                changeDeliveryState(actionName, props.delivery.id, position.coords.latitude, position.coords.longitude)
                     .then(() => {
                         alert("Delivery state changed __");
                         props.refresh();

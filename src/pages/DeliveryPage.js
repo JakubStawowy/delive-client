@@ -13,17 +13,19 @@ import {
 } from "@material-ui/core";
 import {useEffect, useState} from "react";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {loadDeliveriesByDeliverer, loadDeliveriesByPrincipal} from "../actions/restActions";
+import {loadDeliveriesByDeliverer, loadDeliveriesByPrincipal} from "../rest/restActions";
 // import {USER_ID} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
 import {DeliveryTableRow} from "../components/DeliveryTableRow";
 import {useHistory} from "react-router";
+import LoopIcon from "@material-ui/icons/Loop";
+import {BounceLoader} from "react-spinners";
 
 export const DeliveryPage = (props) => {
 
-    const [deliveries, setDeliveries] = useState([]);
+    const [deliveries, setDeliveries] = useState(null);
+    const [userDeliveries, setUserDeliveries] = useState(null);
     const [deliveryFlag, setDeliveryFlag] = useState(true);
-    const [userDeliveries, setUserDeliveries] = useState([]);
     const history = useHistory();
     const useClasses = makeStyles((theme) => ({
         tableHead: {
@@ -76,8 +78,8 @@ export const DeliveryPage = (props) => {
     }
 
     const refresh = () => {
-        setUserDeliveries([]);
-        setDeliveries([]);
+        setUserDeliveries(null);
+        setDeliveries(null);
         loadDeliveries();
     }
 
@@ -91,44 +93,55 @@ export const DeliveryPage = (props) => {
                     <Button onClick={()=>setDeliveryFlag(false)} className={!deliveryFlag && classes.selected}>
                         Realized by user
                     </Button>
+                    <Button onClick={() => refresh()}>
+                        <LoopIcon />
+                    </Button>
                 </Tabs>
-                <TableContainer component={Card} className={`${classes.container}`}>
-                    <Table className={classes.table}>
-                        <TableHead className={classes.tableHead}>
-                            <TableRow>
-                                <TableCell align={"center"}>announcement</TableCell>
-                                <TableCell align={"center"}>registered at</TableCell>
-                                <TableCell align={"center"}>packages</TableCell>
-                                <TableCell align={"center"}>from</TableCell>
-                                <TableCell align={"center"}>to</TableCell>
-                                <TableCell align={"center"}>state</TableCell>
-                                <TableCell align={"center"}>action</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                deliveryFlag ?
-                                    userDeliveries.map(delivery => {
-                                        return (
-                                            <DeliveryTableRow
-                                                delivery={delivery}
-                                                refresh={refresh}
-                                            />
-                                        );
-                                    })
-                                    :
-                                    deliveries.map(delivery => {
-                                        return (
-                                            <DeliveryTableRow
-                                                delivery={delivery}
-                                                refresh={refresh}
-                                            />
-                                        );
-                                    })
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {
+                    deliveries === null || userDeliveries === null ?
+                        <BounceLoader
+                            loading
+                            color={'red'}
+                        />
+                        :
+                        <TableContainer component={Card} className={`${classes.container}`}>
+                            <Table className={classes.table}>
+                                <TableHead className={classes.tableHead}>
+                                    <TableRow>
+                                        <TableCell align={"center"}>announcement</TableCell>
+                                        <TableCell align={"center"}>registered at</TableCell>
+                                        <TableCell align={"center"}>packages</TableCell>
+                                        <TableCell align={"center"}>from</TableCell>
+                                        <TableCell align={"center"}>to</TableCell>
+                                        <TableCell align={"center"}>state</TableCell>
+                                        <TableCell align={"center"}>action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        deliveryFlag ?
+                                            userDeliveries.map(delivery => {
+                                                return (
+                                                    <DeliveryTableRow
+                                                        delivery={delivery}
+                                                        refresh={refresh}
+                                                    />
+                                                );
+                                            })
+                                            :
+                                            deliveries.map(delivery => {
+                                                return (
+                                                    <DeliveryTableRow
+                                                        delivery={delivery}
+                                                        refresh={refresh}
+                                                    />
+                                                );
+                                            })
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                }
             </Card>
         </div>
     )
