@@ -1,8 +1,9 @@
 import {ROLE, TOKEN} from "../consts/applicationConsts";
 
 
-const logout = (history) => {
+const logout = (history, setLogged) => {
     localStorage.clear();
+    setLogged(false);
     history.push('/login');
 }
 
@@ -12,7 +13,7 @@ export const handleItemAccessAttempt = history => {
 
 export const isLogged = () => localStorage.getItem(TOKEN) !== null && localStorage.getItem(ROLE) !== null;
 
-export const handleError = (error, history) => {
+export const handleError = (error, history, setLogged) => {
     if(error.response) {
         if (error.response.status === 500) {
             alert("Server error");
@@ -22,6 +23,6 @@ export const handleError = (error, history) => {
         }
         else alert(error);
     }
-    else alert(error);
-    logout(history);
+    else alert("Error occured");
+    logout(history, setLogged);
 }

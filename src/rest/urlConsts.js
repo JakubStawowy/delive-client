@@ -41,6 +41,7 @@ export const FINISH_DELIVERY_URL = BASE_API_URL + '/delivery/finish?' + DELIVERY
 export const LOAD_USER_URL = BASE_API_URL + '/users/details?' + USER_ID + '=' + PARAM_USER_ID;
 export const LOAD_LOGGED_USER_URL = BASE_API_URL + '/users/details/loggedUser';
 export const LOAD_FEEDBACK_URL = BASE_API_URL + '/feedback/user?' + USER_ID + '=' + PARAM_USER_ID;
+export const SEND_FEEDBACK_URL = BASE_API_URL + '/feedback/add';
 export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
 export const GET_REVERSE_GEOCODE_URL = BASE_API_URL + '/geocode/reverse?longitude=:longitude&latitude=:latitude';
 export const GET_NEXT_ACTION_NAME_URL = BASE_API_URL + '/delivery/actionName?deliveryState=:deliveryState&announcementAuthorId=:announcementAuthorId&delivererId=:delivererId';

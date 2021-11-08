@@ -5,6 +5,7 @@ export const EditAnnouncement = (props) => {
         <AnnouncementForm
             announcementId={props.match.params.announcementId}
             edit={true}
+            setLogged={props.setLogged}
         />
     )
 }

@@ -12,7 +12,7 @@ import {useHistory} from "react-router";
 import {getNormalAnnouncements} from "../rest/restActions";
 import LoopIcon from "@material-ui/icons/Loop";
 
-export const Home = () => {
+export const Home = (props) => {
 
     const [announcements, setAnnouncements] = useState([]);
     const [bounce, setBounce] = useState(false);
@@ -40,7 +40,8 @@ export const Home = () => {
     }, []);
 
     const loadAnnouncements = () => {
-        getNormalAnnouncements().then(response => setAnnouncements(response.data)).catch((error) => handleError(error, history));
+        getNormalAnnouncements().then(response => setAnnouncements(response.data))
+            .catch((error) => handleError(error, history, props.setLogged));
     }
 
     const navToCommissionForm = type => {

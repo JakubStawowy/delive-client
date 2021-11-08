@@ -22,7 +22,7 @@ import {
     LOGOUT_USER_URL,
     REGISTER_MESSAGE_NORMAL_URL,
     REGISTER_USER_URL,
-    REPLY_MESSAGE_URL,
+    REPLY_MESSAGE_URL, SEND_FEEDBACK_URL,
     VALIDATE_EMAIL_URL,
     VALIDATE_NICKNAME_URL
 } from "./urlConsts";
@@ -77,6 +77,7 @@ export const finishDelivery = (deliveryId, clientLongitude, clientLatitude) => a
 export const loadUser = userId => axios.get(LOAD_USER_URL.replace(PARAM_USER_ID, userId), getConfig());
 export const loadLoggedUser = () => axios.get(LOAD_LOGGED_USER_URL, getConfig());
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(PARAM_USER_ID, userId), getConfig());
+export const sendFeedback = data => axios.post(SEND_FEEDBACK_URL, data, getConfig());
 export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
 export const getReverseGeocode = (longitude, latitude) => axios.get(GET_REVERSE_GEOCODE_URL
     .replace(":longitude", longitude).replace(":latitude", latitude), getConfig());

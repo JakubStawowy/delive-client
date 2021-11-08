@@ -1,6 +1,6 @@
 import {Button, Card, List, makeStyles} from "@material-ui/core";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BounceLoader} from "react-spinners";
 import {StyleRoot} from "radium";
 import {fadeInDown, fadeIn, fadeOutLeft} from "react-animations";
@@ -14,8 +14,9 @@ import {
     getMessagesSent
 } from "../rest/restActions";
 import {MessageListItem} from "../components/MessageListItem";
+import {LocationDetails} from "../components/LocationDetails";
 
-export const Messages = () => {
+export const Messages = (props) => {
 
     const [messagesSent, setMessagesSent] = useState(null);
     const [messagesReceived, setMessagesReceived] = useState(null);
@@ -54,12 +55,12 @@ export const Messages = () => {
         getMessagesSent().then(response => {
             setMessagesSent(response.data);
             console.log(response.data);
-        }).catch((error) => handleError(error, history));
+        }).catch((error) => handleError(error, history, props.setLogged));
 
         getMessagesReceived().then(response => {
             setMessagesReceived(response.data);
             console.log(response.data);
-        }).catch((error) => handleError(error, history));
+        }).catch((error) => handleError(error, history, props.setLogged));
     }
 
     const refresh = () => {
@@ -102,6 +103,7 @@ export const Messages = () => {
                                                         <MessageListItem
                                                             message={message}
                                                             received={false}
+                                                            setLogged={props.setLogged}
                                                         />
                                                     )
                                                 })
@@ -118,6 +120,7 @@ export const Messages = () => {
                                                         message={message}
                                                         received={true}
                                                         refresh={refresh}
+                                                        setLogged={props.setLogged}
                                                     />
                                                 )
                                             })

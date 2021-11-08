@@ -2,7 +2,7 @@ import {useHistory} from "react-router";
 import {useEffect, useState} from "react";
 import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {StyleRoot} from "radium";
-import {Button, Card, TextareaAutosize, Typography} from "@material-ui/core";
+import {Button, Card, makeStyles, TextareaAutosize, Typography} from "@material-ui/core";
 import {
     flexComponents,
     paddingComponents,
@@ -25,10 +25,15 @@ export const DeliveryForm = (props) => {
         localStorage.getItem('locale') !== undefined
         && localStorage.getItem('locale') !== null
             ? localStorage.getItem('locale') : 'en'].announcement;
-    const [bounce, setBounce] = useState(false);
     const [message, setMessage] = useState('Hello! I can handle your delivery');
 
-
+    const useClasses = makeStyles(((theme) => ({
+        messageField: {
+            width: '30vw',
+            marginBottom: '2em'
+        }
+    })));
+    const classes = useClasses();
     const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
     const sizeClasses = sizeComponents();
@@ -41,36 +46,36 @@ export const DeliveryForm = (props) => {
 
     const handleRegisterDelivery = () =>
         registerMessageNormal({
-            announcementId: props.match.params.announcementId,
-            receiverId: props.match.params.authorId,
+            announcementId: props.announcementId,
+            receiverId: props.authorId,
             message
         }).then(response =>
             response.data ?
             setTimeout(() => {
-                history.push('/history');
+                alert('Delivery request sent');
+                props.setDeliveryModalOpened(false);
             }, ANIMATION_TIME / 2)
                 :
                 alert("You are already assigned to delivery")
-        ).catch((error) => handleError(error, history));
+        ).catch((error) => handleError(error, history, props.setLogged));
 
 
     return (
-        <StyleRoot>
-            <div style={fadeInClasses.animation} className={`${flexClasses.flexRowCenter} ${sizeClasses.bodyHeight}`}>
-                <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium}`}>
-                    <Typography className={flexClasses.flexRowSpaceBetween}>
-                        <div>
-                            <TextareaAutosize className={paddingClasses.paddingSmall} value={message} onChange={(e)=>setMessage(e.target.value)}/>
-                        </div>
-                        <Button
-                            onClick={()=>handleRegisterDelivery()}
-                            variant={"contained"}
-                        >
-                            Send message
-                        </Button>
-                    </Typography>
-                </Card>
-            </div>
-        </StyleRoot>
+        <Card className={`${paddingClasses.paddingMedium}`}>
+            <Typography className={flexClasses.flexColumnSpaceBetween}>
+                <div>
+                    <TextareaAutosize
+                        className={`${paddingClasses.paddingSmall} ${classes.messageField}`}
+                        value={message}
+                        onChange={(e)=>setMessage(e.target.value)}/>
+                </div>
+                <Button
+                    onClick={()=>handleRegisterDelivery()}
+                    variant={"contained"}
+                >
+                    Send message
+                </Button>
+            </Typography>
+        </Card>
     );
 }

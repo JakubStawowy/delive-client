@@ -7,11 +7,11 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 export const PackageForm = (props) => {
 
-    const [packageLength, setPackageLength] = useState('');
+    const [packageLength, setPackageLength] = useState(null);
     const [packageLengthValidated, setPackageLengthValidated] = useState(true);
-    const [packageWidth, setPackageWidth] = useState('');
+    const [packageWidth, setPackageWidth] = useState(null);
     const [packageWidthValidated, setPackageWidthValidated] = useState(true);
-    const [packageHeight, setPackageHeight] = useState('');
+    const [packageHeight, setPackageHeight] = useState(null);
     const [packageHeightValidated, setPackageHeightValidated] = useState(true);
 
     const useStyles = makeStyles((()=>({
@@ -37,7 +37,9 @@ export const PackageForm = (props) => {
     }
 
     const handleConfirm = () => {
-        packageLengthValidated && packageWidthValidated && packageHeightValidated ?
+        packageLengthValidated && packageLength !== null &&
+        packageWidthValidated && packageWidth !== null &&
+        packageHeightValidated && packageHeight !== null ?
             props.addPackage({
                 id: props.packagesLength,
                 packageLength,

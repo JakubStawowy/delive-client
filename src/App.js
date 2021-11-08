@@ -22,8 +22,9 @@ function App() {
 
     const [locale, setLocale] = useState(
         localStorage.getItem('locale') !== undefined && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'
+            ? localStorage.getItem('locale') : 'pl'
     );
+    const [logged, setLogged] = useState(isLogged())
 
     const useStyles = makeStyles(({
         container: {
@@ -41,21 +42,26 @@ function App() {
 
     return (
         <BrowserRouter className={classes.container}>
-          <Menu locale={locale} action={setLocale}/>
+          <Menu locale={locale} action={setLocale}
+                logged={logged} setLogged={setLogged}/>
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
-              <Route path={'/error/:code'} component={ErrorPage}/>
-              <Route path={'/login'} component={LoginRegister} locale={locale} />
-              <Route path={'/home'} component={Home} locale={locale}/>
-              <Route path={'/messages'} component={Messages} locale={locale}/>
+              <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
+              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
+              <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
               <Route path={'/test'} component={Test}/>
-              <Route path={'/delivery/register/:announcementId/:authorId'} component={DeliveryForm} delivery={false}/>
-              <Route path={'/addAnnouncement/normal'} component={RegisterAnnouncement} locale={locale}/>
-              <Route path={'/editAnnouncement/:announcementId'} component={EditAnnouncement} locale={locale}/>
-              <Route path={'/delivery'} component={DeliveryPage} locale={locale}/>
-              <Route path={'/profile/:userId'} component={Profile} />
-              <Route path={'/profile'} component={Profile} />
-              <Route path={'/announcement/:announcementId'} component={Announcement} />
+              <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>
+              <Route path={'/editAnnouncement/:announcementId'}
+                     component={EditAnnouncement}
+                     render={()=><EditAnnouncement setLogged={setLogged()}/>}/>
+              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
+              <Route path={'/profile/:userId'}
+                     component={Profile}
+                     render={()=><Profile setLogged={setLogged}/>} />
+              <Route path={'/profile'} component={Profile} render={()=><Profile setLogged={setLogged}/>} />
+              <Route path={'/announcement/:announcementId'}
+                     component={Announcement}
+                     render={()=><Announcement setLogged={setLogged}/>} />
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
               </Route>

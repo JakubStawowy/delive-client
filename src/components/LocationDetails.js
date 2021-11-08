@@ -39,7 +39,7 @@ export const LocationDetails = props => {
                 }
                 setKeys(kys)
             })
-            .catch(error => handleError(error, history));
+            .catch(error => handleError(error, history, props.setLogged));
     }, []);
 
     return (

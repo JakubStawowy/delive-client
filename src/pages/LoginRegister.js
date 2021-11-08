@@ -12,7 +12,7 @@ import {validateConfirmedPassword, validateEmail, validatePassword} from "../act
 import {ROLE, TOKEN} from "../consts/applicationConsts";
 import {handleError} from "../actions/handlers";
 
-export const LoginRegister = () => {
+export const LoginRegister = (props) => {
 
     const loginItems = i18n[
         localStorage.getItem('locale') !== undefined
@@ -63,7 +63,8 @@ export const LoginRegister = () => {
             surname: null,
             phone: null,
             image: 'no-image'
-        }).then((response) => alert(response.data.message)).catch(error => handleError(error, history))
+        }).then((response) => alert(response.data.message))
+            .catch(error => handleError(error, history, props.setLogged))
             :
             alert("Nope")
 
@@ -78,13 +79,13 @@ export const LoginRegister = () => {
             if (response.data.operationSuccess) {
                 localStorage.setItem(TOKEN, response.data.token);
                 localStorage.setItem(ROLE, response.data.role);
-
+                props.setLogged(true);
                 history.push('/home');
             }
             else {
                 alert(response.data.message);
             }
-        }).catch((error) => handleError(error, history));
+        }).catch((error) => handleError(error, history, props.setLogged));
     }
 
     return (
@@ -121,12 +122,15 @@ export const LoginRegister = () => {
                             {registerItems.label}
                         </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
+                            <TextField label={'username'}/>
+                            <TextField label={'surname'}/>
+                            <TextField label={'phone'}/>
                             <TextField label={registerItems.email} value={registeredEmail} onChange={e=> {
                                 setRegisteredEmail(e.target.value);
                                 setTimeout(()=>setValidatedEmail(validateEmail(e.target.value)), 500);
                                 checkIfEmailExists(e.target.value).then((response)=> {
                                     setEmailExists(response.data);
-                                }).catch((error)=>handleError(error));
+                                }).catch((error)=>handleError(error, history, props.setLogged));
                             }}
                             className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
                             />

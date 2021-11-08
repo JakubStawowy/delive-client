@@ -103,7 +103,7 @@ export const MapFormModal = (props) => {
                                 mapStyle={'mapbox://styles/mapbox/streets-v11'}
                             >
                                 {
-                                    props.coordinates === undefined && /*props.longitude === undefined &&*/
+                                    props.coordinates === undefined &&
                                         <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
                                             <RoomIcon fontSize={'large'} className={classes.pin}/>
                                         </Marker>

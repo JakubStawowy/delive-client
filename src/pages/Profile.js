@@ -44,19 +44,19 @@ export const Profile = props => {
             setUserId(uid);
             loadUser(uid).then(response => {
                 setUserData(response.data);
-            }).catch((error) => handleError(error, history));
+            }).catch((error) => handleError(error, history, props.setLogged));
 
             loadFeedback(uid).then(
                 response => setFeedback(response.data)
-            ).catch((error) => handleError(error, history));
+            ).catch((error) => handleError(error, history, props.setLogged));
         }
         else {
             loadLoggedUser().then(response => {
                 setUserData(response.data);
                 loadFeedback(response.data.id).then(
                     response => setFeedback(response.data)
-                ).catch((error) => handleError(error, history));
-            }).catch((error) => handleError(error, history));
+                ).catch((error) => handleError(error, history, props.setLogged));
+            }).catch((error) => handleError(error, history, props.setLogged));
         }
     }, []);
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, makeStyles, MenuItem, Select} from "@material-ui/core";
+import {Button, makeStyles, MenuItem, Select, Typography} from "@material-ui/core";
 import {flexComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
 import logo from "../uploads/menu-logo.png";
@@ -33,6 +33,11 @@ export const Menu = (props) => {
         },
         select: {
 
+        },
+        logoText: {
+            fontSize: '2em',
+            color: 'white',
+            cursor: 'pointer'
         }
     }));
     const classes = useStyles();
@@ -45,9 +50,10 @@ export const Menu = (props) => {
     const handleLogout = () => {
         logoutUser().then(() => {
             localStorage.clear();
+            props.setLogged(false);
             history.push("/login");
             closeMenu();
-        }).catch((error) => handleError(error, history));
+        }).catch((error) => handleError(error, history, props.setLogged));
     }
 
     const handleNav = url => {
@@ -70,9 +76,15 @@ export const Menu = (props) => {
     return (
         <StyleRoot>
             <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
-                <img src={logo} alt={''} className={classes.logo} onClick={()=>handleNav('/home')}/>
                 <div
-                    className={`${rwd.menu} ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
+                    className={classes.logoText}
+                    onClick={()=>handleNav('/home')}>
+                    Delive
+                </div>
+                {/*<img src={logo} alt={''} className={classes.logo}/>*/}
+                <div
+                    className={`${rwd.menu}
+                     ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
                     style={menuAnimated
                         ?
                         (window.matchMedia(SM_MEDIA_QUERY).matches
@@ -81,25 +93,42 @@ export const Menu = (props) => {
                         (window.matchMedia(SM_MEDIA_QUERY).matches
                             ? fadeOutAnimationStyles.animation : null)}
                 >
-                    <Button variant={'contained'} onClick={()=>handleNav('/addAnnouncement/normal')}>
-                        {menuStatements.newOffer}
-                    </Button>
-                    <Button variant={'contained'} onClick={()=>handleNav('/home')}>
-                        {menuStatements.allOffers}
-                    </Button>
-                    <Button variant={'contained'} onClick={()=>handleNav('/messages')}>
-                        Messages
-                    </Button>
-                    <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
-                        Delivery
-                    </Button>
-                    {/*<Button variant={'contained'} onClick={()=>handleNav('/profile/' + localStorage.getItem(USER_ID))}>*/}
-                    <Button variant={'contained'} onClick={()=>handleNav('/profile')}>
-                        Profile
-                    </Button>
-                    <Button variant={'contained'} onClick={()=>handleLogout()} >
-                        {menuStatements.login}
-                    </Button>
+                    {
+                        props.logged &&
+                        <Button variant={'contained'} onClick={() => handleNav('/addAnnouncement/normal')}>
+                            {menuStatements.newOffer}
+                        </Button>
+                    }
+                    {/*{*/}
+                    {/*    props.logged &&*/}
+                    {/*    <Button variant={'contained'} onClick={()=>handleNav('/home')}>*/}
+                    {/*        {menuStatements.allOffers}*/}
+                    {/*    </Button>*/}
+                    {/*}*/}
+                    {
+                        props.logged &&
+                        <Button variant={'contained'} onClick={()=>handleNav('/messages')}>
+                            Messages
+                        </Button>
+                    }
+                    {
+                        props.logged &&
+                        <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
+                            Delivery
+                        </Button>
+                    }
+                    {
+                        props.logged &&
+                        <Button variant={'contained'} onClick={()=>handleNav('/profile')}>
+                            Profile
+                        </Button>
+                    }
+                    {
+                        props.logged &&
+                        <Button variant={'contained'} onClick={()=>handleLogout()} >
+                            {menuStatements.login}
+                        </Button>
+                    }
                     <Select
                         onChange={(e)=>handleChangeLocale(e)}
                         className={`${classes.select}`}

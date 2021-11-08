@@ -40,21 +40,29 @@ export const DeliveryTableRow = (props) => {
                     .then(() => {
                         alert("Delivery state changed __");
                         props.refresh();
-                    }).catch(error => handleError(error, history));
-            }, ()=>alert('Problems with geolocation occurred'));
+                    }).catch(error => handleError(error, history, props.setLogged));
+            }, ()=> {
+                alert('Problems with geolocation occurred');
+                changeDeliveryState(actionName, props.delivery.id, 0, 0)
+                    .then(() => {
+                        alert("Delivery state changed __");
+                        props.refresh();
+                    }).catch(error => handleError(error, history, props.setLogged));
+            });
         } else {
             changeDeliveryState(actionName, props.delivery.id)
                 .then(() => {
                     alert("Delivery state changed");
                     props.refresh();
-                }).catch(error => handleError(error, history));
+                }).catch(error => handleError(error, history, props.setLogged));
         }
     }
 
     useEffect(() => {
         getNextActionName(props.delivery.deliveryState,
             props.delivery.announcement.authorId,
-            props.delivery.delivererId).then(response => setActionNames(response.data)).catch(error => handleError(error, history));
+            props.delivery.delivererId).then(response => setActionNames(response.data))
+            .catch(error => handleError(error, history, props.setLogged));
     }, []);
 
     return (

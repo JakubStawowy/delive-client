@@ -7,17 +7,17 @@ import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
-import {PackagesModal} from "./PackagesModal";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {Announcement} from "./Announcement";
 import {Profile} from "../pages/Profile";
+import {FeedbackForm} from "./FeedbackForm";
 
 export const MessageListItem = (props) => {
 
     const history = useHistory();
-    const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
     const [profileModalOpened, setProfileModalOpened] = useState(false);
+    const [feedbackFormModalOpened, setFeedbackFormModalOpened] = useState(false);
     const [currentProfileUserId, setCurrentProfileUserId] = useState(null);
 
     const useClasses = makeStyles(((theme)=>({
@@ -49,7 +49,7 @@ export const MessageListItem = (props) => {
     }).then(() => {
         alert("Message sent");
         props.refresh();
-    }).catch((error) => handleError(error, history));
+    }).catch((error) => handleError(error, history, props.setLogged));
 
     const handleOpenProfile = userId => {
         setCurrentProfileUserId(userId);
@@ -58,19 +58,6 @@ export const MessageListItem = (props) => {
 
     return (
         <ListItem className={classes.root}>
-            {
-                props.message.packages.length > 0 &&
-                    <Modal
-                        className={flexClasses.flexRowCenter}
-                        centered open={packagesModalOpened}
-                        children={<PackagesModal
-                            packages={props.message.packages}
-                            setPackagesModalOpened={setPackagesModalOpened}
-                        />}
-                        onClose={()=>setPackagesModalOpened(false)}
-                    />
-            }
-
             <Modal
                 className={flexClasses.flexRowCenter}
                 centered open={announcementModalOpened}
@@ -103,6 +90,23 @@ export const MessageListItem = (props) => {
                 onClose={()=>setProfileModalOpened(false)}
             />
 
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={feedbackFormModalOpened}
+                children={
+                    <ModalTemplate
+                        action={setFeedbackFormModalOpened}
+                        child={
+                            <FeedbackForm
+                                setLogged={props.setLogged}
+                                userId={props.message.senderId}
+                            />
+                        }
+                    />
+                }
+                onClose={()=>setFeedbackFormModalOpened(false)}
+            />
+
             <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.listItem}`}>
                 <div className={flexClasses.flexRowSpaceBetween}>
                     <div>
@@ -114,7 +118,7 @@ export const MessageListItem = (props) => {
                             Announcement
                         </Button>
                         {
-                            props.received ?
+                            props.received && props.message.messageType !== 'INFO' &&
                                 <Button
                                     variant={"contained"}
                                     onClick={() => handleOpenProfile(props.message.senderId)}
@@ -122,7 +126,9 @@ export const MessageListItem = (props) => {
                                 >
                                     Sender
                                 </Button>
-                                :
+                        }
+                        {
+                            !props.received && props.message.messageType !== 'INFO' &&
                                 <Button
                                     variant={"contained"}
                                     onClick={() => handleOpenProfile(props.message.receiverId)}
@@ -130,17 +136,16 @@ export const MessageListItem = (props) => {
                                 >
                                     Receiver
                                 </Button>
-
                         }
                         {
-                            props.message.packages.length > 0 &&
-                            <Button
-                                onClick={() => setPackagesModalOpened(true)}
-                                variant={"contained"}
-                                className={classes.messageButton}
-                            >
-                                Packages
-                            </Button>
+                            props.message.messageType === 'INFO' &&
+                                <Button
+                                    variant={"contained"}
+                                    className={classes.messageButton}
+                                    onClick={() => setFeedbackFormModalOpened(true)}
+                                >
+                                    Send feedback
+                                </Button>
                         }
                     </div>
                     {trimDate(props.message.createdAt)}

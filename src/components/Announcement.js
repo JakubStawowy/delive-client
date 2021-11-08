@@ -11,11 +11,13 @@ import {ModalTemplate} from "../templates/ModalTemplate";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import {handleError} from "../actions/handlers";
+import {DeliveryForm} from "./DeliveryForm";
 
 export const Announcement = (props) => {
 
     const [announcement, setAnnouncement] = useState(null);
     const [locationModalOpened, setLocationModalOpened] = useState(false);
+    const [deliveryFormModalOpened, setDeliveryFormModalOpened] = useState(false);
     const [currentLocationLongitude, setCurrentLocationLongitude] = useState(null);
     const [currentLocationLatitude, setCurrentLocationLatitude] = useState(null);
     const [loggedUserId, setLoggedUserId] = useState(null);
@@ -35,7 +37,7 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const listClasses = listComponents();
 
-    const handleRegisterCommission = () => setTimeout(() => history.push('/delivery/register/' + announcement.id + '/' + announcement.authorId),  ANIMATION_TIME / 2);
+    // const handleRegisterCommission = () => setTimeout(() => history.push('/delivery/register/' + announcement.id + '/' + announcement.authorId),  ANIMATION_TIME / 2);
 
     const handleOpenProfile = userId => history.push('/profile/' + userId);
 
@@ -43,11 +45,12 @@ export const Announcement = (props) => {
         deleteAnnouncement(announcementId).then(() => {
             alert("Announcement removed successfully");
             history.push('/home');
-        }).catch(error => handleError(error, history));
+        }).catch(error => handleError(error, history, props.setLogged));
     }
 
     useEffect(() => {
-        getLoggedUserId().then(response => setLoggedUserId(response.data)).catch(error => handleError(error, history));
+        getLoggedUserId().then(response => setLoggedUserId(response.data))
+            .catch(error => handleError(error, history, props.setLogged));
         props.announcementId !== undefined ?
         getAnnouncementById(props.announcementId)
             .then(response => setAnnouncement(response.data))
@@ -82,11 +85,29 @@ export const Announcement = (props) => {
                             child={<LocationDetails
                                     longitude={currentLocationLongitude}
                                     latitude={currentLocationLatitude}
+                                    setLogged={props.setLogged}
                                 />}
                             action={setLocationModalOpened}
                         />}
                         onClose={()=>setLocationModalOpened(false)}
                     />
+                    <Modal
+                        className={flexClasses.flexRowCenter}
+                        centered open={deliveryFormModalOpened}
+                        children={<ModalTemplate
+                            child={
+                                <DeliveryForm
+                                    setLogged={props.setLogged}
+                                    setDeliveryModalOpened={setDeliveryFormModalOpened}
+                                    announcementId={announcement.id}
+                                    authorId={announcement.authorId}
+                                />
+                            }
+                            action={setDeliveryFormModalOpened}
+                        />}
+                        onClose={()=>setDeliveryFormModalOpened(false)}
+                    />
+
                     <Card
                         className={`${rwdClasses.biggerMobileCard} 
                         ${paddingClasses.paddingMedium}`}
@@ -96,7 +117,7 @@ export const Announcement = (props) => {
                             {
                                 loggedUserId !== announcement.authorId ?
                                 <div className={classes.listItem}>
-                                    <Button variant={"contained"} onClick={() => handleRegisterCommission()}>
+                                    <Button variant={"contained"} onClick={() => setDeliveryFormModalOpened(true)}>
                                         Send request
                                     </Button>
                                     <Button variant={"contained"} onClick={() => handleOpenProfile(announcement.authorId)}>

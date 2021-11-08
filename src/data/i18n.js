@@ -3,7 +3,7 @@ export const i18n = {
         menuItems: {
             newOffer: 'Post new offer',
             allOffers: 'Check the offers',
-            login: 'Login / Logout'
+            login: 'Logout'
         },
         loginItems: {
             label: 'Login',
@@ -47,7 +47,7 @@ export const i18n = {
         menuItems: {
             newOffer: 'Dodaj nową ofertę',
             allOffers: 'Sprawdź oferty',
-            login: 'Zaloguj / Wyloguj'
+            login: 'Wyloguj się'
         },
         loginItems: {
             label: 'Zaloguj się',

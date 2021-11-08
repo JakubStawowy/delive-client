@@ -105,7 +105,7 @@ export const AnnouncementForm = (props) => {
         addNormalAnnouncement(data).then(() => {
             setBounce(true);
             setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
-        }).catch((error) => handleError(error))
+        }).catch((error) => handleError(error, history, props.setLogged))
             :
             handleValidationError(isGeolocationValid, isPackagesValid, isSalaryValid);
     };
