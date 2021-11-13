@@ -51,8 +51,19 @@ export const AnnouncementForm = (props) => {
 
     const [fromLatitude, setFromLatitude] = useState(null);
     const [fromLongitude, setFromLongitude] = useState(null);
+    const [fromCountry, setFromCountry] = useState(null);
+    const [fromAddress, setFromAddress] = useState(null);
+    const [fromLocality, setFromLocality] = useState(null);
+    const [useFromMap, setUseFromMap] = useState(false);
+
     const [toLatitude, setToLatitude] = useState(null);
     const [toLongitude, setToLongitude] = useState(null);
+    const [toCountry, setToCountry] = useState(null);
+    const [toAddress, setToAddress] = useState(null);
+    const [toLocality, setToLocality] = useState(null);
+    const [useToMap, setUseToMap] = useState(false);
+
+
     const [amount, setAmount] = useState(null);
 
     const history = useHistory();
@@ -83,19 +94,31 @@ export const AnnouncementForm = (props) => {
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
-        const isGeolocationValid = validateGeolocation(fromLatitude, fromLongitude, toLatitude, toLongitude);
+        // const isGeolocationValid = validateGeolocation(fromLatitude, fromLongitude, toLatitude, toLongitude);
+        const isGeolocationValid = true;
         const isPackagesValid = packages.length > 0;
         const isSalaryValid = validateSalary(amount);
+        const destinationFrom = useFromMap ? {
+            longitude: fromLongitude,
+            latitude: fromLatitude
+        } : {
+            address: fromAddress,
+            locality: fromLocality,
+            country: fromCountry
+        };
+        const destinationTo = useToMap ? {
+            longitude: toLongitude,
+            latitude: toLatitude
+        } : {
+            address: toAddress,
+            locality: toLocality,
+            country: toCountry
+        };
+
         const data = {
             id: announcementId,
-            destinationFrom: {
-                longitude: fromLongitude,
-                latitude: fromLatitude
-            },
-            destinationTo: {
-                longitude: toLongitude,
-                latitude: toLatitude
-            },
+            destinationFrom,
+            destinationTo,
             packages: packages,
             amount,
             requireTransportWithClient: transportWithTheClient,
@@ -177,6 +200,14 @@ export const AnnouncementForm = (props) => {
                                 setLatitude={setFromLatitude}
                                 latitude={fromLatitude}
                                 longitude={fromLongitude}
+                                address={fromAddress}
+                                setAddress={setFromAddress}
+                                country={fromCountry}
+                                setCountry={setFromCountry}
+                                locality={fromLocality}
+                                setLocality={setFromLocality}
+                                useMap={useFromMap}
+                                setUseMap={setUseFromMap}
                             />
                         }
                         onClose={()=>setLocalizationFromModalOpened(!localizationFromModalOpened)}
@@ -190,6 +221,14 @@ export const AnnouncementForm = (props) => {
                             setLatitude={setToLatitude}
                             latitude={toLatitude}
                             longitude={toLongitude}
+                            address={toAddress}
+                            setAddress={setToAddress}
+                            country={toCountry}
+                            setCountry={setToCountry}
+                            locality={toLocality}
+                            setLocality={setToLocality}
+                            useMap={useToMap}
+                            setUseMap={setUseToMap}
                         />}
                         onClose={()=>setLocalizationToModalOpened(!localizationToModalOpened)}
                     />

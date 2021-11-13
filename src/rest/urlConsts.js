@@ -14,9 +14,9 @@ import {
     USER_ID
 } from "./parametersConsts";
 
-const BASE_API_URL = 'http://localhost:8080/api';
+// const BASE_API_URL = 'http://localhost:8080/api';
 // const BASE_API_URL = "http://192.168.0.115:8080/api";
-// const BASE_API_URL = "http://192.168.2.104:8080/api";
+const BASE_API_URL = "http://192.168.2.104:8080/api";
 const BASE_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements';
 
 export const REGISTER_USER_URL = BASE_API_URL + '/register';

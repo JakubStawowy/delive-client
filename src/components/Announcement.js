@@ -25,9 +25,7 @@ export const Announcement = (props) => {
     const [confirmDeleteLabel, setConfirmDeleteLabel] = useState('');
 
     const useClasses = makeStyles(((theme) => ({
-        listItem: {
-            margin: '2em'
-        }
+
     })));
     const classes = useClasses();
     const history = useHistory();
@@ -109,8 +107,7 @@ export const Announcement = (props) => {
                     />
 
                     <Card
-                        className={`${rwdClasses.biggerMobileCard} 
-                        ${paddingClasses.paddingMedium}`}
+                        className={`${paddingClasses.paddingMedium}`}
                     >
                         <List className={`${listClasses.verticalList} 
                         ${flexClasses.flexColumnSpaceBetween}`}>
@@ -169,12 +166,15 @@ export const Announcement = (props) => {
                                 </div>
                             }
                             <div className={classes.listItem}>
-                                <Button variant={"contained"} onClick={() => openLocationFromDetails()}>
-                                    location from details
-                                </Button>
-                                <Button variant={"contained"} onClick={() => openLocationToDetails()}>
-                                    location to details
-                                </Button>
+                                <div className={classes.dataElement}>
+                                    from: {`${announcement.destinationFrom.address}, ${announcement.destinationFrom.locality}, ${announcement.destinationFrom.country}`}
+                                </div>
+                                <div className={classes.dataElement}>
+                                    to: {`${announcement.destinationTo.address}, ${announcement.destinationTo.locality}, ${announcement.destinationTo.country}`}
+                                </div>
+                                <div className={classes.dataElement}>
+                                    salary: {`${announcement.amount}`}
+                                </div>
                             </div>
                             <div className={classes.listItem}>
                                 Destinations

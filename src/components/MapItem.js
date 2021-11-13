@@ -14,10 +14,6 @@ export const MapItem = (props) => {
         pin: {
             color: 'red'
         },
-        map: {
-            width: '60vw',
-            height: '80vh'
-        }
     })));
     const classes = useStyles();
 
@@ -33,8 +29,8 @@ export const MapItem = (props) => {
                 setViewport({
                     latitude: response.data.latitude,
                     longitude: response.data.longitude,
-                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '70vw',
-                    height: '80vh',
+                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '80vw' : '40vw',
+                    height: '30vh',
                     zoom: response.data.zoomLevel
                     // zoom: 15
                 });
@@ -43,8 +39,8 @@ export const MapItem = (props) => {
             setViewport({
                 latitude: props.latitude,
                 longitude: props.longitude,
-                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
-                height: '80vh',
+                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '80vw' : '40vw',
+                height: '30vh',
                 zoom: 15
             });
     }, []);

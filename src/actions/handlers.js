@@ -24,5 +24,5 @@ export const handleError = (error, history, setLogged) => {
         else alert(error);
     }
     else alert("Error occured");
-    logout(history, setLogged);
+    // logout(history, setLogged);
 }

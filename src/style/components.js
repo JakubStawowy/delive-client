@@ -32,6 +32,12 @@ export const flexComponents = makeStyles((()=>({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    flexColumnCenter: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 })));
 
 export const paddingComponents = makeStyles((()=>({
@@ -41,6 +47,9 @@ export const paddingComponents = makeStyles((()=>({
     paddingSmall: {
         padding: '1em'
     },
+    noPadding: {
+        padding: 0
+    }
 })));
 
 export const sizeComponents = makeStyles((()=>({
@@ -129,7 +138,7 @@ export const rwdComponents = makeStyles(((theme)=>({
             background: 'red',
             height: '88vh',
             width: '100%',
-            zIndex: 1
+            zIndex: 3
         }
     },
     visibleMobileFlexComponent: {

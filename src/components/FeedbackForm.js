@@ -9,6 +9,7 @@ import {useHistory} from "react-router";
 export const FeedbackForm = props => {
 
     const history = useHistory();
+    const indexes = [0, 1, 2, 3, 4];
     const [feedbackMessage, setFeedbackMessage] = useState('I can recommend this user!');
     const [rate, setRate] = useState(null);
     const useClasses = makeStyles(((theme) => ({
@@ -52,14 +53,18 @@ export const FeedbackForm = props => {
         onHoverEvent(index);
     }
 
-    const indexes = [0, 1, 2, 3, 4];
 
     const handleSendFeedback = () => {
         sendFeedback({
             content: feedbackMessage,
             rate,
-            userId: props.userId
-        }).then(() => alert("Feedback sent"))
+            userId: props.userId,
+            messageId: props.messageId
+        }).then(() => {
+            alert("Feedback sent");
+            props.setFeedbackFromModalOpened(false);
+            props.refresh();
+        })
             .catch(error => handleError(error, history, props.setLogged));
     }
 

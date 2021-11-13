@@ -24,6 +24,9 @@ export const Menu = (props) => {
         container: {
             background: 'red',
             width: '100%',
+            position: 'fixed',
+            top: 0,
+            zIndex: 3
         },
         logo: {
             height: '80%',
@@ -42,6 +45,7 @@ export const Menu = (props) => {
     }));
     const classes = useStyles();
     const flex = flexComponents();
+    const sizeClasses = sizeComponents();
     const size = sizeComponents();
     const rwd = rwdComponents();
     const fadeInAnimationStyles = useAnimationStyles(fadeInDown, ANIMATION_TIME / 2);
@@ -75,80 +79,84 @@ export const Menu = (props) => {
 
     return (
         <StyleRoot>
-            <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
-                <div
-                    className={classes.logoText}
-                    onClick={()=>handleNav('/home')}>
-                    Delive
-                </div>
-                {/*<img src={logo} alt={''} className={classes.logo}/>*/}
-                <div
-                    className={`${rwd.menu}
+            <div className={sizeClasses.menuHeight}>
+                <div className={`${classes.container} ${flex.flexRowSpaceAround} ${size.menuHeight}`}>
+                    <div
+                        className={classes.logoText}
+                        onClick={()=>handleNav('/home')}>
+                        Delive
+                    </div>
+                    {/*<img src={logo} alt={''} className={classes.logo}/>*/}
+                    <div
+                        className={`${rwd.menu}
                      ${menuOpened ? rwd.visibleMobileFlexComponent : rwd.hiddenMobileComponent}`}
-                    style={menuAnimated
-                        ?
-                        (window.matchMedia(SM_MEDIA_QUERY).matches
-                            ? fadeInAnimationStyles.animation : null)
-                        :
-                        (window.matchMedia(SM_MEDIA_QUERY).matches
-                            ? fadeOutAnimationStyles.animation : null)}
-                >
-                    {
-                        props.logged &&
-                        <Button variant={'contained'} onClick={() => handleNav('/addAnnouncement/normal')}>
-                            {menuStatements.newOffer}
-                        </Button>
-                    }
-                    {/*{*/}
-                    {/*    props.logged &&*/}
-                    {/*    <Button variant={'contained'} onClick={()=>handleNav('/home')}>*/}
-                    {/*        {menuStatements.allOffers}*/}
-                    {/*    </Button>*/}
-                    {/*}*/}
-                    {
-                        props.logged &&
-                        <Button variant={'contained'} onClick={()=>handleNav('/messages')}>
-                            Messages
-                        </Button>
-                    }
-                    {
-                        props.logged &&
-                        <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
-                            Delivery
-                        </Button>
-                    }
-                    {
-                        props.logged &&
-                        <Button variant={'contained'} onClick={()=>handleNav('/profile')}>
-                            Profile
-                        </Button>
-                    }
-                    {
-                        props.logged &&
-                        <Button variant={'contained'} onClick={()=>handleLogout()} >
-                            {menuStatements.login}
-                        </Button>
-                    }
-                    <Select
-                        onChange={(e)=>handleChangeLocale(e)}
-                        className={`${classes.select}`}
+                        style={menuAnimated
+                            ?
+                            (window.matchMedia(SM_MEDIA_QUERY).matches
+                                ? fadeInAnimationStyles.animation : null)
+                            :
+                            (window.matchMedia(SM_MEDIA_QUERY).matches
+                                ? fadeOutAnimationStyles.animation : null)}
                     >
                         {
-                            localeSet.map(key=>{
-                                return (
-                                    <MenuItem
-                                        value={key}
-                                    >
-                                        {key}
-                                    </MenuItem>
-                                )
-                            })
+                            props.logged &&
+                            <Button
+                                variant={'contained'}
+                                onClick={() => handleNav('/addAnnouncement/normal')}>
+                                {menuStatements.newOffer}
+                            </Button>
                         }
-                    </Select>
+                        {/*{*/}
+                        {/*    props.logged &&*/}
+                        {/*    <Button variant={'contained'} onClick={()=>handleNav('/home')}>*/}
+                        {/*        {menuStatements.allOffers}*/}
+                        {/*    </Button>*/}
+                        {/*}*/}
+                        {
+                            props.logged &&
+                            <Button variant={'contained'} onClick={()=>handleNav('/messages')}>
+                                Messages
+                            </Button>
+                        }
+                        {
+                            props.logged &&
+                            <Button variant={'contained'} onClick={()=>handleNav('/delivery')}>
+                                Delivery
+                            </Button>
+                        }
+                        {
+                            props.logged &&
+                            <Button variant={'contained'} onClick={()=>handleNav('/profile')}>
+                                Profile
+                            </Button>
+                        }
+                        {
+                            props.logged &&
+                            <Button variant={'contained'} onClick={()=>handleLogout()} >
+                                {menuStatements.login}
+                            </Button>
+                        }
+                        <Select
+                            onChange={(e)=>handleChangeLocale(e)}
+                            className={`${classes.select}`}
+                        >
+                            {
+                                localeSet.map(key=>{
+                                    return (
+                                        <MenuItem
+                                            value={key}
+                                        >
+                                            {key}
+                                        </MenuItem>
+                                    )
+                                })
+                            }
+                        </Select>
+                    </div>
+                    <Button className={`${rwd.mobileComponent}`} onClick={()=>closeMenu()}>
+                        <MenuIcon fontSize={'large'} className={`${classes.icon}`}/>
+                    </Button>
                 </div>
-                <Button className={`${rwd.mobileComponent}`} onClick={()=>closeMenu()}>
-                    <MenuIcon fontSize={'large'} className={`${classes.icon}`}/>
-                </Button>
             </div>
         </StyleRoot>
     )

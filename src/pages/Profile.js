@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Button, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
-import userImage from '../uploads/user.png';
 import {useHistory} from "react-router";
 import {FeedbackListItem} from "../components/FeedbackListItem";
 import {handleError} from "../actions/handlers";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
 import {loadFeedback, loadLoggedUser, loadUser} from "../rest/restActions";
-// import {USER_ID} from "../consts/applicationConsts";
+import image from "../uploads/user.png";
 
 export const Profile = props => {
 
@@ -17,8 +16,8 @@ export const Profile = props => {
     const [userId, setUserId] = useState(null);
     const useClasses = makeStyles((theme) => ({
         img: {
-            width: '10vw',
-            borderRadius: '50%'
+            // width: '10vw',
+            // borderRadius: '50%'
         },
         list: {
             maxHeight: '30vh',
@@ -66,9 +65,7 @@ export const Profile = props => {
                 userData !== null &&
                 <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                     <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceBetween}`}>
-                        <Avatar>
-                            <img className={classes.img} src={userImage} alt={''}/>
-                        </Avatar>
+                        <Avatar src={image} alt={''} className={classes.img} />
                         <Typography variant={'h3'} gutterBottom={'true'}>
                             {`${userData.name} ${userData.surname}`}
                         </Typography>

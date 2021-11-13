@@ -6,16 +6,17 @@ import {useAnimationStyles} from "../style/animation";
 import {fadeIn, bounceInDown} from "react-animations";
 import {ANIMATION_TIME, XS_MEDIA_QUERY} from "../data/consts";
 import RoomIcon from '@material-ui/icons/Room';
-import {Button, makeStyles} from "@material-ui/core";
+import {Button, Card, Checkbox, FormControlLabel, makeStyles, TextField} from "@material-ui/core";
 
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
+import {flexComponents, paddingComponents} from "../style/components";
 
 export const MapFormModal = (props) => {
 
     const [viewport, setViewport] = useState(null);
 
-    const useStyles = makeStyles((()=>({
+    const useStyles = makeStyles(((theme)=>({
         pin: {
             color: 'red'
         },
@@ -29,26 +30,40 @@ export const MapFormModal = (props) => {
         clear: {
             color: "red"
         },
-        map: {
-            width: '60vw',
-            height: '80vh'
+        container: {
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0,
+        },
+        textField: {
+            width: '100%'
+        },
+        subContainer: {
+
+            width: '90%',
+            alignItems: 'flex-start'
         }
     })));
     const classes = useStyles();
     const bounceInDownAnimationStyles = useAnimationStyles(bounceInDown, ANIMATION_TIME * 2);
     const loaderAnimationStyles = useAnimationStyles(fadeIn, ANIMATION_TIME);
+    const flexClasses = flexComponents();
+    const paddingClasses = paddingComponents();
 
     const handleLocationError = () => {
         alert("Wystąpił problem z pobieraniem geolokacji");
         setDefaultViewport();
     }
 
+    const mobileMapWidth = '100vw';
+    const normalMapWidth = '40vw';
+    const mapHeight = '30vh';
+
     const setDefaultViewport = () => {
         setViewport({
             latitude: 0,
             longitude: 0,
-            width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
-            height: '80vh',
+            width: window.matchMedia(XS_MEDIA_QUERY).matches ? mobileMapWidth : normalMapWidth,
+            height: mapHeight,
             zoom: 0,
         });
     }
@@ -59,18 +74,18 @@ export const MapFormModal = (props) => {
             setViewport({
                 latitude: props.latitude,
                 longitude: props.longitude,
-                width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
-                height: '80vh',
-                zoom: 15,
+                width: window.matchMedia(XS_MEDIA_QUERY).matches ? mobileMapWidth : normalMapWidth,
+                height: mapHeight,
+                zoom: 10,
             })
             :
             navigator.geolocation.getCurrentPosition(position => {
                 setViewport({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? '100vw' : '60vw',
-                    height: '80vh',
-                    zoom: 15,
+                    width: window.matchMedia(XS_MEDIA_QUERY).matches ? mobileMapWidth : normalMapWidth,
+                    height: mapHeight,
+                    zoom: 10,
                 });
             }, ()=>handleLocationError());
     }, []);
@@ -85,41 +100,88 @@ export const MapFormModal = (props) => {
 
     return (
         <StyleRoot>
-            <div>
-                {
-                    viewport === null ?
-                        <div style={loaderAnimationStyles.animation}>
-                            <BounceLoader
-                                loading
-                                color={'red'}
+            <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingMedium} ${classes.container}`}>
+
+                <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={!props.useMap}
+                                color={"secondary"}
+                                onChange={() => props.setUseMap(false)}
                             />
-                        </div>
-                        :
-                        <div id={'map'} style={bounceInDownAnimationStyles.animation}>
-                            <ReactMapGl
-                                {...viewport}
-                                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                                onViewportChange={viewport => setViewport(viewport)}
-                                mapStyle={'mapbox://styles/mapbox/streets-v11'}
-                            >
-                                {
-                                    props.coordinates === undefined &&
+                        }
+                        label={'Type address'}
+                    />
+                    <TextField
+                        label={"Country"}
+                        className={`${classes.textField}`}
+                        value={props.country}
+                        onChange={e => props.setCountry(e.target.value)}
+                    />
+                    <TextField
+                        label={"City"}
+                        className={`${classes.textField}`}
+                        value={props.locality}
+                        onChange={e => props.setLocality(e.target.value)}
+                    />
+                    <TextField
+                        label={"Address"}
+                        className={`${classes.textField}`}
+                        value={props.address}
+                        onChange={e => props.setAddress(e.target.value)}
+                    />
+                </div>
+
+                <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={props.useMap}
+                                color={"secondary"}
+                                onChange={() => props.setUseMap(true)}
+                            />
+                        }
+                        label={'Use maps'}
+                    />
+                </div>
+                <div className={`${flexClasses.flexColumnSpaceBetween}`}>
+
+                    {
+                        viewport === null ?
+                            <div style={loaderAnimationStyles.animation}>
+                                <BounceLoader
+                                    loading
+                                    color={'red'}
+                                />
+                            </div>
+                            :
+                            <div id={'map'} style={bounceInDownAnimationStyles.animation}>
+                                <ReactMapGl
+                                    {...viewport}
+                                    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                    onViewportChange={viewport => setViewport(viewport)}
+                                    mapStyle={'mapbox://styles/mapbox/streets-v11'}
+                                >
+                                    {
+                                        props.coordinates === undefined &&
                                         <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
                                             <RoomIcon fontSize={'large'} className={classes.pin}/>
                                         </Marker>
-                                }
-                            </ReactMapGl>
-                            <div>
-                                <Button variant={'contained'} className={classes.button} onClick={()=>handleConfirm()}>
-                                    <CheckIcon className={classes.check}/>
-                                </Button>
-                                <Button variant={'contained'} className={classes.button} onClick={()=>handleClose()}>
-                                    <ClearIcon className={classes.clear}/>
-                                </Button>
+                                    }
+                                </ReactMapGl>
                             </div>
-                            }
-                        </div>
-                }
+                    }
+                </div>
+
+            </Card>
+            <div>
+                <Button variant={'contained'} className={classes.button} onClick={()=>handleConfirm()}>
+                    <CheckIcon className={classes.check}/>
+                </Button>
+                <Button variant={'contained'} className={classes.button} onClick={()=>handleClose()}>
+                    <ClearIcon className={classes.clear}/>
+                </Button>
             </div>
         </StyleRoot>
     )

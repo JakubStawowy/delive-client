@@ -2,10 +2,9 @@ import {Button, Card, ListItem, makeStyles, Modal, TableRow} from "@material-ui/
 import {replyMessage} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
 import {useHistory} from "react-router";
-// import {USER_ID} from "../consts/applicationConsts";
 import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {Announcement} from "./Announcement";
@@ -33,6 +32,18 @@ export const MessageListItem = (props) => {
         },
         check: {
             color: "green"
+        },
+        greenBackground: {
+            background: '#90EE90'
+        },
+        redBackground: {
+            background: '#FFA07A'
+        },
+        infoBackground: {
+            background: '#52ADC8'
+        },
+        requestBackground: {
+            background: '#EBA172'
         }
     })));
     const classes = useClasses();
@@ -67,6 +78,7 @@ export const MessageListItem = (props) => {
                         child={
                             <Announcement
                                 announcementId={props.message.announcementId}
+                                setLogged={props.setLogged}
                             />
                         }
                     />
@@ -83,6 +95,7 @@ export const MessageListItem = (props) => {
                         child={
                             <Profile
                                 userId={currentProfileUserId}
+                                setLogged={props.setLogged}
                             />
                         }
                     />
@@ -100,6 +113,9 @@ export const MessageListItem = (props) => {
                             <FeedbackForm
                                 setLogged={props.setLogged}
                                 userId={props.message.senderId}
+                                setFeedbackFromModalOpened={setFeedbackFormModalOpened}
+                                messageId={props.message.id}
+                                refresh={props.refresh}
                             />
                         }
                     />
@@ -107,7 +123,9 @@ export const MessageListItem = (props) => {
                 onClose={()=>setFeedbackFormModalOpened(false)}
             />
 
-            <Card className={`${paddingClasses.paddingSmall} ${rwdClasses.listItem}`}>
+            <Card className={`
+                ${paddingClasses.paddingSmall}
+                ${rwdClasses.listItem}`}>
                 <div className={flexClasses.flexRowSpaceBetween}>
                     <div>
                         <Button
@@ -138,11 +156,12 @@ export const MessageListItem = (props) => {
                                 </Button>
                         }
                         {
-                            props.message.messageType === 'INFO' &&
-                                <Button
+                            props.message.messageType === 'INFO' && !props.message.replied &&
+                            <Button
                                     variant={"contained"}
                                     className={classes.messageButton}
                                     onClick={() => setFeedbackFormModalOpened(true)}
+                                    disabled={props.message.replied}
                                 >
                                     Send feedback
                                 </Button>
@@ -151,14 +170,14 @@ export const MessageListItem = (props) => {
                     {trimDate(props.message.createdAt)}
                 </div>
                 {
-                    props.received && props.message.messageType === 'REQUEST' &&
+                    props.received && props.message.messageType === 'REQUEST' && !props.message.replied &&
                         // <div className={classes.marginComponent}>
                         <div>
                             <Button
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(true)}
                                 disabled={props.message.replied}
-                                className={classes.messageButton}
+                                className={`${classes.messageButton} ${classes.greenBackground}`}
                             >
                                 Agree
                             </Button>
@@ -166,7 +185,7 @@ export const MessageListItem = (props) => {
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(false)}
                                 disabled={props.message.replied}
-                                className={classes.messageButton}
+                                className={`${classes.messageButton} ${classes.redBackground}`}
                             >
                                 Disagree
                             </Button>
@@ -177,19 +196,13 @@ export const MessageListItem = (props) => {
                         props.message.message !== undefined && props.message.message
                     }
                 </div>
-                <div className={flexClasses.flexRowSpaceBetween}>
-                    {/*<div className={classes.marginComponent}>*/}
+                {
+                    props.message.replied && props.received &&
                     <div>
-                        {props.message.messageType}
+                        Replied
+                        <CheckIcon className={classes.check}/>
                     </div>
-                    {
-                        props.message.replied && props.received &&
-                        <div>
-                            Replied
-                            <CheckIcon className={classes.check}/>
-                        </div>
-                    }
-                </div>
+                }
             </Card>
         </ListItem>
     )
