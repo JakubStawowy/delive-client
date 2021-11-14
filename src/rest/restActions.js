@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
     ADD_NORMAL_ANNOUNCEMENT_URL,
     CHANGE_DELIVERY_STATE_URL,
-    DELETE_ANNOUNCEMENT_URL,
+    DELETE_ANNOUNCEMENT_URL, FILTER_ANNOUNCEMENTS_URL,
     FINISH_DELIVERY_URL,
     GET_ANNOUNCEMENT_URL,
     GET_HALFWAY_POINT_URL,
@@ -90,6 +90,11 @@ export const getNextActionName = (deliveryState, announcementAuthorId, deliverer
 
 export const getLoggedUserId = () => axios.get(GET_LOGGED_USER_ID_URL, getConfig());
 export const deleteAnnouncement = announcementId => axios.delete(DELETE_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
+export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary, requireTransportWithClient = '') => axios.get(FILTER_ANNOUNCEMENTS_URL
+    .replace(':initialAddress', initialAddress)
+    .replace(':finalAddress', finalAddress)
+    .replace(':minimalSalary', minimalSalary)
+    .replace(':requireTransportWithClient', requireTransportWithClient), getConfig());
 const getConfig = () => {
     return {
         headers: {

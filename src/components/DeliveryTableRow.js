@@ -20,13 +20,18 @@ export const DeliveryTableRow = (props) => {
     const [toLocalizationModalOpened, setToLocalizationModalOpened] = useState(false);
     const [actionNames, setActionNames] = useState([]);
 
-    const useStyles = makeStyles((()=>({
+    const useStyles = makeStyles(((theme)=>({
         package: {
             background: '#FFE4C4'
         },
         modalChild: {
             borderBottomRightRadius: 0,
             borderBottomLeftRadius: 0
+        },
+        hiddenColumn: {
+            [theme.breakpoints.down('xs')]: {
+                display: 'none'
+            }
         }
     })));
     const classes = useStyles();
@@ -139,7 +144,10 @@ export const DeliveryTableRow = (props) => {
             <TableCell align={"center"}>
                 {trimDate(props.delivery.createdAt)}
             </TableCell>
-            <TableCell align={"center"}>
+            <TableCell
+                align={"center"}
+                className={classes.hiddenColumn}
+            >
                 <Button
                     variant={"contained"}
                     onClick={() => setPackagesModalOpened(true)}
@@ -148,14 +156,20 @@ export const DeliveryTableRow = (props) => {
                     Check
                 </Button>
             </TableCell>
-            <TableCell align={"center"}>
+            <TableCell
+                align={"center"}
+                className={classes.hiddenColumn}
+            >
                 {
                     <Button variant={"contained"} onClick={() => setFromLocalizationModalOpened(true)}>
                         Check
                     </Button>
                 }
             </TableCell>
-            <TableCell align={"center"}>
+            <TableCell
+                align={"center"}
+                className={classes.hiddenColumn}
+            >
                 {
                     <Button variant={"contained"} onClick={() => setToLocalizationModalOpened(true)}>
                         Check

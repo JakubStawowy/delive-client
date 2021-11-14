@@ -102,17 +102,15 @@ export const AnnouncementForm = (props) => {
             longitude: fromLongitude,
             latitude: fromLatitude
         } : {
-            address: fromAddress,
-            locality: fromLocality,
-            country: fromCountry
+            // address: fromAddress + ", " + fromLocality + ", " + fromCountry,
+            address: fromAddress
         };
         const destinationTo = useToMap ? {
             longitude: toLongitude,
             latitude: toLatitude
         } : {
-            address: toAddress,
-            locality: toLocality,
-            country: toCountry
+            // address: toAddress + ", " + toLocality + ", " + toCountry,
+            address: toAddress
         };
 
         const data = {

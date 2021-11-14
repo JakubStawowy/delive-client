@@ -64,6 +64,11 @@ export const DeliveryPage = (props) => {
             [theme.breakpoints.up('md')]: {
                 padding: '2em'
             }
+        },
+        hiddenColumn: {
+            [theme.breakpoints.down('xs')]: {
+                display: 'none'
+            }
         }
     }));
     const classes = useClasses();
@@ -125,9 +130,9 @@ export const DeliveryPage = (props) => {
                                     <TableRow>
                                         <TableCell align={"center"}>announcement</TableCell>
                                         <TableCell align={"center"}>registered at</TableCell>
-                                        <TableCell align={"center"}>packages</TableCell>
-                                        <TableCell align={"center"}>from</TableCell>
-                                        <TableCell align={"center"}>to</TableCell>
+                                        <TableCell className={classes.hiddenColumn} align={"center"}>packages</TableCell>
+                                        <TableCell className={classes.hiddenColumn} align={"center"}>from</TableCell>
+                                        <TableCell className={classes.hiddenColumn} align={"center"}>to</TableCell>
                                         <TableCell align={"center"}>state</TableCell>
                                         <TableCell align={"center"}>action</TableCell>
                                     </TableRow>

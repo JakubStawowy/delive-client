@@ -47,3 +47,5 @@ export const GET_REVERSE_GEOCODE_URL = BASE_API_URL + '/geocode/reverse?longitud
 export const GET_NEXT_ACTION_NAME_URL = BASE_API_URL + '/delivery/actionName?deliveryState=:deliveryState&announcementAuthorId=:announcementAuthorId&delivererId=:delivererId';
 export const GET_LOGGED_USER_ID_URL = BASE_API_URL + '/users/details/loggedUser/id';
 export const DELETE_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/delete?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
+export const FILTER_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements/filtered?initialAddress=:initialAddress&' +
+    'finalAddress=:finalAddress&minimalSalary=:minimalSalary&requireTransportWithClient=:requireTransportWithClient'

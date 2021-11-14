@@ -20,9 +20,9 @@ export const handleError = (error, history, setLogged) => {
         }
         else if (error.response.status === 403) {
             alert("Session expired");
+            logout(history, setLogged);
         }
         else alert(error);
     }
     else alert("Error occured");
-    // logout(history, setLogged);
 }

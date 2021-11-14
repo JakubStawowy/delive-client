@@ -35,8 +35,6 @@ export const Announcement = (props) => {
     const paddingClasses = paddingComponents();
     const listClasses = listComponents();
 
-    // const handleRegisterCommission = () => setTimeout(() => history.push('/delivery/register/' + announcement.id + '/' + announcement.authorId),  ANIMATION_TIME / 2);
-
     const handleOpenProfile = userId => history.push('/profile/' + userId);
 
     const handleDeleteAnnouncement = announcementId => {
@@ -58,18 +56,6 @@ export const Announcement = (props) => {
             .then(response => setAnnouncement(response.data))
             .catch(error => alert(error));
     }, []);
-
-    const openLocationFromDetails = () => {
-        setCurrentLocationLatitude(announcement.destinationFrom.latitude);
-        setCurrentLocationLongitude(announcement.destinationFrom.longitude);
-        setLocationModalOpened(true);
-    }
-
-    const openLocationToDetails = () => {
-        setCurrentLocationLatitude(announcement.destinationTo.latitude);
-        setCurrentLocationLongitude(announcement.destinationTo.longitude);
-        setLocationModalOpened(true);
-    }
 
     return (
         <StyleRoot>
