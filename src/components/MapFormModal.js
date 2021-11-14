@@ -34,14 +34,6 @@ export const MapFormModal = (props) => {
             borderBottomRightRadius: 0,
             borderBottomLeftRadius: 0,
         },
-        textField: {
-            width: '100%'
-        },
-        subContainer: {
-
-            width: '90%',
-            alignItems: 'flex-start'
-        }
     })));
     const classes = useStyles();
     const bounceInDownAnimationStyles = useAnimationStyles(bounceInDown, ANIMATION_TIME * 2);
@@ -56,7 +48,7 @@ export const MapFormModal = (props) => {
 
     const mobileMapWidth = '100vw';
     const normalMapWidth = '40vw';
-    const mapHeight = '30vh';
+    const mapHeight = '50vh';
 
     const setDefaultViewport = () => {
         setViewport({
@@ -100,51 +92,7 @@ export const MapFormModal = (props) => {
 
     return (
         <StyleRoot>
-            <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingMedium} ${classes.container}`}>
-
-                <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={!props.useMap}
-                                color={"secondary"}
-                                onChange={() => props.setUseMap(false)}
-                            />
-                        }
-                        label={'Type address'}
-                    />
-                    <TextField
-                        label={"Country"}
-                        className={`${classes.textField}`}
-                        value={props.country}
-                        onChange={e => props.setCountry(e.target.value)}
-                    />
-                    <TextField
-                        label={"City"}
-                        className={`${classes.textField}`}
-                        value={props.locality}
-                        onChange={e => props.setLocality(e.target.value)}
-                    />
-                    <TextField
-                        label={"Address"}
-                        className={`${classes.textField}`}
-                        value={props.address}
-                        onChange={e => props.setAddress(e.target.value)}
-                    />
-                </div>
-
-                <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={props.useMap}
-                                color={"secondary"}
-                                onChange={() => props.setUseMap(true)}
-                            />
-                        }
-                        label={'Use maps'}
-                    />
-                </div>
+            <Card className={`${flexClasses.flexColumnSpaceAround} ${classes.container}`}>
                 <div className={`${flexClasses.flexColumnSpaceBetween}`}>
 
                     {

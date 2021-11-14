@@ -49,39 +49,48 @@ export const AnnouncementForm = (props) => {
     const [transportWithTheClient, setTransportWithTheClient] = useState(false);
     const [validatedSalary, setValidatedSalary] = useState(true);
 
+    const [useMap, setUseMap] = useState(false);
+
     const [fromLatitude, setFromLatitude] = useState(null);
     const [fromLongitude, setFromLongitude] = useState(null);
-    const [fromCountry, setFromCountry] = useState(null);
     const [fromAddress, setFromAddress] = useState(null);
-    const [fromLocality, setFromLocality] = useState(null);
-    const [useFromMap, setUseFromMap] = useState(false);
 
     const [toLatitude, setToLatitude] = useState(null);
     const [toLongitude, setToLongitude] = useState(null);
-    const [toCountry, setToCountry] = useState(null);
     const [toAddress, setToAddress] = useState(null);
-    const [toLocality, setToLocality] = useState(null);
-    const [useToMap, setUseToMap] = useState(false);
 
 
     const [amount, setAmount] = useState(null);
 
     const history = useHistory();
 
-    const styles = makeStyles((()=>({
-        datePicker: {
-            borderRadius: '10px',
-        },
-        card: {
-            height: '70vh'
-        },
+    const styles = makeStyles(((theme)=>({
         check: {
             color: "green"
         },
         package: {
             background: '#FFE4C4'
         },
+        root: {
+            alignItems: 'flex-start',
+            [theme.breakpoints.down('xs')]: {
+                padding: '5vw'
+            }
+        },
+        textField: {
+            width: '100%'
+        },
+        subContainer: {
 
+            width: '100%',
+            alignItems: 'flex-start'
+        },
+        submit: {
+            width: '100%',
+            [theme.breakpoints.down('xs')]: {
+                flexDirection: 'column'
+            },
+        }
     })))
     const classes = styles();
     const flexClasses = flexComponents();
@@ -98,18 +107,16 @@ export const AnnouncementForm = (props) => {
         const isGeolocationValid = true;
         const isPackagesValid = packages.length > 0;
         const isSalaryValid = validateSalary(amount);
-        const destinationFrom = useFromMap ? {
+        const destinationFrom = useMap ? {
             longitude: fromLongitude,
             latitude: fromLatitude
         } : {
-            // address: fromAddress + ", " + fromLocality + ", " + fromCountry,
             address: fromAddress
         };
-        const destinationTo = useToMap ? {
+        const destinationTo = useMap ? {
             longitude: toLongitude,
             latitude: toLatitude
         } : {
-            // address: toAddress + ", " + toLocality + ", " + toCountry,
             address: toAddress
         };
 
@@ -186,8 +193,7 @@ export const AnnouncementForm = (props) => {
 
     return (
         <StyleRoot>
-            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation}>
-                <Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation} className={`${flexClasses.flexColumnCenter} ${sizeClasses.bodyHeight}`} >
                     <Modal
                         className={flexClasses.flexRowCenter}
                         centered open={localizationFromModalOpened}
@@ -200,12 +206,6 @@ export const AnnouncementForm = (props) => {
                                 longitude={fromLongitude}
                                 address={fromAddress}
                                 setAddress={setFromAddress}
-                                country={fromCountry}
-                                setCountry={setFromCountry}
-                                locality={fromLocality}
-                                setLocality={setFromLocality}
-                                useMap={useFromMap}
-                                setUseMap={setUseFromMap}
                             />
                         }
                         onClose={()=>setLocalizationFromModalOpened(!localizationFromModalOpened)}
@@ -221,12 +221,6 @@ export const AnnouncementForm = (props) => {
                             longitude={toLongitude}
                             address={toAddress}
                             setAddress={setToAddress}
-                            country={toCountry}
-                            setCountry={setToCountry}
-                            locality={toLocality}
-                            setLocality={setToLocality}
-                            useMap={useToMap}
-                            setUseMap={setUseToMap}
                         />}
                         onClose={()=>setLocalizationToModalOpened(!localizationToModalOpened)}
                     />
@@ -241,29 +235,72 @@ export const AnnouncementForm = (props) => {
                         />}
                         onClose={()=>setPackageFormOpened(!packageFormOpened)}
                     />
-                    <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceAround} ${classes.card} ${rwdClasses.singleMobileCard}`}>
-                        <Typography variant={'h5'} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.fullWidth}`}>
-                            {announcementFormItems.destination.destinations}
-                            <Button variant={'contained'} onClick={()=>setLocalizationFromModalOpened(true)}>
-                                {
-                                    fromLatitude !== null && fromLongitude !== null ?
-                                    <CheckIcon className={classes.check}/>
-                                    :
-                                    <RoomIcon color={'secondary'}/>
+                    <Card className={`${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceAround} ${rwdClasses.singleMobileCard} ${classes.root}`}>
+                        <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={!useMap}
+                                        color={"secondary"}
+                                        onChange={() => setUseMap(false)}
+                                    />
                                 }
-                                {announcementFormItems.destination.from}
-                            </Button>
+                                label={'Type address'}
+                            />
+                            <TextField
+                                label={"Initial address"}
+                                className={`${classes.textField}`}
+                                value={fromAddress}
+                                onChange={e => setFromAddress(e.target.value)}
+                                disabled={useMap}
+                            />
+                            <TextField
+                                label={"Final address"}
+                                className={`${classes.textField}`}
+                                value={toAddress}
+                                onChange={e => setToAddress(e.target.value)}
+                                disabled={useMap}
+                            />
+                        </div>
+                        <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={useMap}
+                                        color={"secondary"}
+                                        onChange={() => setUseMap(true)}
+                                    />
+                                }
+                                label={'Use maps'}
+                            />
+                            <div className={`${flexClasses.flexRowSpaceAround}`}>
+                                <Button
+                                    onClick={()=>setLocalizationFromModalOpened(true)}
+                                    disabled={!useMap}
+                                >
+                                    {
+                                        fromLatitude !== null && fromLongitude !== null ?
+                                            <CheckIcon className={classes.check}/>
+                                            :
+                                            <RoomIcon color={'secondary'}/>
+                                    }
+                                    {announcementFormItems.destination.from}
+                                </Button>
 
-                            <Button variant={'contained'} onClick={()=>setLocalizationToModalOpened(true)}>
-                                {
-                                    toLatitude !== null && toLongitude !== null ?
-                                        <CheckIcon className={classes.check}/>
-                                        :
-                                        <RoomIcon color={'secondary'}/>
-                                }
-                                {announcementFormItems.destination.to}
-                            </Button>
-                        </Typography>
+                                <Button
+                                    onClick={()=>setLocalizationToModalOpened(true)}
+                                    disabled={!useMap}
+                                >
+                                    {
+                                        toLatitude !== null && toLongitude !== null ?
+                                            <CheckIcon className={classes.check}/>
+                                            :
+                                            <RoomIcon color={'secondary'}/>
+                                    }
+                                    {announcementFormItems.destination.to}
+                                </Button>
+                            </div>
+                        </div>
                         <div className={flexClasses.flexRowSpaceBetween}>
                             <List className={`${flexClasses.flexRowSpaceBetween} ${listClasses.horizontalList}`}>
                                 {
@@ -283,16 +320,6 @@ export const AnnouncementForm = (props) => {
                                 </ListItem>
                             </List>
                         </div>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={transportWithTheClient}
-                                    color={"secondary"}
-                                    onChange={() => setTransportWithTheClient(!transportWithTheClient)}
-                                />
-                            }
-                            label={'Transport with the client'}
-                        />
                         <div className={flexClasses.flexRowSpaceBetween}>
                             <TextField
                                 label={"salary"}
@@ -303,13 +330,24 @@ export const AnnouncementForm = (props) => {
                                 }}
                                 className={!validatedSalary && validationClasses.wrongTextField}
                             />
+                        </div>
+                        <div className={`${flexClasses.flexRowSpaceBetween} ${classes.submit}`}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={transportWithTheClient}
+                                        color={"secondary"}
+                                        onChange={() => setTransportWithTheClient(!transportWithTheClient)}
+                                    />
+                                }
+                                label={'Transport with the client'}
+                            />
                             <Button variant={'contained'} onClick={()=>handleSubmit()}>
                                 {announcementFormItems.submit}
                                 <ArrowForwardIcon fontSize={'large'}/>
                             </Button>
                         </div>
                     </Card>
-                </Grid>
             </div>
         </StyleRoot>
     )

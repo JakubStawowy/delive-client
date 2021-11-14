@@ -2,7 +2,7 @@ import {StyleRoot} from "radium";
 
 import React, {useEffect, useState} from "react";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {Button, Card, List, makeStyles, Modal, TextField} from "@material-ui/core";
+import {Button, Card, List, ListItem, makeStyles, Modal, TextField} from "@material-ui/core";
 import {getAnnouncementById, getLoggedUserId, deleteAnnouncement} from "../rest/restActions";
 import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
@@ -12,6 +12,7 @@ import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import {handleError} from "../actions/handlers";
 import {DeliveryForm} from "./DeliveryForm";
+import {Profile} from "../pages/Profile";
 
 export const Announcement = (props) => {
 
@@ -23,9 +24,14 @@ export const Announcement = (props) => {
     const [loggedUserId, setLoggedUserId] = useState(null);
     const [isToRemove, setIsToRemove] = useState(false);
     const [confirmDeleteLabel, setConfirmDeleteLabel] = useState('');
+    const [profileModalOpened, setProfileModalOpened] = useState(false);
 
     const useClasses = makeStyles(((theme) => ({
 
+        dataElement: {
+            borderBottom: '1px solid gray',
+            padding: '.5em 0 .5em'
+        }
     })));
     const classes = useClasses();
     const history = useHistory();
@@ -34,8 +40,6 @@ export const Announcement = (props) => {
     const sizeClasses = sizeComponents();
     const paddingClasses = paddingComponents();
     const listClasses = listComponents();
-
-    const handleOpenProfile = userId => history.push('/profile/' + userId);
 
     const handleDeleteAnnouncement = announcementId => {
         deleteAnnouncement(announcementId).then(() => {
@@ -92,6 +96,23 @@ export const Announcement = (props) => {
                         onClose={()=>setDeliveryFormModalOpened(false)}
                     />
 
+                    <Modal
+                        className={flexClasses.flexRowCenter}
+                        centered open={profileModalOpened}
+                        children={
+                            <ModalTemplate
+                                action={setProfileModalOpened}
+                                child={
+                                    <Profile
+                                        userId={announcement.authorId}
+                                        setLogged={props.setLogged}
+                                    />
+                                }
+                            />
+                        }
+                        onClose={()=>setProfileModalOpened(false)}
+                    />
+
                     <Card
                         className={`${paddingClasses.paddingMedium}`}
                     >
@@ -103,7 +124,7 @@ export const Announcement = (props) => {
                                     <Button variant={"contained"} onClick={() => setDeliveryFormModalOpened(true)}>
                                         Send request
                                     </Button>
-                                    <Button variant={"contained"} onClick={() => handleOpenProfile(announcement.authorId)}>
+                                    <Button variant={"contained"} onClick={() => setProfileModalOpened(true)}>
                                         Author
                                     </Button>
                                 </div>
@@ -163,7 +184,6 @@ export const Announcement = (props) => {
                                 </div>
                             </div>
                             <div className={classes.listItem}>
-                                Destinations
                                 <MapItem
                                     coordinates={
                                         {

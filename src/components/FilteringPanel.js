@@ -18,22 +18,22 @@ export const FilteringPanel = props => {
     const paddingClasses = paddingComponents();
     const flexClasses = flexComponents();
 
-    const changeAddressFrom = (value) => {
+    const changeAddressFrom = value => {
         props.setAddressFrom(value);
         props.filterAnnouncements(value, props.addressTo, props.minimalSalary, props.requireNoClientTransport);
     }
 
-    const changeAddressTo = (value) => {
+    const changeAddressTo = value => {
         props.setAddressTo(value);
         props.filterAnnouncements(props.addressFrom, value, props.minimalSalary, props.requireNoClientTransport);
     }
 
-    const changeMinimalSalary = (value) => {
+    const changeMinimalSalary = value => {
         props.setMinimalSalary(value);
         props.filterAnnouncements(props.addressFrom, props.addressTo, value, props.requireNoClientTransport);
     }
 
-    const changeTransportRequirement = (value) => {
+    const changeTransportRequirement = value => {
         props.setRequireNoClientTransport(value);
         props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, value);
     }
