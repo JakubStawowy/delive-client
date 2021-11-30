@@ -12,6 +12,9 @@ export const FilteringPanel = props => {
         },
         address: {
             width: '100%'
+        },
+        smallFilter: {
+            width: '45%'
         }
     })));
     const classes = useClasses();
@@ -20,22 +23,27 @@ export const FilteringPanel = props => {
 
     const changeAddressFrom = value => {
         props.setAddressFrom(value);
-        props.filterAnnouncements(value, props.addressTo, props.minimalSalary, props.requireNoClientTransport);
+        props.filterAnnouncements(value, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport);
     }
 
     const changeAddressTo = value => {
         props.setAddressTo(value);
-        props.filterAnnouncements(props.addressFrom, value, props.minimalSalary, props.requireNoClientTransport);
+        props.filterAnnouncements(props.addressFrom, value, props.minimalSalary, props.maxWeight, props.requireNoClientTransport);
     }
 
     const changeMinimalSalary = value => {
         props.setMinimalSalary(value);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, value, props.requireNoClientTransport);
+        props.filterAnnouncements(props.addressFrom, props.addressTo, value, props.maxWeight, props.requireNoClientTransport);
+    }
+
+    const changeMaxWeight = value => {
+        props.setMaxWeight(value);
+        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, value, props.requireNoClientTransport);
     }
 
     const changeTransportRequirement = value => {
         props.setRequireNoClientTransport(value);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, value);
+        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, value);
     }
 
     return (
@@ -50,10 +58,20 @@ export const FilteringPanel = props => {
                 onChange={e => changeAddressTo(e.target.value)}
                 label={"Final addresss"}
                 className={`${classes.address}`}/>
-            <TextField
-                value={props.minimalSalary}
-                onChange={e => changeMinimalSalary(e.target.value)}
-                label={"Minimal salary"}/>
+            <div className={flexClasses.flexRowSpaceBetween}>
+                <TextField
+                    value={props.minimalSalary}
+                    onChange={e => changeMinimalSalary(e.target.value)}
+                    label={"Minimal salary"}
+                    className={classes.smallFilter}
+                />
+                <TextField
+                    value={props.maxWeight}
+                    onChange={e => changeMaxWeight(e.target.value)}
+                    label={"Max weight"}
+                    className={classes.smallFilter}
+                />
+            </div>
             <FormControlLabel
                 control={
                     <Checkbox

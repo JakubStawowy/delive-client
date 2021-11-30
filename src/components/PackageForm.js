@@ -13,6 +13,8 @@ export const PackageForm = (props) => {
     const [packageWidthValidated, setPackageWidthValidated] = useState(true);
     const [packageHeight, setPackageHeight] = useState(null);
     const [packageHeightValidated, setPackageHeightValidated] = useState(true);
+    const [packageWeight, setPackageWeight] = useState(null);
+    const [packageWeightValidated, setPackageWeightValidated] = useState(true);
 
     const useStyles = makeStyles((()=>({
         button: {
@@ -44,7 +46,8 @@ export const PackageForm = (props) => {
                 id: props.packagesLength,
                 packageLength,
                 packageWidth,
-                packageHeight
+                packageHeight,
+                packageWeight
             }) :
         alert("ValidationError");
     }
@@ -78,6 +81,15 @@ export const PackageForm = (props) => {
                     onChange={(e)=> {
                         setPackageHeight(e.target.value);
                         setTimeout(()=>setPackageHeightValidated(validateNumberFormat(e.target.value)), 500);
+                    }}
+                    label={'z'} />
+                Weight:
+                <TextField
+                    className={!packageWeightValidated && validationClasses.wrongTextField}
+                    value={packageWeight}
+                    onChange={(e)=> {
+                        setPackageWeight(e.target.value);
+                        setTimeout(()=>setPackageWeightValidated(validateNumberFormat(e.target.value)), 500);
                     }}
                     label={'z'} />
                 <div>

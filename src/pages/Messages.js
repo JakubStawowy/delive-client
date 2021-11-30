@@ -14,7 +14,6 @@ import {
     getMessagesSent
 } from "../rest/restActions";
 import {MessageListItem} from "../components/MessageListItem";
-import {LocationDetails} from "../components/LocationDetails";
 
 export const Messages = (props) => {
 

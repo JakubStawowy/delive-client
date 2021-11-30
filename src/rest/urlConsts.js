@@ -14,9 +14,10 @@ import {
     USER_ID
 } from "./parametersConsts";
 
-// const BASE_API_URL = 'http://localhost:8080/api';
-// const BASE_API_URL = "http://192.168.0.115:8080/api";
-const BASE_API_URL = "http://192.168.2.104:8080/api";
+// export const BASE_URL = 'http://localhost:8080';
+export const BASE_URL = "http://192.168.0.115:8080";
+// export const BASE_URL = "http://192.168.2.104:8080";
+const BASE_API_URL = BASE_URL + '/api';
 const BASE_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements';
 
 export const REGISTER_USER_URL = BASE_API_URL + '/register';
@@ -28,7 +29,7 @@ export const ADD_NORMAL_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/normal
 export const GET_NORMAL_ANNOUNCEMENTS_URL = BASE_ANNOUNCEMENTS_URL + '/all';
 export const GET_HALFWAY_POINT_URL = BASE_API_URL + "/maps/middle?" + FROM_LATITUDE +
     "=" + PARAM_FROM_LATITUDE + "&" + TO_LATITUDE + "=" + PARAM_TO_LATITUDE +
-    "&" + FROM_LONGITUDE + "=" + PARAM_FROM_LONGITUDE + "&" + TO_LONGITUDE + "=" + PARAM_TO_LONGITUDE + "&mapWidth=:mapWidth";
+    "&" + FROM_LONGITUDE + "=" + PARAM_FROM_LONGITUDE + "&" + TO_LONGITUDE + "=" + PARAM_TO_LONGITUDE + "&mapWidth=:mapWidth&mapHeight=:mapHeight";
 export const LOAD_MESSAGES_SENT_URL = BASE_API_URL + "/messages/sent";
 export const LOAD_MESSAGES_RECEIVED_URL = BASE_API_URL + "/messages/received";
 export const REPLY_MESSAGE_URL = BASE_API_URL + "/messages/reply";
@@ -43,9 +44,8 @@ export const LOAD_LOGGED_USER_URL = BASE_API_URL + '/users/details/loggedUser';
 export const LOAD_FEEDBACK_URL = BASE_API_URL + '/feedback/user?' + USER_ID + '=' + PARAM_USER_ID;
 export const SEND_FEEDBACK_URL = BASE_API_URL + '/feedback/add';
 export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
-export const GET_REVERSE_GEOCODE_URL = BASE_API_URL + '/geocode/reverse?longitude=:longitude&latitude=:latitude';
 export const GET_NEXT_ACTION_NAME_URL = BASE_API_URL + '/delivery/actionName?deliveryState=:deliveryState&announcementAuthorId=:announcementAuthorId&delivererId=:delivererId';
 export const GET_LOGGED_USER_ID_URL = BASE_API_URL + '/users/details/loggedUser/id';
 export const DELETE_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/delete?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
 export const FILTER_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements/filtered?initialAddress=:initialAddress&' +
-    'finalAddress=:finalAddress&minimalSalary=:minimalSalary&requireTransportWithClient=:requireTransportWithClient'
+    'finalAddress=:finalAddress&minimalSalary=:minimalSalary&maxWeight=:maxWeight&requireTransportWithClient=:requireTransportWithClient'

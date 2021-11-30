@@ -5,8 +5,6 @@ import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeCo
 import {Button, Card, List, ListItem, makeStyles, Modal, TextField} from "@material-ui/core";
 import {getAnnouncementById, getLoggedUserId, deleteAnnouncement} from "../rest/restActions";
 import {useHistory} from "react-router";
-import {ANIMATION_TIME} from "../data/consts";
-import {LocationDetails} from "./LocationDetails";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
@@ -17,7 +15,6 @@ import {Profile} from "../pages/Profile";
 export const Announcement = (props) => {
 
     const [announcement, setAnnouncement] = useState(null);
-    const [locationModalOpened, setLocationModalOpened] = useState(false);
     const [deliveryFormModalOpened, setDeliveryFormModalOpened] = useState(false);
     const [currentLocationLongitude, setCurrentLocationLongitude] = useState(null);
     const [currentLocationLatitude, setCurrentLocationLatitude] = useState(null);
@@ -68,19 +65,6 @@ export const Announcement = (props) => {
                 <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                     <Modal
                         className={flexClasses.flexRowCenter}
-                        centered open={locationModalOpened}
-                        children={<ModalTemplate
-                            child={<LocationDetails
-                                    longitude={currentLocationLongitude}
-                                    latitude={currentLocationLatitude}
-                                    setLogged={props.setLogged}
-                                />}
-                            action={setLocationModalOpened}
-                        />}
-                        onClose={()=>setLocationModalOpened(false)}
-                    />
-                    <Modal
-                        className={flexClasses.flexRowCenter}
                         centered open={deliveryFormModalOpened}
                         children={<ModalTemplate
                             child={
@@ -89,6 +73,7 @@ export const Announcement = (props) => {
                                     setDeliveryModalOpened={setDeliveryFormModalOpened}
                                     announcementId={announcement.id}
                                     authorId={announcement.authorId}
+                                    // connect={props.connect}
                                 />
                             }
                             action={setDeliveryFormModalOpened}

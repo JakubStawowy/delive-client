@@ -22,6 +22,7 @@ export const Home = (props) => {
     const [addressFrom, setAddressFrom] = useState('');
     const [addressTo, setAddressTo] = useState('');
     const [minimalSalary, setMinimalSalary] = useState('');
+    const [maxWeight, setMaxWeight] = useState('');
     const [requireNoClientTransport, setRequireNoClientTransport] = useState(false);
 
     const [bounce, setBounce] = useState(false);
@@ -53,8 +54,8 @@ export const Home = (props) => {
             .catch((error) => handleError(error, history, props.setLogged));
     }
 
-    const filterAnnouncements = (addressFrom, addressTo, minimalSalary, requireNoClientTransport) => {
-        getFilteredAnnouncements(addressFrom, addressTo, minimalSalary,
+    const filterAnnouncements = (addressFrom, addressTo, minimalSalary, maxWeight, requireNoClientTransport) => {
+        getFilteredAnnouncements(addressFrom, addressTo, minimalSalary, maxWeight,
             requireNoClientTransport === true ? 'false' : '')
             .then(response => setAnnouncements(response.data))
             .catch((error) => handleError(error, history, props.setLogged));
@@ -104,6 +105,8 @@ export const Home = (props) => {
                                             setAddressTo={setAddressTo}
                                             minimalSalary={minimalSalary}
                                             setMinimalSalary={setMinimalSalary}
+                                            maxWeight={maxWeight}
+                                            setMaxWeight={setMaxWeight}
                                             requireNoClientTransport={requireNoClientTransport}
                                             setRequireNoClientTransport={setRequireNoClientTransport}
                                             filterAnnouncements={filterAnnouncements}

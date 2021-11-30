@@ -10,7 +10,6 @@ import {
     GET_LOGGED_USER_ID_URL,
     GET_NEXT_ACTION_NAME_URL,
     GET_NORMAL_ANNOUNCEMENTS_URL,
-    GET_REVERSE_GEOCODE_URL,
     LOAD_DELIVERY_BY_DELIVERER_URL,
     LOAD_DELIVERY_BY_PRINCIPAL_URL,
     LOAD_FEEDBACK_URL,
@@ -49,6 +48,7 @@ export const getHalfwayPoint = (data) => axios.get(
         .replace(PARAM_FROM_LONGITUDE, data.fromLongitude)
         .replace(PARAM_TO_LONGITUDE, data.toLongitude)
         .replace(":mapWidth", data.mapWidth)
+        .replace(":mapHeight", data.mapHeight)
     , getConfig());
 export const getMessagesSent = () => axios.get(LOAD_MESSAGES_SENT_URL, getConfig());
 export const getMessagesReceived = () => axios.get(LOAD_MESSAGES_RECEIVED_URL, getConfig());
@@ -79,8 +79,6 @@ export const loadLoggedUser = () => axios.get(LOAD_LOGGED_USER_URL, getConfig())
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(PARAM_USER_ID, userId), getConfig());
 export const sendFeedback = data => axios.post(SEND_FEEDBACK_URL, data, getConfig());
 export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
-export const getReverseGeocode = (longitude, latitude) => axios.get(GET_REVERSE_GEOCODE_URL
-    .replace(":longitude", longitude).replace(":latitude", latitude), getConfig());
 
 export const getNextActionName = (deliveryState, announcementAuthorId, delivererId) => axios.get(GET_NEXT_ACTION_NAME_URL
         .replace(":deliveryState", deliveryState)
@@ -90,12 +88,13 @@ export const getNextActionName = (deliveryState, announcementAuthorId, deliverer
 
 export const getLoggedUserId = () => axios.get(GET_LOGGED_USER_ID_URL, getConfig());
 export const deleteAnnouncement = announcementId => axios.delete(DELETE_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
-export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary, requireTransportWithClient = '') => axios.get(FILTER_ANNOUNCEMENTS_URL
+export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary, maxWeight, requireTransportWithClient = '') => axios.get(FILTER_ANNOUNCEMENTS_URL
     .replace(':initialAddress', initialAddress)
     .replace(':finalAddress', finalAddress)
     .replace(':minimalSalary', minimalSalary)
+    .replace(':maxWeight', maxWeight)
     .replace(':requireTransportWithClient', requireTransportWithClient), getConfig());
-const getConfig = () => {
+export const getConfig = () => {
     return {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem(TOKEN)

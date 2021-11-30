@@ -1,6 +1,6 @@
 import {Button, Card, ListItem, makeStyles, Modal, TableRow} from "@material-ui/core";
 import {replyMessage} from "../rest/restActions";
-import {handleError} from "../actions/handlers";
+import {handleError, sendMessage} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
@@ -54,10 +54,10 @@ export const MessageListItem = (props) => {
     const handleReplyMessage = consent => replyMessage({
         replyMessageId: props.message.id,
         announcementId: props.message.announcementId,
-        // senderId: localStorage.getItem(USER_ID),
         receiverId: props.message.senderId,
         consent
     }).then(() => {
+        sendMessage(props.message.senderId);
         alert("Message sent");
         props.refresh();
     }).catch((error) => handleError(error, history, props.setLogged));

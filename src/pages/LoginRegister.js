@@ -10,7 +10,7 @@ import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../rest/restActions";
 import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN} from "../consts/applicationConsts";
-import {handleError} from "../actions/handlers";
+import {handleError, reconnect} from "../actions/handlers";
 
 export const LoginRegister = (props) => {
 
@@ -79,7 +79,9 @@ export const LoginRegister = (props) => {
             if (response.data.operationSuccess) {
                 localStorage.setItem(TOKEN, response.data.token);
                 localStorage.setItem(ROLE, response.data.role);
+                localStorage.setItem('userId', response.data.userId);
                 props.setLogged(true);
+                reconnect();
                 history.push('/home');
             }
             else {

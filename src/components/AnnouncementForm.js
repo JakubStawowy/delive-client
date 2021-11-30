@@ -59,7 +59,6 @@ export const AnnouncementForm = (props) => {
     const [toLongitude, setToLongitude] = useState(null);
     const [toAddress, setToAddress] = useState(null);
 
-
     const [amount, setAmount] = useState(null);
 
     const history = useHistory();
@@ -88,7 +87,13 @@ export const AnnouncementForm = (props) => {
         submit: {
             width: '100%',
             [theme.breakpoints.down('xs')]: {
-                flexDirection: 'column'
+                flexDirection: 'column',
+                alignItems: 'flex-start'
+            },
+        },
+        submitButton: {
+            [theme.breakpoints.down('xs')]: {
+                width: '100%'
             },
         }
     })))
@@ -342,7 +347,7 @@ export const AnnouncementForm = (props) => {
                                 }
                                 label={'Transport with the client'}
                             />
-                            <Button variant={'contained'} onClick={()=>handleSubmit()}>
+                            <Button variant={'contained'} onClick={()=>handleSubmit()} className={classes.submitButton}>
                                 {announcementFormItems.submit}
                                 <ArrowForwardIcon fontSize={'large'}/>
                             </Button>

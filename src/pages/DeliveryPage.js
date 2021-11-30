@@ -146,6 +146,7 @@ export const DeliveryPage = (props) => {
                                                         delivery={delivery}
                                                         refresh={refresh}
                                                         setLogged={props.setLogged}
+                                                        // connect={props.connect}
                                                     />
                                                 );
                                             })
@@ -156,6 +157,7 @@ export const DeliveryPage = (props) => {
                                                         delivery={delivery}
                                                         refresh={refresh}
                                                         setLogged={props.setLogged}
+                                                        // connect={props.connect}
                                                     />
                                                 );
                                             })

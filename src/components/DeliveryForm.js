@@ -1,6 +1,6 @@
 import {useHistory} from "react-router";
 import {useEffect, useState} from "react";
-import {handleError, handleItemAccessAttempt} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt, reconnect, sendMessage} from "../actions/handlers";
 import {StyleRoot} from "radium";
 import {Button, Card, makeStyles, TextareaAutosize, Typography} from "@material-ui/core";
 import {
@@ -49,14 +49,16 @@ export const DeliveryForm = (props) => {
             announcementId: props.announcementId,
             receiverId: props.authorId,
             message
-        }).then(response =>
-            response.data ?
-            setTimeout(() => {
-                alert('Delivery request sent');
-                props.setDeliveryModalOpened(false);
-            }, ANIMATION_TIME / 2)
-                :
-                alert("You are already assigned to delivery")
+        }).then(response => {
+                if (response.data) {
+                    props.setDeliveryModalOpened(false);
+                    sendMessage(props.authorId, "Someone wants to handle your delivery1");
+                    alert('Delivery request sent');
+                }
+                else {
+                    alert("You are already assigned to delivery")
+                }
+            }
         ).catch((error) => handleError(error, history, props.setLogged));
 
 

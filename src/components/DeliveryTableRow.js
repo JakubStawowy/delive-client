@@ -3,13 +3,18 @@ import {flexComponents} from "../style/components";
 import {useEffect, useState} from "react";
 import {WAITING} from "../consts/applicationConsts";
 import {changeDeliveryState, getNextActionName} from "../rest/restActions";
-import {handleError} from "../actions/handlers";
+import {handleError, sendMessage} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {Announcement} from "./Announcement";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import {trimDate} from "../actions/commonFunctions";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import {getConfig} from "../rest/restActions";
+import {BASE_URL} from "../rest/urlConsts";
+import {TOKEN} from "../consts/applicationConsts";
 
 export const DeliveryTableRow = (props) => {
 
@@ -54,7 +59,16 @@ export const DeliveryTableRow = (props) => {
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));
             });
+            sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to destination");
         } else {
+            if (actionName === 'start') {
+                sendMessage(props.delivery.announcement.authorId, "Your uber has arrived");
+            }
+
+            if (actionName === 'close' || actionName === 'discard' || actionName === 'accept') {
+                sendMessage(props.delivery.delivererId);
+            }
+
             changeDeliveryState(actionName, props.delivery.id)
                 .then(() => {
                     alert("Delivery state changed");

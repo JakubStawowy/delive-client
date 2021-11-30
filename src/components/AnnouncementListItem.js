@@ -109,7 +109,10 @@ export const AnnouncementListItem = (props) => {
                         to: {`${props.data.destinationTo.address}, ${props.data.destinationTo.locality}, ${props.data.destinationTo.country}`}
                     </div>
                     <div className={classes.dataElement}>
-                        salary: {`${props.data.amount}`}
+                        packages weight: {`${props.data.weight}`} LBS
+                    </div>
+                    <div className={classes.dataElement}>
+                        salary: {`${props.data.amount}`} EUR
                     </div>
                 </div>
             <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.buttons}`}>

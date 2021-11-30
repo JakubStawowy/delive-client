@@ -24,7 +24,9 @@ export const MapItem = (props) => {
                 toLatitude: props.coordinates.toLatitude,
                 fromLongitude: props.coordinates.fromLongitude,
                 toLongitude: props.coordinates.toLongitude,
-                mapWidth: document.getElementById('root').clientWidth
+                mapWidth: window.matchMedia(XS_MEDIA_QUERY).matches ?
+                    document.getElementById('root').clientWidth * 0.8 : document.getElementById('root').clientWidth * 0.4,
+                mapHeight: document.getElementById('root').clientHeight * 0.3
             }).then((response)=> {
                 setViewport({
                     latitude: response.data.latitude,
