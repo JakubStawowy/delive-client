@@ -12,7 +12,7 @@ import {
 import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
 // import {Profile} from "./pages/Profile";
-// import {Messages} from "./pages/Messages";
+import {Messages} from "./pages/Messages";
 // import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
 // import {EditAnnouncement} from "./pages/EditAnnouncement";
 // import {Announcement} from "./components/Announcement";
@@ -55,7 +55,7 @@ function App() {
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
               <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
-          {/*    <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
+              <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
           {/*    /!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
           {/*    <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
           {/*    <Route path={'/editAnnouncement/:announcementId'}*/}
