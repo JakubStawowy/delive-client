@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import {Button, makeStyles, MenuItem, Select, Typography} from "@material-ui/core";
 import {flexComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
-import logo from "../uploads/menu-logo.png";
 import MenuIcon from '@material-ui/icons/Menu';
-import {i18n} from "../data/i18n";
 import {useAnimationStyles} from "../style/animation";
 import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
@@ -14,8 +12,6 @@ import {handleError} from "../actions/handlers";
 
 export const Menu = (props) => {
 
-    const localeSet = Object.keys(i18n);
-    const menuStatements = i18n[props.locale].menuItems;
     const [menuOpened, setMenuOpened] = useState(false);
     const [menuAnimated, setMenuAnimated] = useState(false);
     const history = useHistory();
@@ -103,7 +99,7 @@ export const Menu = (props) => {
                             <Button
                                 variant={'contained'}
                                 onClick={() => handleNav('/addAnnouncement/normal')}>
-                                {menuStatements.newOffer}
+                                Post new offer
                             </Button>
                         }
                         {/*{*/}
@@ -133,7 +129,7 @@ export const Menu = (props) => {
                         {
                             props.logged &&
                             <Button variant={'contained'} onClick={()=>handleLogout()} >
-                                {menuStatements.login}
+                                Logout
                             </Button>
                         }
                     </div>
