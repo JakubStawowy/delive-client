@@ -3,19 +3,19 @@ import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {
-    // Redirect,
+    Redirect,
     Route,
-    // Router,
+    Router,
     Switch,
-    // useHistory
+    useHistory
 } from "react-router";
 import {Home} from "./pages/Home";
-// import {DeliveryPage} from "./pages/DeliveryPage";
-// import {Profile} from "./pages/Profile";
+import {DeliveryPage} from "./pages/DeliveryPage";
+import {Profile} from "./pages/Profile";
 import {Messages} from "./pages/Messages";
-// import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
-// import {EditAnnouncement} from "./pages/EditAnnouncement";
-// import {Announcement} from "./components/Announcement";
+import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
+import {EditAnnouncement} from "./pages/EditAnnouncement";
+import {Announcement} from "./components/Announcement";
 
 import wallpaper from './uploads/wallpaper.png';
 import {useEffect, useState} from "react";
@@ -51,26 +51,24 @@ function App() {
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
               <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
               <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
-          {/*    /!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
-          {/*    <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
-          {/*    <Route path={'/editAnnouncement/:announcementId'}*/}
-          {/*           component={EditAnnouncement}*/}
-          {/*           render={()=><EditAnnouncement setLogged={setLogged()}/>}/>*/}
-          {/*    <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>*/}
-          {/*    <Route path={'/profile/:userId'}*/}
-          {/*           component={Profile}*/}
-          {/*           render={()=><Profile setLogged={setLogged}/>} />*/}
-          {/*    <Route path={'/profile'} component={Profile} render={()=><Profile setLogged={setLogged}/>} />*/}
-          {/*    <Route path={'/announcement/:announcementId'}*/}
-          {/*           component={Announcement}*/}
-          {/*           // connect={connect}*/}
-          {/*           render={()=><Announcement setLogged={setLogged}/>} />*/}
-          {/*    <Route exact path={'/'}>*/}
-          {/*        {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
-          {/*    </Route>*/}
-          {/*    <Route exact path={'/*'}>*/}
-          {/*        {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
-          {/*    </Route>*/}
+              <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>
+              <Route path={'/editAnnouncement/:announcementId'}
+                     component={EditAnnouncement}
+                     render={()=><EditAnnouncement setLogged={setLogged()}/>}/>
+              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
+              <Route path={'/profile/:userId'}
+                     component={Profile}
+                     render={()=><Profile setLogged={setLogged}/>} />
+              <Route path={'/profile'} component={Profile} render={()=><Profile setLogged={setLogged}/>} />
+              <Route path={'/announcement/:announcementId'}
+                     component={Announcement}
+                     render={()=><Announcement setLogged={setLogged}/>} />
+              <Route exact path={'/'}>
+                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
+              </Route>
+              <Route exact path={'/*'}>
+                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
+              </Route>
           </Switch>
         </BrowserRouter>
     );
