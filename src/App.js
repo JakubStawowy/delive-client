@@ -9,7 +9,7 @@ import {
     Switch,
     // useHistory
 } from "react-router";
-// import {Home} from "./pages/Home";
+import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
 // import {Profile} from "./pages/Profile";
 // import {Messages} from "./pages/Messages";
@@ -54,7 +54,7 @@ function App() {
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-          {/*    <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>*/}
+              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
           {/*    <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
           {/*    /!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
           {/*    <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
