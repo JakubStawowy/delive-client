@@ -9,7 +9,7 @@ import {
     Switch,
     // useHistory
 } from "react-router";
-import {Home} from "./pages/Home";
+// import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
 // import {Profile} from "./pages/Profile";
 // import {Messages} from "./pages/Messages";
