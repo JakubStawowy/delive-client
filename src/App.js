@@ -3,19 +3,19 @@ import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {
-    Redirect,
+    // Redirect,
     Route,
-    Router,
+    // Router,
     Switch,
-    useHistory
+    // useHistory
 } from "react-router";
-import {Home} from "./pages/Home";
-import {DeliveryPage} from "./pages/DeliveryPage";
-import {Profile} from "./pages/Profile";
-import {Messages} from "./pages/Messages";
-import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
-import {EditAnnouncement} from "./pages/EditAnnouncement";
-import {Announcement} from "./components/Announcement";
+// import {Home} from "./pages/Home";
+// import {DeliveryPage} from "./pages/DeliveryPage";
+// import {Profile} from "./pages/Profile";
+// import {Messages} from "./pages/Messages";
+// import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
+// import {EditAnnouncement} from "./pages/EditAnnouncement";
+// import {Announcement} from "./components/Announcement";
 
 import wallpaper from './uploads/wallpaper.png';
 import {useEffect, useState} from "react";
@@ -63,12 +63,12 @@ function App() {
               {/*<Route path={'/announcement/:announcementId'}*/}
               {/*       component={Announcement}*/}
               {/*       render={()=><Announcement setLogged={setLogged}/>} />*/}
-              <Route exact path={'/'}>
-                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
-              </Route>
-              <Route exact path={'/*'}>
-                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
-              </Route>
+              {/*<Route exact path={'/'}>*/}
+              {/*    {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
+              {/*</Route>*/}
+              {/*<Route exact path={'/*'}>*/}
+              {/*    {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
+              {/*</Route>*/}
           </Switch>
         </BrowserRouter>
     );
