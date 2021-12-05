@@ -49,7 +49,7 @@ function App() {
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
+              {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/editAnnouncement/:announcementId'}*/}
