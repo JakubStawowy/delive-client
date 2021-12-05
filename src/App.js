@@ -1,8 +1,14 @@
 import {Menu} from "./components/Menu";
 import {makeStyles} from "@material-ui/core";
-// import {LoginRegister} from "./pages/LoginRegister";
+import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
-// import {Redirect, Route, Router, Switch, useHistory} from "react-router";
+import {
+    // Redirect,
+    Route,
+    // Router,
+    Switch,
+    // useHistory
+} from "react-router";
 // import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
 // import {Profile} from "./pages/Profile";
@@ -46,8 +52,8 @@ function App() {
           <Menu locale={locale} action={setLocale}
                 logged={logged} setLogged={setLogged}/>
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
-          {/*<Switch>*/}
-          {/*    <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>*/}
+          <Switch>
+              <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
           {/*    <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>*/}
           {/*    <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
           {/*    /!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
@@ -70,7 +76,7 @@ function App() {
           {/*    <Route exact path={'/*'}>*/}
           {/*        {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
           {/*    </Route>*/}
-          {/*</Switch>*/}
+          </Switch>
         </BrowserRouter>
     );
 }
