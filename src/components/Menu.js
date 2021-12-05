@@ -136,22 +136,6 @@ export const Menu = (props) => {
                                 {menuStatements.login}
                             </Button>
                         }
-                        <Select
-                            onChange={(e)=>handleChangeLocale(e)}
-                            className={`${classes.select}`}
-                        >
-                            {
-                                localeSet.map(key=>{
-                                    return (
-                                        <MenuItem
-                                            value={key}
-                                        >
-                                            {key}
-                                        </MenuItem>
-                                    )
-                                })
-                            }
-                        </Select>
                     </div>
                     <Button className={`${rwd.mobileComponent}`} onClick={()=>closeMenu()}>
                         <MenuIcon fontSize={'large'} className={`${classes.icon}`}/>

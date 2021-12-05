@@ -59,10 +59,13 @@ export const DeliveryTableRow = (props) => {
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));
             });
-            sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to destination");
+            sendMessage(props.delivery.announcement.authorId, "Deliverer rached the destination");
         } else {
+            if (actionName === 'toStart') {
+                sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to initial location");
+            }
             if (actionName === 'start') {
-                sendMessage(props.delivery.announcement.authorId, "Your uber has arrived");
+                sendMessage(props.delivery.delivererId, "Delivery started");
             }
 
             if (actionName === 'close' || actionName === 'discard' || actionName === 'accept') {
@@ -198,10 +201,10 @@ export const DeliveryTableRow = (props) => {
                     actionNames.map(actionName => {
                         return (
                             <Button variant={"contained"}
-                                    onClick={() => handleChangeDeliveryState(actionName)}
-                                    disabled={actionName === WAITING || actionName === '-'}
+                                    onClick={() => handleChangeDeliveryState(actionName.value)}
+                                    disabled={actionName.value === WAITING || actionName.value === '-'}
                             >
-                                {actionName}
+                                {actionName.label}
                             </Button>
                         )
                     })

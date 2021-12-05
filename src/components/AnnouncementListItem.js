@@ -83,23 +83,6 @@ export const AnnouncementListItem = (props) => {
                 }
                 onClose={()=>setMapModalOpened(false)}
             />
-            <Modal
-                className={flexClasses.flexRowCenter}
-                centered open={packagesModalOpened}
-                children={
-                    <ModalTemplate
-                        child={
-                            <Card>
-                                <PackagesList
-                                    packages={props.data.packages}
-                                />
-                            </Card>
-                        }
-                        action={setPackagesModalOpened}
-                    />
-                }
-                onClose={()=>setPackagesModalOpened(false)}
-            />
             <img src={boxIcon} alt={''}  className={`${classes.icon}`}/>
                 <div className={`${classes.description}`}>
                     <div className={classes.dataElement}>
@@ -109,16 +92,13 @@ export const AnnouncementListItem = (props) => {
                         to: {`${props.data.destinationTo.address}, ${props.data.destinationTo.locality}, ${props.data.destinationTo.country}`}
                     </div>
                     <div className={classes.dataElement}>
-                        packages weight: {`${props.data.weight}`} LBS
+                        packages weight: {`${props.data.weight}`} {`${props.data.weightUnit}`}
                     </div>
                     <div className={classes.dataElement}>
                         salary: {`${props.data.amount}`} EUR
                     </div>
                 </div>
             <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.buttons}`}>
-                <Button onClick={() => setPackagesModalOpened(true)}>
-                    <MapIcon />
-                </Button>
                 <Button onClick={() => setMapModalOpened(true)}>
                     <RoomIcon />
                 </Button>

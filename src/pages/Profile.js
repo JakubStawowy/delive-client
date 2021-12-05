@@ -75,15 +75,26 @@ export const Profile = props => {
                                 My wallet: {`${userData.userWallet.balance} ${userData.userWallet.currency}`}
                             </div>
                         }
-                        {
-                            userData.userWallet !== null &&
-                            <Button
-                                variant={"contained"}
-                                onClick={()=>alert('Function currently not supported')}
-                            >
-                                Withdraw money to bank account
-                            </Button>
-                        }
+                        <div>
+                            {
+                                userData.userWallet !== null &&
+                                <Button
+                                    variant={"contained"}
+                                    onClick={()=>alert('Function currently not supported')}
+                                >
+                                    Top-up your wallet
+                                </Button>
+                            }
+                            {
+                                userData.userWallet !== null &&
+                                <Button
+                                    variant={"contained"}
+                                    onClick={()=>alert('Function currently not supported')}
+                                >
+                                    Withdraw money to bank account
+                                </Button>
+                            }
+                        </div>
                         <Typography variant={'h4'} gutterBottom={'true'}>
                             Feedback
                         </Typography>

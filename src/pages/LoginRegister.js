@@ -8,7 +8,7 @@ import {ANIMATION_TIME} from "../data/consts";
 import {StyleRoot} from "radium";
 import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../rest/restActions";
-import {validateConfirmedPassword, validateEmail, validatePassword} from "../actions/validators";
+import {validateConfirmedPassword, validateEmail, validateEmptyString, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN} from "../consts/applicationConsts";
 import {handleError, reconnect} from "../actions/handlers";
 
@@ -23,6 +23,9 @@ export const LoginRegister = (props) => {
         && localStorage.getItem('locale') !== null
             ? localStorage.getItem('locale') : 'en'].registerItems;
 
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [phone, setPhone] = useState('');
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [bounce, setBounce] = useState(false);
@@ -31,6 +34,8 @@ export const LoginRegister = (props) => {
     const [confirmedPassword, setConfirmedPassword] = useState('');
 
     const [validatedEmail, setValidatedEmail] = useState(true);
+    const [validatedName, setValidatedName] = useState(true);
+    const [validatedSurname, setValidatedSurname] = useState(true);
     const [validatedPassword, setValidatedPassword] = useState(true);
     const [validatedConfirmedPassword, setValidatedConfirmedPassword] = useState(true);
     const [emailExists, setEmailExists] = useState(false);
@@ -55,13 +60,13 @@ export const LoginRegister = (props) => {
 
     const handleRegisterSubmit = (event) => {
         event.preventDefault();
-        validatedEmail && validatedPassword && validatedConfirmedPassword && !emailExists && !nicknameExists ?
+        validatedEmail && validatedPassword && validatedConfirmedPassword && validateEmptyString(name) && validateEmptyString(surname) && !emailExists && !nicknameExists ?
         registerUser({
             email: registeredEmail,
             password: registeredPassword,
-            name: null,
-            surname: null,
-            phone: null,
+            name,
+            surname,
+            phone,
             image: 'no-image'
         }).then((response) => alert(response.data.message))
             .catch(error => handleError(error, history, props.setLogged))
@@ -124,10 +129,16 @@ export const LoginRegister = (props) => {
                             {registerItems.label}
                         </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
-                            <TextField label={'username'}/>
-                            <TextField label={'surname'}/>
-                            <TextField label={'phone'}/>
-                            <TextField label={registerItems.email} value={registeredEmail} onChange={e=> {
+                            <TextField label={'Name'} value={name} onChange={e=> {
+                                setName(e.target.value);
+                                setTimeout(()=>setValidatedName(validateEmptyString(e.target.value)), 500);
+                            }}/>
+                            <TextField label={'Surname'} value={surname} onChange={e=> {
+                                setSurname(e.target.value);
+                                setTimeout(()=>setValidatedSurname(validateEmptyString(e.target.value)), 500);
+                            }}/>
+                            <TextField label={'Phone (optional)'} value={phone} onChange={e=>setPhone(e.target.value)}/>
+                            <TextField label={'Email'} value={registeredEmail} onChange={e=> {
                                 setRegisteredEmail(e.target.value);
                                 setTimeout(()=>setValidatedEmail(validateEmail(e.target.value)), 500);
                                 checkIfEmailExists(e.target.value).then((response)=> {
@@ -136,7 +147,7 @@ export const LoginRegister = (props) => {
                             }}
                             className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
                             />
-                            <TextField label={registerItems.password} value={registeredPassword} type={'password'} onChange={e=> {
+                            <TextField label={'Password'} value={registeredPassword} type={'password'} onChange={e=> {
                                 setRegisteredPassword(e.target.value);
                                 setTimeout(() => {
                                     setValidatedPassword(validatePassword(e.target.value));

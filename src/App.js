@@ -38,7 +38,6 @@ function App() {
     const classes = useStyles();
 
     useEffect(() => {
-        alert("Hello world");
         logged && reconnect();
     }, []);
 

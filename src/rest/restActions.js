@@ -39,7 +39,10 @@ export const checkIfEmailExists = (email) => axios.get(VALIDATE_EMAIL_URL.replac
 export const checkIfNicknameExists = (nickname) => axios.get(VALIDATE_NICKNAME_URL.replace(':nickname', nickname));
 export const loginUser = (data) => axios.post(LOGIN_USER_URL.replace(':email', data.email).replace(':password', data.password));
 export const logoutUser = () => axios.put(LOGOUT_USER_URL, null, getConfig());
-export const addNormalAnnouncement = (data) => axios.post(ADD_NORMAL_ANNOUNCEMENT_URL, data, getConfig());
+export const addNormalAnnouncement = (data) => {
+    console.log(data);
+    return axios.post(ADD_NORMAL_ANNOUNCEMENT_URL, data, getConfig())
+};
 export const getNormalAnnouncements = () => axios.get(GET_NORMAL_ANNOUNCEMENTS_URL, getConfig());
 export const getHalfwayPoint = (data) => axios.get(
     GET_HALFWAY_POINT_URL

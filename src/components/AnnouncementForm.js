@@ -8,7 +8,7 @@ import {
     List,
     ListItem,
     TextField,
-    FormControlLabel, Checkbox
+    FormControlLabel, Checkbox, Select, MenuItem
 } from "@material-ui/core";
 import {
     flexComponents, listComponents,
@@ -33,6 +33,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
 import {validateEmptyString, validateNumberFormat} from "../actions/validators";
 import {PackageForm} from "./PackageForm";
+import {KILOGRAM, LBS} from "../consts/unitConsts";
 
 export const AnnouncementForm = (props) => {
 
@@ -48,6 +49,7 @@ export const AnnouncementForm = (props) => {
     const [packageFormOpened, setPackageFormOpened] = useState(false);
     const [transportWithTheClient, setTransportWithTheClient] = useState(false);
     const [validatedSalary, setValidatedSalary] = useState(true);
+    const [weightUnit, setWeightUnit] = useState(KILOGRAM);
 
     const [useMap, setUseMap] = useState(false);
 
@@ -95,6 +97,17 @@ export const AnnouncementForm = (props) => {
             [theme.breakpoints.down('xs')]: {
                 width: '100%'
             },
+        },
+        unitSection: {
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%'
+        },
+        weightSelect: {
+            marginLeft: '1em'
+        },
+        listItem: {
+            whiteSpace: 'nowrap'
         }
     })))
     const classes = styles();
@@ -130,14 +143,20 @@ export const AnnouncementForm = (props) => {
             destinationFrom,
             destinationTo,
             packages: packages,
+            weightUnit,
             amount,
             requireTransportWithClient: transportWithTheClient,
         };
         console.log(data);
         isGeolocationValid && isPackagesValid && isSalaryValid ?
-        addNormalAnnouncement(data).then(() => {
-            setBounce(true);
-            setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
+        addNormalAnnouncement(data).then(response => {
+            if (response.data.operationSuccess) {
+                setBounce(true);
+                setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
+            }
+            else {
+                alert(response.data.message);
+            }
         }).catch((error) => handleError(error, history, props.setLogged))
             :
             handleValidationError(isGeolocationValid, isPackagesValid, isSalaryValid);
@@ -237,6 +256,7 @@ export const AnnouncementForm = (props) => {
                             setPackageFormOpened={setPackageFormOpened}
                             addPackage={addPackage}
                             packagesLength={packages.length}
+                            weightUnit={weightUnit}
                         />}
                         onClose={()=>setPackageFormOpened(!packageFormOpened)}
                     />
@@ -306,17 +326,25 @@ export const AnnouncementForm = (props) => {
                                 </Button>
                             </div>
                         </div>
-                        <div className={flexClasses.flexRowSpaceBetween}>
+                        <div className={`${flexClasses.flexRowSpaceBetween} ${classes.subContainer}`}>
                             <List className={`${flexClasses.flexRowSpaceBetween} ${listClasses.horizontalList}`}>
                                 {
-                                    packages.map(deliveryPackage => <ListItem>
+                                    packages.map(deliveryPackage =>
+                                        <ListItem className={classes.listItem}>
                                         <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
                                             <Button onClick={() => removePackage(deliveryPackage.id)}>
                                                 <IndeterminateCheckBoxSharpIcon />
                                             </Button>
-                                            {`${deliveryPackage.packageWidth} x ${deliveryPackage.packageLength} x ${deliveryPackage.packageHeight}`}
+                                            <div>
+                                                {`${deliveryPackage.packageWidth} ${deliveryPackage.widthUnit} x ${deliveryPackage.packageLength} `}
+                                                {`${deliveryPackage.lengthUnit} x ${deliveryPackage.packageHeight} ${deliveryPackage.heightUnit}`}
+                                            </div>
+                                            <div>
+                                                {`${deliveryPackage.packageWeight} ${weightUnit}`}
+                                            </div>
                                         </Card>
-                                    </ListItem>)
+                                    </ListItem>
+                                    )
                                 }
                                 <ListItem>
                                     <Button variant={'contained'} onClick={()=>setPackageFormOpened(true)} className={classes.package}>
@@ -324,10 +352,18 @@ export const AnnouncementForm = (props) => {
                                     </Button>
                                 </ListItem>
                             </List>
+
+                        </div>
+                        <div className={`${classes.unitSection}`}>
+                            Packages weight unit:
+                            <Select className={classes.weightSelect} onChange={e => setWeightUnit(e.target.value)} defaultValue={KILOGRAM}>
+                                <MenuItem value={KILOGRAM}>{KILOGRAM}</MenuItem>
+                                <MenuItem value={LBS}>{LBS}</MenuItem>
+                            </Select>
                         </div>
                         <div className={flexClasses.flexRowSpaceBetween}>
                             <TextField
-                                label={"salary"}
+                                label={"Salary [EUR]"}
                                 value={amount}
                                 onChange={e => {
                                     setAmount(e.target.value);

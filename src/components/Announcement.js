@@ -154,6 +154,7 @@ export const Announcement = (props) => {
                                     Packages to delivery
                                     <PackagesList
                                         packages={announcement.packages}
+                                        weightUnit={announcement.weightUnit}
                                     />
                                 </div>
                             }

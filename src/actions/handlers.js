@@ -71,7 +71,6 @@ export const reconnect = () => {
     }
 
     const onConnected = () => {
-        alert("SSubskrybuje")
         stompClient.subscribe('/topic/' + localStorage.getItem('userId'), message => alert(JSON.parse(message.body).value));
     }
 
