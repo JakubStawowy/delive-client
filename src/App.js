@@ -23,10 +23,6 @@ import {isLogged, reconnect} from "./actions/handlers";
 
 function App() {
 
-    const [locale, setLocale] = useState(
-        localStorage.getItem('locale') !== undefined && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'pl'
-    );
     const [logged, setLogged] = useState(isLogged());
 
     const useStyles = makeStyles(({
@@ -49,12 +45,11 @@ function App() {
 
     return (
         <BrowserRouter className={classes.container}>
-          <Menu locale={locale} action={setLocale}
-                logged={logged} setLogged={setLogged}/>
+          <Menu logged={logged} setLogged={setLogged}/>
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
+              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
               <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
           {/*    /!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
           {/*    <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
