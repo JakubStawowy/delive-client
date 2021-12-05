@@ -49,20 +49,20 @@ function App() {
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
-              <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
-              <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>
-              <Route path={'/editAnnouncement/:announcementId'}
-                     component={EditAnnouncement}
-                     render={()=><EditAnnouncement setLogged={setLogged()}/>}/>
-              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
-              <Route path={'/profile/:userId'}
-                     component={Profile}
-                     render={()=><Profile setLogged={setLogged}/>} />
-              <Route path={'/profile'} component={Profile} render={()=><Profile setLogged={setLogged}/>} />
-              <Route path={'/announcement/:announcementId'}
-                     component={Announcement}
-                     render={()=><Announcement setLogged={setLogged}/>} />
+              {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/editAnnouncement/:announcementId'}*/}
+              {/*       component={EditAnnouncement}*/}
+              {/*       render={()=><EditAnnouncement setLogged={setLogged()}/>}/>*/}
+              {/*<Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/profile/:userId'}*/}
+              {/*       component={Profile}*/}
+              {/*       render={()=><Profile setLogged={setLogged}/>} />*/}
+              {/*<Route path={'/profile'} component={Profile} render={()=><Profile setLogged={setLogged}/>} />*/}
+              {/*<Route path={'/announcement/:announcementId'}*/}
+              {/*       component={Announcement}*/}
+              {/*       render={()=><Announcement setLogged={setLogged}/>} />*/}
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
               </Route>
