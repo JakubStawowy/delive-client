@@ -11,6 +11,7 @@ import {ModalTemplate} from "../templates/ModalTemplate";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import RoomIcon from "@material-ui/icons/Room";
+import CheckIcon from "@material-ui/icons/Check";
 
 export const AnnouncementListItem = (props) => {
 
@@ -53,6 +54,9 @@ export const AnnouncementListItem = (props) => {
         dataElement: {
             borderBottom: '1px solid gray',
             padding: '.5em 0 .5em'
+        },
+        check: {
+            color: 'green'
         }
     })));
     const classes = useStyles();
@@ -86,10 +90,10 @@ export const AnnouncementListItem = (props) => {
             <img src={boxIcon} alt={''}  className={`${classes.icon}`}/>
                 <div className={`${classes.description}`}>
                     <div className={classes.dataElement}>
-                        from: {`${props.data.destinationFrom.address}, ${props.data.destinationFrom.locality}, ${props.data.destinationFrom.country}`}
+                        from: {`${props.data.destinationFrom.address}`}
                     </div>
                     <div className={classes.dataElement}>
-                        to: {`${props.data.destinationTo.address}, ${props.data.destinationTo.locality}, ${props.data.destinationTo.country}`}
+                        to: {`${props.data.destinationTo.address}`}
                     </div>
                     <div className={classes.dataElement}>
                         packages weight: {`${props.data.weight}`} {`${props.data.weightUnit}`}
@@ -97,6 +101,13 @@ export const AnnouncementListItem = (props) => {
                     <div className={classes.dataElement}>
                         salary: {`${props.data.amount}`} EUR
                     </div>
+                    {
+                        props.data.requireTransportWithClient &&
+                        <div className={classes.dataElement}>
+                            <CheckIcon className={classes.check}/>
+                            The client requires his participation in delivery
+                        </div>
+                    }
                 </div>
             <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.buttons}`}>
                 <Button onClick={() => setMapModalOpened(true)}>

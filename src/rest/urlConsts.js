@@ -14,12 +14,14 @@ import {
     USER_ID
 } from "./parametersConsts";
 
-export const BASE_URL = 'http://localhost:8080';
+// export const BASE_URL = 'http://localhost:8080';
+// export const BASE_URL = 'https://delive-server.herokuapp.com';
 // export const BASE_URL = "http://192.168.0.115:8080";
-// export const BASE_URL = "http://192.168.2.104:8080";
+export const BASE_URL = "http://192.168.2.105:8080";
 const BASE_API_URL = BASE_URL + '/api';
 const BASE_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements';
 
+export const GET_LOGGED_USER_ID_URL = BASE_API_URL + "/userId";
 export const REGISTER_USER_URL = BASE_API_URL + '/register';
 export const LOGIN_USER_URL = BASE_API_URL + '/login?email=:email&password=:password';
 export const LOGOUT_USER_URL = BASE_API_URL + '/logout';
@@ -45,7 +47,6 @@ export const LOAD_FEEDBACK_URL = BASE_API_URL + '/feedback/user?' + USER_ID + '=
 export const SEND_FEEDBACK_URL = BASE_API_URL + '/feedback/add';
 export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
 export const GET_NEXT_ACTION_NAME_URL = BASE_API_URL + '/delivery/actionName?deliveryState=:deliveryState&announcementAuthorId=:announcementAuthorId&delivererId=:delivererId';
-export const GET_LOGGED_USER_ID_URL = BASE_API_URL + '/users/details/loggedUser/id';
 export const DELETE_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/delete?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
 export const FILTER_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements/filtered?initialAddress=:initialAddress&' +
     'finalAddress=:finalAddress&minimalSalary=:minimalSalary&maxWeight=:maxWeight&requireTransportWithClient=:requireTransportWithClient'

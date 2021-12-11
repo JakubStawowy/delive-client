@@ -20,6 +20,8 @@ import {DeliveryTableRow} from "../components/DeliveryTableRow";
 import {useHistory} from "react-router";
 import LoopIcon from "@material-ui/icons/Loop";
 import {BounceLoader} from "react-spinners";
+import {Menu} from "../components/Menu";
+import {BrowserRouter} from "react-router-dom";
 
 export const DeliveryPage = (props) => {
 
@@ -105,12 +107,12 @@ export const DeliveryPage = (props) => {
                     <Button
                         onClick={()=>setDeliveryFlag(true)}
                         className={`${deliveryFlag && classes.selected} ${classes.tab}`}>
-                        User
+                        my commissions
                     </Button>
                     <Button
                         onClick={()=>setDeliveryFlag(false)}
                         className={`${!deliveryFlag && classes.selected} ${classes.tab}`}>
-                        Realized by user
+                        my deliveries
                     </Button>
                     <Button
                         onClick={() => refresh()}>

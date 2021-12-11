@@ -4,12 +4,12 @@ import {handleError, sendMessage} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {trimDate} from "../actions/commonFunctions";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import {ModalTemplate} from "../templates/ModalTemplate";
-import {Announcement} from "./Announcement";
-import {Profile} from "../pages/Profile";
 import {FeedbackForm} from "./FeedbackForm";
+import {ProfileComponent} from "./ProfileComponent";
+import {AnnouncementComponent} from "./AnnouncementComponent";
 
 export const MessageListItem = (props) => {
 
@@ -24,8 +24,11 @@ export const MessageListItem = (props) => {
             marginTop: '1em'
         },
         messageButton: {
-            height: '2em',
-            marginBottom: '.5em'
+            cursor: 'pointer',
+            marginBottom: '.5em',
+            "&:hover": {
+                color: 'gray'
+            }
         },
         root: {
             padding: 0
@@ -34,16 +37,36 @@ export const MessageListItem = (props) => {
             color: "green"
         },
         greenBackground: {
-            background: '#90EE90'
+            // background: '#EBA172'
         },
         redBackground: {
-            background: '#FFA07A'
+            // background: '#FFA07A'
         },
         infoBackground: {
             background: '#52ADC8'
         },
         requestBackground: {
             background: '#EBA172'
+        },
+        nextElement: {
+            paddingLeft: '.5em',
+            marginLeft: '.5em',
+            borderLeft: '1px solid gray'
+        },
+        message: {
+            borderLeft: '0.5px solid gray',
+            borderBottom: '0.5px solid gray',
+            borderRadius: '1em',
+            padding: '.5em'
+        },
+        agreement: {
+            display: 'flex'
+        },
+        accept: {
+            // background: '#00FFFF',
+        },
+        discard: {
+            // background: 'red'
         }
     })));
     const classes = useClasses();
@@ -76,7 +99,7 @@ export const MessageListItem = (props) => {
                     <ModalTemplate
                         action={setAnnouncementModalOpened}
                         child={
-                            <Announcement
+                            <AnnouncementComponent
                                 announcementId={props.message.announcementId}
                                 setLogged={props.setLogged}
                             />
@@ -93,7 +116,7 @@ export const MessageListItem = (props) => {
                     <ModalTemplate
                         action={setProfileModalOpened}
                         child={
-                            <Profile
+                            <ProfileComponent
                                 userId={currentProfileUserId}
                                 setLogged={props.setLogged}
                             />
@@ -127,44 +150,45 @@ export const MessageListItem = (props) => {
                 ${paddingClasses.paddingSmall}
                 ${rwdClasses.listItem}`}>
                 <div className={flexClasses.flexRowSpaceBetween}>
-                    <div>
-                        <Button
-                            variant={"contained"}
+                    <div className={flexClasses.flexRowSpaceBetween}>
+                        <div
+                            // variant={"contained"}
                             onClick={() => setAnnouncementModalOpened(true)}
-                            className={classes.messageButton}
+                            className={`${classes.messageButton}`}
                         >
                             Announcement
-                        </Button>
+                        </div>
+                        <div className={classes.separator}/>
                         {
                             props.received && props.message.messageType !== 'INFO' &&
-                                <Button
+                                <div
                                     variant={"contained"}
                                     onClick={() => handleOpenProfile(props.message.senderId)}
-                                    className={classes.messageButton}
+                                    className={`${classes.messageButton} ${classes.nextElement}`}
                                 >
                                     Sender
-                                </Button>
+                                </div>
                         }
                         {
                             !props.received && props.message.messageType !== 'INFO' &&
-                                <Button
+                                <div
                                     variant={"contained"}
                                     onClick={() => handleOpenProfile(props.message.receiverId)}
-                                    className={classes.messageButton}
+                                    className={`${classes.messageButton} ${classes.nextElement}`}
                                 >
                                     Receiver
-                                </Button>
+                                </div>
                         }
                         {
                             props.message.messageType === 'INFO' && !props.message.replied &&
-                            <Button
+                            <div
                                     variant={"contained"}
-                                    className={classes.messageButton}
+                                    className={`${classes.messageButton} ${classes.nextElement}`}
                                     onClick={() => setFeedbackFormModalOpened(true)}
                                     disabled={props.message.replied}
                                 >
                                     Send feedback
-                                </Button>
+                                </div>
                         }
                     </div>
                     {trimDate(props.message.createdAt)}
@@ -172,26 +196,26 @@ export const MessageListItem = (props) => {
                 {
                     props.received && props.message.messageType === 'REQUEST' && !props.message.replied &&
                         // <div className={classes.marginComponent}>
-                        <div>
-                            <Button
+                        <div className={classes.agreement}>
+                            <div
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(true)}
                                 disabled={props.message.replied}
-                                className={`${classes.messageButton} ${classes.greenBackground}`}
+                                className={`${classes.messageButton} ${classes.accept}`}
                             >
-                                Agree
-                            </Button>
-                            <Button
+                                Accept
+                            </div>
+                            <div
                                 variant={"contained"}
                                 onClick={() => handleReplyMessage(false)}
                                 disabled={props.message.replied}
-                                className={`${classes.messageButton} ${classes.redBackground}`}
+                                className={`${classes.messageButton} ${classes.nextElement} ${classes.discard}`}
                             >
-                                Disagree
-                            </Button>
+                                Discard
+                            </div>
                         </div>
                 }
-                <div>
+                <div className={classes.message}>
                     {
                         props.message.message !== undefined && props.message.message
                     }

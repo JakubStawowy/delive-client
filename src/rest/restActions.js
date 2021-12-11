@@ -34,6 +34,7 @@ import {
     PARAM_USER_ID
 } from "./parametersConsts";
 
+export const getLoggedUserId = () => axios.get(GET_LOGGED_USER_ID_URL, getConfig());
 export const registerUser = (data) => axios.post(REGISTER_USER_URL, data);
 export const checkIfEmailExists = (email) => axios.get(VALIDATE_EMAIL_URL.replace(':email', email));
 export const checkIfNicknameExists = (nickname) => axios.get(VALIDATE_NICKNAME_URL.replace(':nickname', nickname));
@@ -89,7 +90,6 @@ export const getNextActionName = (deliveryState, announcementAuthorId, deliverer
     .replace(":delivererId", delivererId),
     getConfig());
 
-export const getLoggedUserId = () => axios.get(GET_LOGGED_USER_ID_URL, getConfig());
 export const deleteAnnouncement = announcementId => axios.delete(DELETE_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
 export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary, maxWeight, requireTransportWithClient = '') => axios.get(FILTER_ANNOUNCEMENTS_URL
     .replace(':initialAddress', initialAddress)

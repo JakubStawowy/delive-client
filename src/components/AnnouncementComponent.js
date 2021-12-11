@@ -1,18 +1,16 @@
-import {StyleRoot} from "radium";
-
-import React, {useEffect, useState} from "react";
-import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {Button, Card, List, ListItem, makeStyles, Modal, TextField} from "@material-ui/core";
-import {getAnnouncementById, getLoggedUserId, deleteAnnouncement} from "../rest/restActions";
-import {useHistory} from "react-router";
+import {Button, Card, List, makeStyles, Modal, TextField} from "@material-ui/core";
 import {ModalTemplate} from "../templates/ModalTemplate";
+import {DeliveryForm} from "./DeliveryForm";
+import {ProfileComponent} from "./ProfileComponent";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
+import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router";
+import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
+import {deleteAnnouncement, getAnnouncementById, getLoggedUserId} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
-import {DeliveryForm} from "./DeliveryForm";
-import {Profile} from "../pages/Profile";
 
-export const Announcement = (props) => {
+export const AnnouncementComponent = props => {
 
     const [announcement, setAnnouncement] = useState(null);
     const [deliveryFormModalOpened, setDeliveryFormModalOpened] = useState(false);
@@ -40,7 +38,7 @@ export const Announcement = (props) => {
 
     const handleDeleteAnnouncement = announcementId => {
         deleteAnnouncement(announcementId).then(() => {
-            alert("Announcement removed successfully");
+            alert("AnnouncementPage removed successfully");
             history.push('/home');
         }).catch(error => handleError(error, history, props.setLogged));
     }
@@ -48,21 +46,17 @@ export const Announcement = (props) => {
     useEffect(() => {
         getLoggedUserId().then(response => setLoggedUserId(response.data))
             .catch(error => handleError(error, history, props.setLogged));
-        props.announcementId !== undefined ?
-        getAnnouncementById(props.announcementId)
-            .then(response => setAnnouncement(response.data))
-            .catch(error => alert(error))
-            :
-        getAnnouncementById(props.match.params.announcementId)
-            .then(response => setAnnouncement(response.data))
-            .catch(error => alert(error));
+            getAnnouncementById(props.announcementId)
+                .then(response => setAnnouncement(response.data))
+                .catch(error => alert(error))
     }, []);
 
     return (
-        <StyleRoot>
+        <div>
             {
+
                 announcement !== null &&
-                <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                <div>
                     <Modal
                         className={flexClasses.flexRowCenter}
                         centered open={deliveryFormModalOpened}
@@ -88,7 +82,7 @@ export const Announcement = (props) => {
                             <ModalTemplate
                                 action={setProfileModalOpened}
                                 child={
-                                    <Profile
+                                    <ProfileComponent
                                         userId={announcement.authorId}
                                         setLogged={props.setLogged}
                                     />
@@ -97,56 +91,55 @@ export const Announcement = (props) => {
                         }
                         onClose={()=>setProfileModalOpened(false)}
                     />
-
                     <Card
                         className={`${paddingClasses.paddingMedium}`}
                     >
                         <List className={`${listClasses.verticalList} 
-                        ${flexClasses.flexColumnSpaceBetween}`}>
+                    ${flexClasses.flexColumnSpaceBetween}`}>
                             {
                                 loggedUserId !== announcement.authorId ?
-                                <div className={classes.listItem}>
-                                    <Button variant={"contained"} onClick={() => setDeliveryFormModalOpened(true)}>
-                                        Send request
-                                    </Button>
-                                    <Button variant={"contained"} onClick={() => setProfileModalOpened(true)}>
-                                        Author
-                                    </Button>
-                                </div>
+                                    <div className={classes.listItem}>
+                                        <Button variant={"contained"} onClick={() => setDeliveryFormModalOpened(true)}>
+                                            Send request
+                                        </Button>
+                                        <Button variant={"contained"} onClick={() => setProfileModalOpened(true)}>
+                                            Author
+                                        </Button>
+                                    </div>
                                     :
-                                <div className={classes.listItem}>
-                                    {
-                                        !isToRemove ?
-                                            <div>
-                                                <Button variant={"contained"} onClick={() => history.push('/editAnnouncement/' + announcement.id)}>
-                                                    Edit
-                                                </Button>
-                                                <Button variant={"contained"} onClick={() => setIsToRemove(true)}>
-                                                    Remove
-                                                </Button>
-                                            </div>
-                                        :
-                                            <div className={flexClasses.flexColumnSpaceBetween}>
-                                                Type REMOVE and confirm to remove announcement:
-                                                <div className={flexClasses.flexRowSpaceBetween}>
-                                                    <TextField
-                                                        label={"REMOVE"}
-                                                        value={confirmDeleteLabel}
-                                                        onChange={e => setConfirmDeleteLabel(e.target.value)}
-                                                    />
-                                                    <Button
-                                                        variant={"contained"}
-                                                        disabled={confirmDeleteLabel !== "REMOVE"}
-                                                        onClick={() => handleDeleteAnnouncement(announcement.id)}>
-                                                        confirm
+                                    <div className={classes.listItem}>
+                                        {
+                                            !isToRemove ?
+                                                <div>
+                                                    <Button variant={"contained"} onClick={() => history.push('/editAnnouncement/' + announcement.id)}>
+                                                        Edit
                                                     </Button>
-                                                    <Button variant={"contained"} onClick={() => setIsToRemove(false)}>
-                                                        cancel
+                                                    <Button variant={"contained"} onClick={() => setIsToRemove(true)}>
+                                                        Remove
                                                     </Button>
                                                 </div>
-                                            </div>
-                                    }
-                                </div>
+                                                :
+                                                <div className={flexClasses.flexColumnSpaceBetween}>
+                                                    Type REMOVE and confirm to remove announcement:
+                                                    <div className={flexClasses.flexRowSpaceBetween}>
+                                                        <TextField
+                                                            label={"REMOVE"}
+                                                            value={confirmDeleteLabel}
+                                                            onChange={e => setConfirmDeleteLabel(e.target.value)}
+                                                        />
+                                                        <Button
+                                                            variant={"contained"}
+                                                            disabled={confirmDeleteLabel !== "REMOVE"}
+                                                            onClick={() => handleDeleteAnnouncement(announcement.id)}>
+                                                            confirm
+                                                        </Button>
+                                                        <Button variant={"contained"} onClick={() => setIsToRemove(false)}>
+                                                            cancel
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                        }
+                                    </div>
                             }
                             {
                                 announcement.packages.length !== 0 &&
@@ -185,7 +178,5 @@ export const Announcement = (props) => {
                     </Card>
                 </div>
             }
-        </StyleRoot>
-
-    )
+        </div>)
 }

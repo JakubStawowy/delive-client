@@ -10,7 +10,7 @@ import {useState} from "react";
 import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../rest/restActions";
 import {validateConfirmedPassword, validateEmail, validateEmptyString, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN} from "../consts/applicationConsts";
-import {handleError, reconnect} from "../actions/handlers";
+import {handleError, reconnect, subscribe} from "../actions/handlers";
 
 export const LoginRegister = (props) => {
 
@@ -32,6 +32,7 @@ export const LoginRegister = (props) => {
     const [registeredEmail, setRegisteredEmail] = useState('');
     const [registeredPassword, setRegisteredPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
+    const [loginVisible, setLoginVisible] = useState(true);
 
     const [validatedEmail, setValidatedEmail] = useState(true);
     const [validatedName, setValidatedName] = useState(true);
@@ -46,7 +47,15 @@ export const LoginRegister = (props) => {
     const useStyles = makeStyles((()=>({
         messagePanel: {
             maxWidth: '10vw',
-            overflow: 'wrap'
+            overflow: 'wrap',
+            fontSize: '.7em'
+        },
+        button: {
+            marginTop: '1em',
+            marginBottom: '1em',
+        },
+        switch: {
+            cursor: 'pointer',
         }
     })));
 
@@ -68,7 +77,10 @@ export const LoginRegister = (props) => {
             surname,
             phone,
             image: 'no-image'
-        }).then((response) => alert(response.data.message))
+        }).then((response) => {
+            alert(response.data.message);
+            setLoginVisible(true);
+        })
             .catch(error => handleError(error, history, props.setLogged))
             :
             alert("Nope")
@@ -82,11 +94,11 @@ export const LoginRegister = (props) => {
             password: loginPassword
         }).then((response)=> {
             if (response.data.operationSuccess) {
+                reconnect();
                 localStorage.setItem(TOKEN, response.data.token);
                 localStorage.setItem(ROLE, response.data.role);
-                localStorage.setItem('userId', response.data.userId);
                 props.setLogged(true);
-                reconnect();
+                // reconnect();
                 history.push('/home');
             }
             else {
@@ -97,20 +109,18 @@ export const LoginRegister = (props) => {
 
     return (
         <StyleRoot>
-            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation}>
-                <Grid container className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation} className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
+                {
+                    loginVisible &&
                     <Card className={`${paddingClasses.paddingMedium}`}>
-                        <Typography>
-                            {loginItems.label}
-                        </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
                             <TextField
-                                label={loginItems.email}
+                                label={"Email"}
                                 value={loginEmail}
                                 onChange={(e) => setLoginEmail(e.target.value)}
                             />
                             <TextField
-                                label={loginItems.password}
+                                label={"Password"}
                                 value={loginPassword}
                                 type={'password'}
                                 onChange={(e) => setLoginPassword(e.target.value)}
@@ -119,15 +129,17 @@ export const LoginRegister = (props) => {
                                 type={'submit'}
                                 variant={'contained'}
                                 onClick={(e)=>handleLoginSubmit(e)}
+                                className={classes.button}
                             >
-                                {loginItems.buttonLabel}
+                                Login
                             </Button>
+                            <a className={classes.switch} onClick={() => setLoginVisible(false)}>I don't have an account</a>
                         </form>
                     </Card>
+                }
+                {
+                    !loginVisible &&
                     <Card className={`${paddingClasses.paddingMedium}`}>
-                        <Typography>
-                            {registerItems.label}
-                        </Typography>
                         <form className={`${flexClasses.flexColumnSpaceAround}`}>
                             <TextField label={'Name'} value={name} onChange={e=> {
                                 setName(e.target.value);
@@ -145,7 +157,7 @@ export const LoginRegister = (props) => {
                                     setEmailExists(response.data);
                                 }).catch((error)=>handleError(error, history, props.setLogged));
                             }}
-                            className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
+                                       className={ (!validatedEmail || emailExists) && validationClasses.wrongTextField }
                             />
                             <TextField label={'Password'} value={registeredPassword} type={'password'} onChange={e=> {
                                 setRegisteredPassword(e.target.value);
@@ -154,58 +166,58 @@ export const LoginRegister = (props) => {
                                     setValidatedConfirmedPassword(validateConfirmedPassword(e.target.value, confirmedPassword));
                                 }, 500);
                             }}
-                           className={ !validatedPassword && validationClasses.wrongTextField }
+                                       className={ !validatedPassword && validationClasses.wrongTextField }
                             />
-                            <TextField label={registerItems.confirmPassword} value={confirmedPassword} type={'password'} onChange={e=> {
+                            <TextField label={"Confirm password"} value={confirmedPassword} type={'password'} onChange={e=> {
                                 setConfirmedPassword(e.target.value);
                                 setTimeout(()=>setValidatedConfirmedPassword(validateConfirmedPassword(registeredPassword, e.target.value)), 500);
                             }}
-                           className={ !validatedConfirmedPassword && validationClasses.wrongTextField }
+                                       className={ !validatedConfirmedPassword && validationClasses.wrongTextField }
                             />
                             <Button
                                 type={'submit'}
                                 variant={'contained'}
                                 onClick={(e)=>handleRegisterSubmit(e)}
+                                className={classes.button}
                             >
-                                {loginItems.buttonLabel}
+                                register
                             </Button>
+                            <a className={classes.switch} onClick={() => setLoginVisible(true)}>I already have an account</a>
                         </form>
                         <div className={classes.messagePanel}>
-                            <Typography variant={'text'}>
-                                {
-                                    !validatedEmail && registerItems.validationMessages.wrongEmail
-                                }
-                                {
-                                    !validatedEmail && <br/>
-                                }
-                                {
-                                    !validatedPassword && registerItems.validationMessages.wrongPassword
-                                }
-                                {
-                                    !validatedPassword && <br/>
-                                }
-                                {
-                                    !validatedConfirmedPassword && registerItems.validationMessages.wrongConfirmedPassword
-                                }
-                                {
-                                    !validatedConfirmedPassword && <br/>
-                                }
-                                {
-                                    emailExists && registerItems.validationMessages.emailExists
-                                }
-                                {
-                                    emailExists && <br/>
-                                }
-                                {
-                                    nicknameExists && registerItems.validationMessages.nicknameExists
-                                }
-                                {
-                                    nicknameExists && <br/>
-                                }
-                            </Typography>
+                            {
+                                !validatedEmail && registerItems.validationMessages.wrongEmail
+                            }
+                            {
+                                !validatedEmail && <br/>
+                            }
+                            {
+                                !validatedPassword && registerItems.validationMessages.wrongPassword
+                            }
+                            {
+                                !validatedPassword && <br/>
+                            }
+                            {
+                                !validatedConfirmedPassword && registerItems.validationMessages.wrongConfirmedPassword
+                            }
+                            {
+                                !validatedConfirmedPassword && <br/>
+                            }
+                            {
+                                emailExists && registerItems.validationMessages.emailExists
+                            }
+                            {
+                                emailExists && <br/>
+                            }
+                            {
+                                nicknameExists && registerItems.validationMessages.nicknameExists
+                            }
+                            {
+                                nicknameExists && <br/>
+                            }
                         </div>
                     </Card>
-                </Grid>
+                }
             </div>
         </StyleRoot>
     )

@@ -52,8 +52,9 @@ export const DeliveryForm = (props) => {
         }).then(response => {
                 if (response.data) {
                     props.setDeliveryModalOpened(false);
-                    sendMessage(props.authorId, "Someone wants to handle your delivery1");
+                    sendMessage(props.authorId, "Someone wants to handle your delivery! You can check the announcement and deliverer from messages panel");
                     alert('Delivery request sent');
+                    history.push('/messages');
                 }
                 else {
                     alert("You are already assigned to delivery")

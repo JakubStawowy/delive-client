@@ -273,14 +273,14 @@ export const AnnouncementForm = (props) => {
                                 label={'Type address'}
                             />
                             <TextField
-                                label={"Initial address"}
+                                label={"Starting location address"}
                                 className={`${classes.textField}`}
                                 value={fromAddress}
                                 onChange={e => setFromAddress(e.target.value)}
                                 disabled={useMap}
                             />
                             <TextField
-                                label={"Final address"}
+                                label={"Destination address"}
                                 className={`${classes.textField}`}
                                 value={toAddress}
                                 onChange={e => setToAddress(e.target.value)}
@@ -309,7 +309,7 @@ export const AnnouncementForm = (props) => {
                                             :
                                             <RoomIcon color={'secondary'}/>
                                     }
-                                    {announcementFormItems.destination.from}
+                                    Starting location
                                 </Button>
 
                                 <Button
@@ -322,7 +322,7 @@ export const AnnouncementForm = (props) => {
                                             :
                                             <RoomIcon color={'secondary'}/>
                                     }
-                                    {announcementFormItems.destination.to}
+                                    Destination
                                 </Button>
                             </div>
                         </div>
@@ -381,7 +381,7 @@ export const AnnouncementForm = (props) => {
                                         onChange={() => setTransportWithTheClient(!transportWithTheClient)}
                                     />
                                 }
-                                label={'Transport with the client'}
+                                label={'I want to participate in transport'}
                             />
                             <Button variant={'contained'} onClick={()=>handleSubmit()} className={classes.submitButton}>
                                 {announcementFormItems.submit}

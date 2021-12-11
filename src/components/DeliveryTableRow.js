@@ -6,15 +6,10 @@ import {changeDeliveryState, getNextActionName} from "../rest/restActions";
 import {handleError, sendMessage} from "../actions/handlers";
 import {useHistory} from "react-router";
 import {ModalTemplate} from "../templates/ModalTemplate";
-import {Announcement} from "./Announcement";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import {trimDate} from "../actions/commonFunctions";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
-import {getConfig} from "../rest/restActions";
-import {BASE_URL} from "../rest/urlConsts";
-import {TOKEN} from "../consts/applicationConsts";
+import {AnnouncementComponent} from "./AnnouncementComponent";
 
 export const DeliveryTableRow = (props) => {
 
@@ -42,41 +37,58 @@ export const DeliveryTableRow = (props) => {
     const classes = useStyles();
     const flexClasses = flexComponents();
 
-    const handleChangeDeliveryState = (actionName) => {
+    const handleChangeDeliveryState = (actionName, message) => {
 
         if (actionName === 'finish') {
             navigator.geolocation.getCurrentPosition(position => {
                 changeDeliveryState(actionName, props.delivery.id, position.coords.latitude, position.coords.longitude)
                     .then(() => {
-                        alert("Delivery state changed __");
+                        alert("Your delivery state has changed");
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));
             }, ()=> {
                 alert('Problems with geolocation occurred');
                 changeDeliveryState(actionName, props.delivery.id, 0, 0)
                     .then(() => {
-                        alert("Delivery state changed __");
+                        alert("Your delivery state has changed");
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));
             });
-            sendMessage(props.delivery.announcement.authorId, "Deliverer rached the destination");
+            // sendMessage(props.delivery.announcement.authorId, "Deliverer has reached the destination");
         } else {
-            if (actionName === 'toStart') {
-                sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to initial location");
-            }
-            if (actionName === 'start') {
-                sendMessage(props.delivery.delivererId, "Delivery started");
-            }
-
-            if (actionName === 'close' || actionName === 'discard' || actionName === 'accept') {
-                sendMessage(props.delivery.delivererId);
-            }
+            // if (actionName === 'pick') {
+            //     sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to starting location");
+            // }
+            // if (actionName === 'start') {
+            //     sendMessage(props.delivery.delivererId, "Your delivery has started");
+            // }
+            //
+            // if (actionName === 'close') {
+            //     sendMessage(props.delivery.delivererId, "Your delivery has been closed");
+            // }
+            //
+            // if (actionName === 'accept') {
+            //     sendMessage(props.delivery.delivererId, "Your delivery commissioner accepted your finish request! You can now check your wallet");
+            // }
+            //
+            // if (actionName === 'discard') {
+            //     sendMessage(props.delivery.delivererId, "Unfortunately, your delivery commissioner discarded your finish request");
+            // }
 
             changeDeliveryState(actionName, props.delivery.id)
                 .then(() => {
                     alert("Delivery state changed");
                     props.refresh();
                 }).catch(error => handleError(error, history, props.setLogged));
+        }
+        if (message !== null) {
+
+            if (actionName === 'finish' || actionName === 'pick') {
+                sendMessage(props.delivery.announcement.authorId, message);
+            }
+            else {
+                sendMessage(props.delivery.delivererId, message);
+            }
         }
     }
 
@@ -141,8 +153,9 @@ export const DeliveryTableRow = (props) => {
                     <ModalTemplate
                         action={setAnnouncementModalOpened}
                         child={
-                            <Announcement
+                            <AnnouncementComponent
                                 announcementId={props.delivery.announcement.id}
+                                setLogged={props.setLogged}
                             />
                         }
                     />
@@ -201,7 +214,7 @@ export const DeliveryTableRow = (props) => {
                     actionNames.map(actionName => {
                         return (
                             <Button variant={"contained"}
-                                    onClick={() => handleChangeDeliveryState(actionName.value)}
+                                    onClick={() => handleChangeDeliveryState(actionName.value, actionName.message)}
                                     disabled={actionName.value === WAITING || actionName.value === '-'}
                             >
                                 {actionName.label}

@@ -10,7 +10,7 @@ import {fadeInDown, fadeOutUp} from "react-animations";
 import {ANIMATION_TIME, SM_MEDIA_QUERY} from "../data/consts";
 import {StyleRoot} from "radium";
 import {logoutUser} from "../rest/restActions";
-import {handleError} from "../actions/handlers";
+import {disconnect, handleError} from "../actions/handlers";
 
 export const Menu = (props) => {
 
@@ -53,6 +53,7 @@ export const Menu = (props) => {
 
     const handleLogout = () => {
         logoutUser().then(() => {
+            disconnect();
             localStorage.clear();
             props.setLogged(false);
             history.push("/login");
