@@ -9,7 +9,7 @@ import {
     GET_HALFWAY_POINT_URL,
     GET_LOGGED_USER_ID_URL,
     GET_NEXT_ACTION_NAME_URL,
-    GET_NORMAL_ANNOUNCEMENTS_URL,
+    GET_NORMAL_ANNOUNCEMENTS_URL, GET_PROPOSED_ADDRESSES_URL,
     LOAD_DELIVERY_BY_DELIVERER_URL,
     LOAD_DELIVERY_BY_PRINCIPAL_URL,
     LOAD_FEEDBACK_URL,
@@ -91,12 +91,16 @@ export const getNextActionName = (deliveryState, announcementAuthorId, deliverer
     getConfig());
 
 export const deleteAnnouncement = announcementId => axios.delete(DELETE_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
-export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary, maxWeight, requireTransportWithClient = '') => axios.get(FILTER_ANNOUNCEMENTS_URL
+export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary,
+                                         maxWeight, requireTransportWithClient = '', sortBySalary, sortByWeight) => axios.get(FILTER_ANNOUNCEMENTS_URL
     .replace(':initialAddress', initialAddress)
     .replace(':finalAddress', finalAddress)
     .replace(':minimalSalary', minimalSalary)
     .replace(':maxWeight', maxWeight)
-    .replace(':requireTransportWithClient', requireTransportWithClient), getConfig());
+    .replace(':requireTransportWithClient', requireTransportWithClient)
+    .replace(':sortBySalary', sortBySalary)
+    .replace(':sortByWeight', sortByWeight), getConfig());
+export const getProposedAddresses = address => axios.get(GET_PROPOSED_ADDRESSES_URL.replace(':address', address), getConfig());
 export const getConfig = () => {
     return {
         headers: {

@@ -67,6 +67,11 @@ export const MessageListItem = (props) => {
         },
         discard: {
             // background: 'red'
+        },
+        rightSection: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end'
         }
     })));
     const classes = useClasses();
@@ -215,10 +220,26 @@ export const MessageListItem = (props) => {
                             </div>
                         </div>
                 }
-                <div className={classes.message}>
-                    {
-                        props.message.message !== undefined && props.message.message
-                    }
+                <div className={`${classes.message} ${flexClasses.flexRowSpaceBetween}`}>
+                    <div>
+                        {
+                            props.message.message !== undefined && props.message.message
+                        }
+                    </div>
+                    <div className={classes.rightSection}>
+                        {
+                            props.message.phoneNumber !== null && props.message.phoneNumber !== undefined && props.message.phoneNumber !== '' &&
+                                <div>
+                                    Phone number: {props.message.phoneNumber}
+                                </div>
+                        }
+                        {
+                            props.message.vehicleRegistrationNumber !== null && props.message.vehicleRegistrationNumber !== undefined && props.message.vehicleRegistrationNumber !== '' &&
+                                <div>
+                                    VRN: {props.message.vehicleRegistrationNumber}
+                                </div>
+                        }
+                    </div>
                 </div>
                 {
                     props.message.replied && props.received &&

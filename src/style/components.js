@@ -47,6 +47,9 @@ export const paddingComponents = makeStyles((()=>({
     paddingSmall: {
         padding: '1em'
     },
+    paddingExtraSmall: {
+        padding: '.5em'
+    },
     noPadding: {
         padding: 0
     }

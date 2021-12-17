@@ -24,6 +24,8 @@ export const Home = (props) => {
     const [minimalSalary, setMinimalSalary] = useState('');
     const [maxWeight, setMaxWeight] = useState('');
     const [requireNoClientTransport, setRequireNoClientTransport] = useState(false);
+    const [sortBySalary, setSortBySalary] = useState(false);
+    const [sortByWeight, setSortByWeight] = useState(false);
 
     const [bounce, setBounce] = useState(false);
 
@@ -54,9 +56,9 @@ export const Home = (props) => {
             .catch((error) => handleError(error, history, props.setLogged));
     }
 
-    const filterAnnouncements = (addressFrom, addressTo, minimalSalary, maxWeight, requireNoClientTransport) => {
+    const filterAnnouncements = (addressFrom, addressTo, minimalSalary, maxWeight, requireNoClientTransport, sortBySalary, sortByWeight) => {
         getFilteredAnnouncements(addressFrom, addressTo, minimalSalary, maxWeight,
-            requireNoClientTransport === true ? 'false' : '')
+            requireNoClientTransport === true ? 'false' : '', sortBySalary, sortByWeight)
             .then(response => setAnnouncements(response.data))
             .catch((error) => handleError(error, history, props.setLogged));
     }
@@ -110,6 +112,10 @@ export const Home = (props) => {
                                             requireNoClientTransport={requireNoClientTransport}
                                             setRequireNoClientTransport={setRequireNoClientTransport}
                                             filterAnnouncements={filterAnnouncements}
+                                            sortBySalary={sortBySalary}
+                                            setSortBySalary={setSortBySalary}
+                                            sortByWeight={sortByWeight}
+                                            setSortByWeight={setSortByWeight}
                                         />
                                 }
                                 <List className={`${listClasses.verticalList}`}>

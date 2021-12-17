@@ -49,4 +49,6 @@ export const GET_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/announcement?
 export const GET_NEXT_ACTION_NAME_URL = BASE_API_URL + '/delivery/actionName?deliveryState=:deliveryState&announcementAuthorId=:announcementAuthorId&delivererId=:delivererId';
 export const DELETE_ANNOUNCEMENT_URL = BASE_API_URL + '/announcements/delete?' + ANNOUNCEMENT_ID + '=' + PARAM_ANNOUNCEMENT_ID;
 export const FILTER_ANNOUNCEMENTS_URL = BASE_API_URL + '/announcements/filtered?initialAddress=:initialAddress&' +
-    'finalAddress=:finalAddress&minimalSalary=:minimalSalary&maxWeight=:maxWeight&requireTransportWithClient=:requireTransportWithClient'
+    'finalAddress=:finalAddress&minimalSalary=:minimalSalary&maxWeight=:maxWeight&requireTransportWithClient=:requireTransportWithClient' +
+    '&sortBySalary=:sortBySalary&sortByWeight=:sortByWeight';
+export const GET_PROPOSED_ADDRESSES_URL = BASE_API_URL + '/geocoding/list?address=:address';

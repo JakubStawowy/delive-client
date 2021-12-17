@@ -28,7 +28,7 @@ import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
 import {MapFormModal} from "./MapFormModal";
 import {handleError, handleItemAccessAttempt} from "../actions/handlers";
-import {addNormalAnnouncement, getAnnouncementById} from "../rest/restActions";
+import {addNormalAnnouncement, getAnnouncementById, getProposedAddresses} from "../rest/restActions";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
 import {validateEmptyString, validateNumberFormat} from "../actions/validators";
@@ -60,6 +60,8 @@ export const AnnouncementForm = (props) => {
     const [toLatitude, setToLatitude] = useState(null);
     const [toLongitude, setToLongitude] = useState(null);
     const [toAddress, setToAddress] = useState(null);
+    const [proposedFromAddresses, setProposedFromAddresses] = useState([]);
+    const [proposedToAddresses, setProposedToAddresses] = useState([]);
 
     const [amount, setAmount] = useState(null);
 
@@ -108,6 +110,23 @@ export const AnnouncementForm = (props) => {
         },
         listItem: {
             whiteSpace: 'nowrap'
+        },
+        dropDown: {
+            position: 'relative'
+        },
+        dropDownContext: {
+            position: 'absolute',
+            background: 'white',
+            border: '.2px solid gray',
+            borderBottomRightRadius: '1em',
+            borderBottomLeftRadius: '1em',
+            zIndex: 1
+        },
+        dropDownItem: {
+            '&:hover': {
+                cursor: 'pointer',
+                background: 'lightgray'
+            }
         }
     })))
     const classes = styles();
@@ -121,8 +140,10 @@ export const AnnouncementForm = (props) => {
     const bounceOutAnimationStyles = useAnimationStyles(bounceOutLeft, ANIMATION_TIME / 2);
 
     const handleSubmit = () => {
-        // const isGeolocationValid = validateGeolocation(fromLatitude, fromLongitude, toLatitude, toLongitude);
-        const isGeolocationValid = true;
+        const isGeolocationValid = validateGeolocation(fromLatitude, fromLongitude, toLatitude, toLongitude)
+            || validateAddresses(fromAddress, toAddress);
+
+        // const isGeolocationValid = true;
         const isPackagesValid = packages.length > 0;
         const isSalaryValid = validateSalary(amount);
         const destinationFrom = useMap ? {
@@ -177,6 +198,10 @@ export const AnnouncementForm = (props) => {
         validateEmptyString(toLongitude) &&
         !(fromLatitude === toLatitude && fromLongitude === toLongitude);
 
+    const validateAddresses = (fromAddress, toAddress) => {
+        return fromAddress !== null && fromAddress.length >= 3 && toAddress !== null && toAddress.length >= 3
+    };
+
     const validateSalary = salary => validateNumberFormat(salary);
 
     const addPackage = data => {
@@ -195,6 +220,21 @@ export const AnnouncementForm = (props) => {
         const packagesCopy = [...packages];
         setPackages(packagesCopy);
     }
+
+    const onTextFieldKeyUp = (setAddress, setProposedAddresses, value) => {
+        // const x = false;
+        const x = true;
+        setAddress(value);
+        if (x) {
+            getProposedAddresses(value).then(response => setProposedAddresses(response.data))
+                .catch(error => handleError(error, history, props.setLogged));
+        }
+    }
+
+    const handleChooseAddress = (setAddress, setProposedAddresses, address) => {
+        setAddress(address);
+        setProposedAddresses([]);
+    };
 
     useEffect(() => {
         handleItemAccessAttempt(history);
@@ -217,7 +257,9 @@ export const AnnouncementForm = (props) => {
 
     return (
         <StyleRoot>
-            <div style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation} className={`${flexClasses.flexColumnCenter} ${sizeClasses.bodyHeight}`} >
+            <div
+                // onClick={() => {setProposedFromAddresses([]); setProposedToAddresses([])}}
+                style={bounce ? bounceOutAnimationStyles.animation : bounceInAnimationStyles.animation} className={`${flexClasses.flexColumnCenter} ${sizeClasses.bodyHeight}`} >
                     <Modal
                         className={flexClasses.flexRowCenter}
                         centered open={localizationFromModalOpened}
@@ -272,20 +314,50 @@ export const AnnouncementForm = (props) => {
                                 }
                                 label={'Type address'}
                             />
-                            <TextField
-                                label={"Starting location address"}
-                                className={`${classes.textField}`}
-                                value={fromAddress}
-                                onChange={e => setFromAddress(e.target.value)}
-                                disabled={useMap}
-                            />
+                            <div className={`${classes.dropDown} ${classes.textField}`}>
+                                <TextField
+                                    label={"Starting location address"}
+                                    className={`${classes.textField}`}
+                                    value={fromAddress}
+                                    onChange={e => onTextFieldKeyUp(setFromAddress, setProposedFromAddresses, e.target.value)}
+                                    disabled={useMap}
+                                />
+                                {
+                                    proposedFromAddresses.length !== 0 &&
+                                    <div className={`${classes.dropDownContext} ${classes.textField}`}>
+                                        {
+                                            proposedFromAddresses.map(address => (
+                                                <div
+                                                    className={`${paddingClasses.paddingExtraSmall} ${classes.dropDownItem}`}
+                                                    onClick={() => handleChooseAddress(setFromAddress, setProposedFromAddresses, address)}
+                                                >{address}</div>
+                                            ))
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div className={`${classes.dropDown} ${classes.textField}`}>
                             <TextField
                                 label={"Destination address"}
                                 className={`${classes.textField}`}
                                 value={toAddress}
-                                onChange={e => setToAddress(e.target.value)}
+                                onChange={e => onTextFieldKeyUp(setToAddress, setProposedToAddresses, e.target.value)}
                                 disabled={useMap}
                             />
+                                {
+                                    proposedToAddresses.length !== 0 &&
+                                    <div className={`${classes.dropDownContext} ${classes.textField}`}>
+                                        {
+                                            proposedToAddresses.map(address => (
+                                                <div
+                                                    className={`${paddingClasses.paddingExtraSmall} ${classes.dropDownItem}`}
+                                                    onClick={() => handleChooseAddress(setToAddress, setProposedToAddresses, address)}
+                                                >{address}</div>
+                                            ))
+                                        }
+                                    </div>
+                                }
+                            </div>
                         </div>
                         <div className={`${flexClasses.flexColumnSpaceBetween} ${classes.subContainer}`}>
                             <FormControlLabel
