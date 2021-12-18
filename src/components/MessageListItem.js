@@ -9,12 +9,12 @@ import CheckIcon from "@material-ui/icons/Check";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {FeedbackForm} from "./FeedbackForm";
 import {ProfileComponent} from "./ProfileComponent";
-import {AnnouncementComponent} from "./AnnouncementComponent";
+import {OrderComponent} from "./OrderComponent";
 
 export const MessageListItem = (props) => {
 
     const history = useHistory();
-    const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
+    const [orderModalOpened, setOrderModalOpened] = useState(false);
     const [profileModalOpened, setProfileModalOpened] = useState(false);
     const [feedbackFormModalOpened, setFeedbackFormModalOpened] = useState(false);
     const [currentProfileUserId, setCurrentProfileUserId] = useState(null);
@@ -81,7 +81,7 @@ export const MessageListItem = (props) => {
 
     const handleReplyMessage = consent => replyMessage({
         replyMessageId: props.message.id,
-        announcementId: props.message.announcementId,
+        orderId: props.message.orderId,
         receiverId: props.message.senderId,
         consent
     }).then(() => {
@@ -99,19 +99,19 @@ export const MessageListItem = (props) => {
         <ListItem className={classes.root}>
             <Modal
                 className={flexClasses.flexRowCenter}
-                centered open={announcementModalOpened}
+                centered open={orderModalOpened}
                 children={
                     <ModalTemplate
-                        action={setAnnouncementModalOpened}
+                        action={setOrderModalOpened}
                         child={
-                            <AnnouncementComponent
-                                announcementId={props.message.announcementId}
+                            <OrderComponent
+                                orderId={props.message.orderId}
                                 setLogged={props.setLogged}
                             />
                         }
                     />
                 }
-                onClose={()=>setAnnouncementModalOpened(false)}
+                onClose={()=>setOrderModalOpened(false)}
             />
 
             <Modal
@@ -158,10 +158,10 @@ export const MessageListItem = (props) => {
                     <div className={flexClasses.flexRowSpaceBetween}>
                         <div
                             // variant={"contained"}
-                            onClick={() => setAnnouncementModalOpened(true)}
+                            onClick={() => setOrderModalOpened(true)}
                             className={`${classes.messageButton}`}
                         >
-                            Announcement
+                            Order
                         </div>
                         <div className={classes.separator}/>
                         {

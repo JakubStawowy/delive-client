@@ -1,19 +1,11 @@
 import {useHistory} from "react-router";
 import {useEffect, useState} from "react";
-import {handleError, handleItemAccessAttempt, reconnect, sendMessage} from "../actions/handlers";
-import {StyleRoot} from "radium";
+import {handleError, handleItemAccessAttempt, sendMessage} from "../actions/handlers";
 import {Button, Card, makeStyles, TextareaAutosize, TextField, Typography} from "@material-ui/core";
 import {
     flexComponents,
     paddingComponents,
-    rwdComponents,
-    sizeComponents,
-    validatedComponents
 } from "../style/components";
-import {useAnimationStyles} from "../style/animation";
-import {ANIMATION_TIME} from "../data/consts";
-import {fadeInRight} from "react-animations";
-import {i18n} from "../data/i18n";
 import {
     loadLoggedUser,
     registerMessageNormal
@@ -22,10 +14,6 @@ import {
 export const DeliveryForm = (props) => {
     const history = useHistory();
 
-    const announcementFormItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].announcement;
     const [message, setMessage] = useState('Hello! I can handle your delivery');
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [vehicleRegistrationNumber, setVehicleRegistrationNumber] = useState(null);
@@ -60,11 +48,8 @@ export const DeliveryForm = (props) => {
         }
     })));
     const classes = useClasses();
-    const rwdClasses = rwdComponents();
     const flexClasses = flexComponents();
-    const sizeClasses = sizeComponents();
     const paddingClasses = paddingComponents();
-    const fadeInClasses = useAnimationStyles(fadeInRight, ANIMATION_TIME);
 
     useEffect(()=> {
         handleItemAccessAttempt(history);
@@ -73,7 +58,7 @@ export const DeliveryForm = (props) => {
 
     const handleRegisterDelivery = () =>
         registerMessageNormal({
-            announcementId: props.announcementId,
+            orderId: props.orderId,
             receiverId: props.authorId,
             message,
             vehicleRegistrationNumber,
@@ -81,7 +66,7 @@ export const DeliveryForm = (props) => {
         }).then(response => {
                 if (response.data) {
                     props.setDeliveryModalOpened(false);
-                    sendMessage(props.authorId, "Someone wants to handle your delivery! You can check the announcement and deliverer from messages panel");
+                    sendMessage(props.authorId, "Someone wants to handle your delivery! You can check the order and deliverer from messages panel");
                     alert('Delivery request sent');
                     history.push('/messages');
                 }

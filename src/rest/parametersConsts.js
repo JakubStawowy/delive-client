@@ -1,6 +1,6 @@
 const PARAM_PREFIX = ":";
-export const ANNOUNCEMENT_ID = 'announcementId';
-export const PARAM_ANNOUNCEMENT_ID = PARAM_PREFIX + ANNOUNCEMENT_ID;
+export const ORDER_ID = 'orderId';
+export const PARAM_ORDER_ID = PARAM_PREFIX + ORDER_ID;
 export const DELIVERY_ID = 'deliveryId';
 export const PARAM_DELIVERY_ID = PARAM_PREFIX + DELIVERY_ID;
 export const USER_ID = 'userId';

@@ -1,27 +1,17 @@
-import {Button, Card, Grid, makeStyles, TextField, Typography} from "@material-ui/core";
+import {Button, Card, makeStyles, TextField} from "@material-ui/core";
 import {flexComponents, paddingComponents, sizeComponents, validatedComponents} from "../style/components";
 import {useHistory} from "react-router";
-import {i18n} from "../data/i18n";
 import {useAnimationStyles} from "../style/animation";
 import {bounceInRight, bounceOutLeft} from "react-animations";
 import {ANIMATION_TIME} from "../data/consts";
 import {StyleRoot} from "radium";
 import {useState} from "react";
-import {checkIfEmailExists, checkIfNicknameExists, loginUser, registerUser} from "../rest/restActions";
+import {checkIfEmailExists, loginUser, registerUser} from "../rest/restActions";
 import {validateConfirmedPassword, validateEmail, validateEmptyString, validatePassword} from "../actions/validators";
 import {ROLE, TOKEN} from "../consts/applicationConsts";
-import {handleError, reconnect, subscribe} from "../actions/handlers";
+import {handleError, reconnect} from "../actions/handlers";
 
 export const LoginRegister = (props) => {
-
-    const loginItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].loginItems;
-    const registerItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].registerItems;
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -186,34 +176,28 @@ export const LoginRegister = (props) => {
                         </form>
                         <div className={classes.messagePanel}>
                             {
-                                !validatedEmail && registerItems.validationMessages.wrongEmail
+                                !validatedEmail && 'Wrong email pattern'
                             }
                             {
                                 !validatedEmail && <br/>
                             }
                             {
-                                !validatedPassword && registerItems.validationMessages.wrongPassword
+                                !validatedPassword && 'Password must contain at least 8 characters. One capital letter and one number'
                             }
                             {
                                 !validatedPassword && <br/>
                             }
                             {
-                                !validatedConfirmedPassword && registerItems.validationMessages.wrongConfirmedPassword
+                                !validatedConfirmedPassword && 'Password and confirmed password must match'
                             }
                             {
                                 !validatedConfirmedPassword && <br/>
                             }
                             {
-                                emailExists && registerItems.validationMessages.emailExists
+                                emailExists && 'Email already exists'
                             }
                             {
                                 emailExists && <br/>
-                            }
-                            {
-                                nicknameExists && registerItems.validationMessages.nicknameExists
-                            }
-                            {
-                                nicknameExists && <br/>
                             }
                         </div>
                     </Card>

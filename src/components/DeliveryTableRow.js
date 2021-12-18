@@ -9,12 +9,12 @@ import {ModalTemplate} from "../templates/ModalTemplate";
 import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import {trimDate} from "../actions/commonFunctions";
-import {AnnouncementComponent} from "./AnnouncementComponent";
+import {OrderComponent} from "./OrderComponent";
 
 export const DeliveryTableRow = (props) => {
 
     const history = useHistory();
-    const [announcementModalOpened, setAnnouncementModalOpened] = useState(false);
+    const [orderModalOpened, setOrderModalOpened] = useState(false);
     const [packagesModalOpened, setPackagesModalOpened] = useState(false);
     const [fromLocalizationModalOpened, setFromLocalizationModalOpened] = useState(false);
     const [toLocalizationModalOpened, setToLocalizationModalOpened] = useState(false);
@@ -54,27 +54,7 @@ export const DeliveryTableRow = (props) => {
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));
             });
-            // sendMessage(props.delivery.announcement.authorId, "Deliverer has reached the destination");
         } else {
-            // if (actionName === 'pick') {
-            //     sendMessage(props.delivery.announcement.authorId, "Deliverer has arrived to starting location");
-            // }
-            // if (actionName === 'start') {
-            //     sendMessage(props.delivery.delivererId, "Your delivery has started");
-            // }
-            //
-            // if (actionName === 'close') {
-            //     sendMessage(props.delivery.delivererId, "Your delivery has been closed");
-            // }
-            //
-            // if (actionName === 'accept') {
-            //     sendMessage(props.delivery.delivererId, "Your delivery commissioner accepted your finish request! You can now check your wallet");
-            // }
-            //
-            // if (actionName === 'discard') {
-            //     sendMessage(props.delivery.delivererId, "Unfortunately, your delivery commissioner discarded your finish request");
-            // }
-
             changeDeliveryState(actionName, props.delivery.id)
                 .then(() => {
                     alert("Delivery state changed");
@@ -84,7 +64,7 @@ export const DeliveryTableRow = (props) => {
         if (message !== null) {
 
             if (actionName === 'finish' || actionName === 'pick') {
-                sendMessage(props.delivery.announcement.authorId, message);
+                sendMessage(props.delivery.order.authorId, message);
             }
             else {
                 sendMessage(props.delivery.delivererId, message);
@@ -94,7 +74,7 @@ export const DeliveryTableRow = (props) => {
 
     useEffect(() => {
         getNextActionName(props.delivery.deliveryState,
-            props.delivery.announcement.authorId,
+            props.delivery.order.authorId,
             props.delivery.delivererId).then(response => setActionNames(response.data))
             .catch(error => handleError(error, history, props.setLogged));
     }, []);
@@ -107,7 +87,7 @@ export const DeliveryTableRow = (props) => {
                 children={<ModalTemplate
                     child={<Card className={classes.modalChild}>
                         <PackagesList
-                            packages={props.delivery.announcement.packages}
+                            packages={props.delivery.order.packages}
                         />
                     </Card>}
                     action={setPackagesModalOpened}
@@ -121,8 +101,8 @@ export const DeliveryTableRow = (props) => {
                     <ModalTemplate
                         child={
                             <MapItem
-                                latitude={props.delivery.announcement.destinationFrom.latitude}
-                                longitude={props.delivery.announcement.destinationFrom.longitude}
+                                latitude={props.delivery.order.destinationFrom.latitude}
+                                longitude={props.delivery.order.destinationFrom.longitude}
                             />
                         }
                         action={setFromLocalizationModalOpened}
@@ -137,8 +117,8 @@ export const DeliveryTableRow = (props) => {
                     <ModalTemplate
                         child={
                             <MapItem
-                                latitude={props.delivery.announcement.destinationTo.latitude}
-                                longitude={props.delivery.announcement.destinationTo.longitude}
+                                latitude={props.delivery.order.destinationTo.latitude}
+                                longitude={props.delivery.order.destinationTo.longitude}
                             />
                         }
                         action={setToLocalizationModalOpened}
@@ -148,24 +128,24 @@ export const DeliveryTableRow = (props) => {
             />
             <Modal
                 className={flexClasses.flexRowCenter}
-                centered open={announcementModalOpened}
+                centered open={orderModalOpened}
                 children={
                     <ModalTemplate
-                        action={setAnnouncementModalOpened}
+                        action={setOrderModalOpened}
                         child={
-                            <AnnouncementComponent
-                                announcementId={props.delivery.announcement.id}
+                            <OrderComponent
+                                orderId={props.delivery.order.id}
                                 setLogged={props.setLogged}
                             />
                         }
                     />
                 }
-                onClose={()=>setAnnouncementModalOpened(false)}
+                onClose={()=>setOrderModalOpened(false)}
             />
             <TableCell align={"center"}>
                 <Button
                     variant={"contained"}
-                    onClick={() => setAnnouncementModalOpened(true)}
+                    onClick={() => setOrderModalOpened(true)}
                 >
                     Check
                 </Button>
@@ -181,7 +161,7 @@ export const DeliveryTableRow = (props) => {
                 <Button
                     variant={"contained"}
                     onClick={() => setPackagesModalOpened(true)}
-                    disabled={props.delivery.announcement.packages.length === 0}
+                    disabled={props.delivery.order.packages.length === 0}
                 >
                     Check
                 </Button>

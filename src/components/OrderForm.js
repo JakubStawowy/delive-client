@@ -1,10 +1,8 @@
 import {
     Button,
     Card,
-    Grid,
     makeStyles,
     Modal,
-    Typography,
     List,
     ListItem,
     TextField,
@@ -19,7 +17,6 @@ import {
 import IndeterminateCheckBoxSharpIcon from '@material-ui/icons/IndeterminateCheckBoxSharp';
 import RoomIcon from '@material-ui/icons/Room';
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import {i18n} from "../data/i18n";
 import {StyleRoot} from "radium";
 import {bounceInRight, bounceOutLeft} from "react-animations";
 import {useAnimationStyles} from "../style/animation";
@@ -28,21 +25,17 @@ import {useHistory} from "react-router";
 import {ANIMATION_TIME} from "../data/consts";
 import {MapFormModal} from "./MapFormModal";
 import {handleError, handleItemAccessAttempt} from "../actions/handlers";
-import {addNormalAnnouncement, getAnnouncementById, getProposedAddresses} from "../rest/restActions";
+import {addOrder, getOrderById, getProposedAddresses} from "../rest/restActions";
 import CheckIcon from "@material-ui/icons/Check";
 import AddIcon from '@material-ui/icons/Add';
 import {validateEmptyString, validateNumberFormat} from "../actions/validators";
 import {PackageForm} from "./PackageForm";
 import {KILOGRAM, LBS} from "../consts/unitConsts";
 
-export const AnnouncementForm = (props) => {
+export const OrderForm = (props) => {
 
-    const announcementFormItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].announcement;
     const [bounce, setBounce] = useState(false);
-    const [announcementId, setAnnouncementId] = useState(null);
+    const [orderId, setOrderId] = useState(null);
     const [packages, setPackages] = useState([]);
     const [localizationFromModalOpened, setLocalizationFromModalOpened] = useState(false);
     const [localizationToModalOpened, setLocalizationToModalOpened] = useState(false);
@@ -63,7 +56,7 @@ export const AnnouncementForm = (props) => {
     const [proposedFromAddresses, setProposedFromAddresses] = useState([]);
     const [proposedToAddresses, setProposedToAddresses] = useState([]);
 
-    const [amount, setAmount] = useState(null);
+    const [salary, setSalary] = useState(null);
 
     const history = useHistory();
 
@@ -147,7 +140,7 @@ export const AnnouncementForm = (props) => {
 
         // const isGeolocationValid = true;
         const isPackagesValid = packages.length > 0;
-        const isSalaryValid = validateSalary(amount);
+        const isSalaryValid = validateSalary(salary);
         const destinationFrom = useMap ? {
             longitude: fromLongitude,
             latitude: fromLatitude
@@ -162,17 +155,17 @@ export const AnnouncementForm = (props) => {
         };
 
         const data = {
-            id: announcementId,
+            id: orderId,
             destinationFrom,
             destinationTo,
             packages: packages,
             weightUnit,
-            amount,
+            salary: salary,
             requireTransportWithClient: transportWithTheClient,
         };
         console.log(data);
         isGeolocationValid && isPackagesValid && isSalaryValid ?
-        addNormalAnnouncement(data).then(response => {
+        addOrder(data).then(response => {
             if (response.data.operationSuccess) {
                 setBounce(true);
                 setTimeout(()=>history.push('/home'), ANIMATION_TIME / 2);
@@ -240,18 +233,18 @@ export const AnnouncementForm = (props) => {
 
     useEffect(() => {
         handleItemAccessAttempt(history);
-        props.announcementId !== null && props.announcementId !== undefined &&
-            getAnnouncementById(props.announcementId)
+        props.orderId !== null && props.orderId !== undefined &&
+            getOrderById(props.orderId)
                 .then(response => {
                     const data = response.data;
-                    setAnnouncementId(data.id);
+                    setOrderId(data.id);
                     setPackages(data.packages);
                     setTransportWithTheClient(data.requireTransportWithClient)
                     setFromLatitude(data.destinationFrom.latitude);
                     setFromLongitude(data.destinationFrom.longitude);
                     setToLatitude(data.destinationTo.latitude);
                     setToLongitude(data.destinationTo.longitude);
-                    setAmount(data.amount);
+                    setSalary(data.salary);
                 })
                 .catch(error => handleError(error, history));
 
@@ -296,7 +289,6 @@ export const AnnouncementForm = (props) => {
                         className={flexClasses.flexRowCenter}
                         centered open={packageFormOpened}
                         children={<PackageForm
-                            announcementFormItems={announcementFormItems}
                             setPackageFormOpened={setPackageFormOpened}
                             addPackage={addPackage}
                             packagesLength={packages.length}
@@ -438,9 +430,9 @@ export const AnnouncementForm = (props) => {
                         <div className={flexClasses.flexRowSpaceBetween}>
                             <TextField
                                 label={"Salary [EUR]"}
-                                value={amount}
+                                value={salary}
                                 onChange={e => {
-                                    setAmount(e.target.value);
+                                    setSalary(e.target.value);
                                     setTimeout(()=>setValidatedSalary(validateSalary(e.target.value)), 500);
                                 }}
                                 className={!validatedSalary && validationClasses.wrongTextField}
@@ -458,7 +450,7 @@ export const AnnouncementForm = (props) => {
                                 label={'I want to participate in transport'}
                             />
                             <Button variant={'contained'} onClick={()=>handleSubmit()} className={classes.submitButton}>
-                                {announcementFormItems.submit}
+                                Submit
                                 <ArrowForwardIcon fontSize={'large'}/>
                             </Button>
                         </div>

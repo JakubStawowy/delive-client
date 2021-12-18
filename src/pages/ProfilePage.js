@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
+import React from 'react';
+import {flexComponents,sizeComponents} from "../style/components";
 import {StyleRoot} from "radium";
 import {ProfileComponent} from "../components/ProfileComponent";
 

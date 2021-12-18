@@ -130,7 +130,7 @@ export const DeliveryPage = (props) => {
                             <Table stickyHeader>
                                 <TableHead className={classes.tableHead}>
                                     <TableRow>
-                                        <TableCell align={"center"}>announcement</TableCell>
+                                        <TableCell align={"center"}>order</TableCell>
                                         <TableCell align={"center"}>registered at</TableCell>
                                         <TableCell className={classes.hiddenColumn} align={"center"}>packages</TableCell>
                                         <TableCell className={classes.hiddenColumn} align={"center"}>from</TableCell>

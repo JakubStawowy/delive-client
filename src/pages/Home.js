@@ -1,6 +1,6 @@
 import {Button, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {AnnouncementListItem} from "../components/AnnouncementListItem";
+import {OrderListItem} from "../components/OrderListItem";
 import {useEffect, useState} from "react";
 import {BounceLoader} from "react-spinners";
 import {StyleRoot} from "radium";
@@ -9,14 +9,14 @@ import {useAnimationStyles} from "../style/animation";
 import {ANIMATION_TIME} from "../data/consts";
 import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {useHistory} from "react-router";
-import {getFilteredAnnouncements, getNormalAnnouncements} from "../rest/restActions";
+import {getFilteredOrders, getOrders} from "../rest/restActions";
 import LoopIcon from "@material-ui/icons/Loop";
 import TuneIcon from '@material-ui/icons/Tune';
 import {FilteringPanel} from "../components/FilteringPanel";
 
 export const Home = (props) => {
 
-    const [announcements, setAnnouncements] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [filteringPanelOpened, setFilteringPanelOpened] = useState(false);
 
     const [addressFrom, setAddressFrom] = useState('');
@@ -48,18 +48,18 @@ export const Home = (props) => {
 
     useEffect(()=>{
         handleItemAccessAttempt(history);
-        loadAnnouncements();
+        loadOrders();
     }, []);
 
-    const loadAnnouncements = () => {
-        getNormalAnnouncements().then(response => setAnnouncements(response.data))
+    const loadOrders = () => {
+        getOrders().then(response => setOrders(response.data))
             .catch((error) => handleError(error, history, props.setLogged));
     }
 
-    const filterAnnouncements = (addressFrom, addressTo, minimalSalary, maxWeight, requireNoClientTransport, sortBySalary, sortByWeight) => {
-        getFilteredAnnouncements(addressFrom, addressTo, minimalSalary, maxWeight,
+    const filterOrders = (addressFrom, addressTo, minimalSalary, maxWeight, requireNoClientTransport, sortBySalary, sortByWeight) => {
+        getFilteredOrders(addressFrom, addressTo, minimalSalary, maxWeight,
             requireNoClientTransport === true ? 'false' : '', sortBySalary, sortByWeight)
-            .then(response => setAnnouncements(response.data))
+            .then(response => setOrders(response.data))
             .catch((error) => handleError(error, history, props.setLogged));
     }
 
@@ -69,15 +69,15 @@ export const Home = (props) => {
     }
 
     const refresh = () => {
-        setAnnouncements([]);
-        loadAnnouncements();
+        setOrders([]);
+        loadOrders();
     }
 
     return (
         <StyleRoot>
             <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
                 {
-                    announcements === null ?
+                    orders === null ?
                         <div style={loaderAnimationStyles.animation}>
                             <BounceLoader
                                 loading
@@ -111,7 +111,7 @@ export const Home = (props) => {
                                             setMaxWeight={setMaxWeight}
                                             requireNoClientTransport={requireNoClientTransport}
                                             setRequireNoClientTransport={setRequireNoClientTransport}
-                                            filterAnnouncements={filterAnnouncements}
+                                            filterOrders={filterOrders}
                                             sortBySalary={sortBySalary}
                                             setSortBySalary={setSortBySalary}
                                             sortByWeight={sortByWeight}
@@ -120,12 +120,12 @@ export const Home = (props) => {
                                 }
                                 <List className={`${listClasses.verticalList}`}>
                                     {
-                                        announcements.length > 0 ?
-                                        announcements.map(announcement=>{
+                                        orders.length > 0 ?
+                                        orders.map(order=>{
                                             return (
                                                 <ListItem>
-                                                    <AnnouncementListItem
-                                                        data={announcement}
+                                                    <OrderListItem
+                                                        data={order}
                                                         action={navToCommissionForm}
                                                         delivery={false}
                                                     />
@@ -134,7 +134,7 @@ export const Home = (props) => {
                                         })
                                             :
                                             <div>
-                                                No announcements yet
+                                                No Orders yet
                                             </div>
                                     }
                                 </List>

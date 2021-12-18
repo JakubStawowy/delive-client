@@ -80,8 +80,8 @@ export const listComponents = makeStyles(((theme)=>({
         overflow: 'auto'
     },
     horizontalList: {
-        // maxWidth: '30vw',
-        maxWidth: '100%',
+        maxWidth: '30vw',
+        // maxWidth: '100%',
         overflow: 'auto',
         [theme.breakpoints.down('xs')]: {
             maxWidth: '100vw',

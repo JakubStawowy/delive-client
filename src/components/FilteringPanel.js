@@ -23,39 +23,39 @@ export const FilteringPanel = props => {
 
     const changeAddressFrom = value => {
         props.setAddressFrom(value);
-        props.filterAnnouncements(value, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
+        props.filterOrders(value, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
     }
 
     const changeAddressTo = value => {
         props.setAddressTo(value);
-        props.filterAnnouncements(props.addressFrom, value, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
+        props.filterOrders(props.addressFrom, value, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
     }
 
     const changeMinimalSalary = value => {
         props.setMinimalSalary(value);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, value, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
+        props.filterOrders(props.addressFrom, props.addressTo, value, props.maxWeight, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
     }
 
     const changeMaxWeight = value => {
         props.setMaxWeight(value);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, value, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
+        props.filterOrders(props.addressFrom, props.addressTo, props.minimalSalary, value, props.requireNoClientTransport, props.sortBySalary, props.sortByWeight);
     }
 
     const changeTransportRequirement = value => {
         props.setRequireNoClientTransport(value);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, value, props.sortBySalary, props.sortByWeight);
+        props.filterOrders(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, value, props.sortBySalary, props.sortByWeight);
     }
 
     const changeSortBySalary = value => {
         props.setSortBySalary(value);
         props.setSortByWeight(false);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, value, false);
+        props.filterOrders(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, value, false);
     }
 
     const changeSortByWeight = value => {
         props.setSortByWeight(value);
         props.setSortBySalary(false);
-        props.filterAnnouncements(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, false, value);
+        props.filterOrders(props.addressFrom, props.addressTo, props.minimalSalary, props.maxWeight, props.requireNoClientTransport, false, value);
     }
 
     return (
@@ -92,7 +92,7 @@ export const FilteringPanel = props => {
                         onChange={() => changeTransportRequirement(!props.requireNoClientTransport)}
                     />
                 }
-                label={'Show announcements without client transport requirement'}
+                label={'Show orders without client transport requirement'}
             />
             <div className={flexClasses.flexRowSpaceBetween}>
                 <FormControlLabel

@@ -1,30 +1,21 @@
 import {Button, Card, makeStyles, Modal} from "@material-ui/core";
 import {flexComponents, paddingComponents} from "../style/components";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import SettingsIcon from '@material-ui/icons/Settings';
-import {i18n} from "../data/i18n";
-import MapIcon from '@material-ui/icons/Map';
 import {useState} from "react";
 import boxIcon from "../uploads/box.png";
 import {useHistory} from "react-router";
 import {ModalTemplate} from "../templates/ModalTemplate";
-import {PackagesList} from "./PackagesList";
 import {MapItem} from "./MapItem";
 import RoomIcon from "@material-ui/icons/Room";
 import CheckIcon from "@material-ui/icons/Check";
 
-export const AnnouncementListItem = (props) => {
+export const OrderListItem = (props) => {
 
     const history = useHistory();
     const [mapModalOpened, setMapModalOpened] = useState(false);
-    const [packagesModalOpened, setPackagesModalOpened] = useState(false);
-    const announcementItems = i18n[
-        localStorage.getItem('locale') !== undefined
-        && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'].announcement;
 
     const useStyles = makeStyles(((theme)=>({
-        announcement: {
+        order: {
             width: '50vw',
             background: '#DCDCDC',
             [theme.breakpoints.down('xs')]: {
@@ -63,10 +54,10 @@ export const AnnouncementListItem = (props) => {
     const paddingClasses = paddingComponents();
     const flexClasses = flexComponents();
 
-    const handleRegisterCommission = () => history.push('/announcement/' + props.data.id);
+    const handleRegisterCommission = () => history.push('/order/' + props.data.id);
 
     return (
-        <Card className={`${paddingClasses.paddingMedium} ${classes.announcement} ${flexClasses.flexRowSpaceBetween}`}>
+        <Card className={`${paddingClasses.paddingMedium} ${classes.order} ${flexClasses.flexRowSpaceBetween}`}>
             <Modal
                 className={flexClasses.flexRowCenter}
                 centered open={mapModalOpened}
@@ -99,7 +90,7 @@ export const AnnouncementListItem = (props) => {
                         packages weight: {`${props.data.weight}`} {`${props.data.weightUnit}`}
                     </div>
                     <div className={classes.dataElement}>
-                        salary: {`${props.data.amount}`} EUR
+                        salary: {`${props.data.salary}`} EUR
                     </div>
                     {
                         props.data.requireTransportWithClient &&

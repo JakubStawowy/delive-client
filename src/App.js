@@ -1,21 +1,20 @@
 import {Menu} from "./components/Menu";
-import {Button, makeStyles} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
-import {Redirect, Route, Router, Switch, useHistory} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import {Home} from "./pages/Home";
 import {DeliveryPage} from "./pages/DeliveryPage";
 import {ProfilePage} from "./pages/ProfilePage";
 import {Messages} from "./pages/Messages";
-import {RegisterAnnouncement} from "./pages/RegisterAnnouncement";
-import {EditAnnouncement} from "./pages/EditAnnouncement";
-import {AnnouncementPage} from "./pages/AnnouncementPage";
+import {RegisterOrderPage} from "./pages/RegisterOrderPage";
+import {EditOrderPage} from "./pages/EditOrderPage";
+import {OrderPage} from "./pages/OrderPage";
 
 import wallpaper from './uploads/wallpaper.png';
 import {useEffect, useState} from "react";
-import {connect, isLogged, reconnect} from "./actions/handlers";
+import {isLogged, reconnect} from "./actions/handlers";
 
-let stompClient = null;
 function App() {
 
     const [locale, setLocale] = useState(
@@ -55,19 +54,19 @@ function App() {
               <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
               <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
               {/*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*/}
-              <Route path={'/addAnnouncement/normal'} render={()=><RegisterAnnouncement setLogged={setLogged}/>}/>
-              <Route path={'/editAnnouncement/:announcementId'}
-                     component={EditAnnouncement}
-                     render={()=><EditAnnouncement setLogged={setLogged()}/>}/>
+              <Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>
+              <Route path={'/editOrder/:orderId'}
+                     component={EditOrderPage}
+                     render={()=><EditOrderPage setLogged={setLogged()}/>}/>
               <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
               <Route path={'/profile/:userId'}
                      component={ProfilePage}
                      render={()=><ProfilePage setLogged={setLogged}/>} />
               <Route path={'/profile'} component={ProfilePage} render={()=><ProfilePage setLogged={setLogged}/>} />
-              <Route path={'/announcement/:announcementId'}
-                     component={AnnouncementPage}
+              <Route path={'/order/:orderId'}
+                     component={OrderPage}
                      // connect={connect}
-                     render={()=><AnnouncementPage setLogged={setLogged}/>} />
+                     render={()=><OrderPage setLogged={setLogged}/>} />
               <Route exact path={'/'}>
                   {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
               </Route>

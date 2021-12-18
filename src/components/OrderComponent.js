@@ -7,12 +7,12 @@ import {MapItem} from "./MapItem";
 import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
-import {deleteAnnouncement, getAnnouncementById, getLoggedUserId} from "../rest/restActions";
+import {deleteOrder, getOrderById, getLoggedUserId} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
 
-export const AnnouncementComponent = props => {
+export const OrderComponent = props => {
 
-    const [announcement, setAnnouncement] = useState(null);
+    const [order, setOrder] = useState(null);
     const [deliveryFormModalOpened, setDeliveryFormModalOpened] = useState(false);
     const [currentLocationLongitude, setCurrentLocationLongitude] = useState(null);
     const [currentLocationLatitude, setCurrentLocationLatitude] = useState(null);
@@ -36,9 +36,9 @@ export const AnnouncementComponent = props => {
     const paddingClasses = paddingComponents();
     const listClasses = listComponents();
 
-    const handleDeleteAnnouncement = announcementId => {
-        deleteAnnouncement(announcementId).then(() => {
-            alert("AnnouncementPage removed successfully");
+    const handleDeleteOrder = orderId => {
+        deleteOrder(orderId).then(() => {
+            alert("OrderPage removed successfully");
             history.push('/home');
         }).catch(error => handleError(error, history, props.setLogged));
     }
@@ -46,8 +46,8 @@ export const AnnouncementComponent = props => {
     useEffect(() => {
         getLoggedUserId().then(response => setLoggedUserId(response.data))
             .catch(error => handleError(error, history, props.setLogged));
-            getAnnouncementById(props.announcementId)
-                .then(response => setAnnouncement(response.data))
+            getOrderById(props.orderId)
+                .then(response => setOrder(response.data))
                 .catch(error => alert(error))
     }, []);
 
@@ -55,7 +55,7 @@ export const AnnouncementComponent = props => {
         <div>
             {
 
-                announcement !== null &&
+                order !== null &&
                 <div>
                     <Modal
                         className={flexClasses.flexRowCenter}
@@ -65,8 +65,8 @@ export const AnnouncementComponent = props => {
                                 <DeliveryForm
                                     setLogged={props.setLogged}
                                     setDeliveryModalOpened={setDeliveryFormModalOpened}
-                                    announcementId={announcement.id}
-                                    authorId={announcement.authorId}
+                                    orderId={order.id}
+                                    authorId={order.authorId}
                                     // connect={props.connect}
                                 />
                             }
@@ -83,7 +83,7 @@ export const AnnouncementComponent = props => {
                                 action={setProfileModalOpened}
                                 child={
                                     <ProfileComponent
-                                        userId={announcement.authorId}
+                                        userId={order.authorId}
                                         setLogged={props.setLogged}
                                     />
                                 }
@@ -97,7 +97,7 @@ export const AnnouncementComponent = props => {
                         <List className={`${listClasses.verticalList} 
                     ${flexClasses.flexColumnSpaceBetween}`}>
                             {
-                                loggedUserId !== announcement.authorId ?
+                                loggedUserId !== order.authorId ?
                                     <div className={classes.listItem}>
                                         <Button variant={"contained"} onClick={() => setDeliveryFormModalOpened(true)}>
                                             Send request
@@ -111,7 +111,7 @@ export const AnnouncementComponent = props => {
                                         {
                                             !isToRemove ?
                                                 <div>
-                                                    <Button variant={"contained"} onClick={() => history.push('/editAnnouncement/' + announcement.id)}>
+                                                    <Button variant={"contained"} onClick={() => history.push('/editOrder/' + order.id)}>
                                                         Edit
                                                     </Button>
                                                     <Button variant={"contained"} onClick={() => setIsToRemove(true)}>
@@ -120,7 +120,7 @@ export const AnnouncementComponent = props => {
                                                 </div>
                                                 :
                                                 <div className={flexClasses.flexColumnSpaceBetween}>
-                                                    Type REMOVE and confirm to remove announcement:
+                                                    Type REMOVE and confirm to remove order:
                                                     <div className={flexClasses.flexRowSpaceBetween}>
                                                         <TextField
                                                             label={"REMOVE"}
@@ -130,7 +130,7 @@ export const AnnouncementComponent = props => {
                                                         <Button
                                                             variant={"contained"}
                                                             disabled={confirmDeleteLabel !== "REMOVE"}
-                                                            onClick={() => handleDeleteAnnouncement(announcement.id)}>
+                                                            onClick={() => handleDeleteOrder(order.id)}>
                                                             confirm
                                                         </Button>
                                                         <Button variant={"contained"} onClick={() => setIsToRemove(false)}>
@@ -142,34 +142,34 @@ export const AnnouncementComponent = props => {
                                     </div>
                             }
                             {
-                                announcement.packages.length !== 0 &&
+                                order.packages.length !== 0 &&
                                 <div className={classes.listItem}>
                                     Packages to delivery
                                     <PackagesList
-                                        packages={announcement.packages}
-                                        weightUnit={announcement.weightUnit}
+                                        packages={order.packages}
+                                        weightUnit={order.weightUnit}
                                     />
                                 </div>
                             }
                             <div className={classes.listItem}>
                                 <div className={classes.dataElement}>
-                                    from: {`${announcement.destinationFrom.address}`}
+                                    from: {`${order.destinationFrom.address}`}
                                 </div>
                                 <div className={classes.dataElement}>
-                                    to: {`${announcement.destinationTo.address}`}
+                                    to: {`${order.destinationTo.address}`}
                                 </div>
                                 <div className={classes.dataElement}>
-                                    salary: {`${announcement.amount}`}
+                                    salary: {`${order.salary}`}
                                 </div>
                             </div>
                             <div className={classes.listItem}>
                                 <MapItem
                                     coordinates={
                                         {
-                                            fromLongitude: parseFloat(announcement.destinationFrom.longitude),
-                                            fromLatitude: parseFloat(announcement.destinationFrom.latitude),
-                                            toLongitude: parseFloat(announcement.destinationTo.longitude),
-                                            toLatitude: parseFloat(announcement.destinationTo.latitude)
+                                            fromLongitude: parseFloat(order.destinationFrom.longitude),
+                                            fromLatitude: parseFloat(order.destinationFrom.latitude),
+                                            toLongitude: parseFloat(order.destinationTo.longitude),
+                                            toLatitude: parseFloat(order.destinationTo.latitude)
                                         }
                                     }
                                 />

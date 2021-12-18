@@ -2,9 +2,9 @@ import {StyleRoot} from "radium";
 
 import React, {useEffect, useState} from "react";
 import {flexComponents, sizeComponents} from "../style/components";
-import {AnnouncementComponent} from "../components/AnnouncementComponent";
+import {OrderComponent} from "../components/OrderComponent";
 
-export const AnnouncementPage = (props) => {
+export const OrderPage = (props) => {
 
     const flexClasses = flexComponents();
     const sizeClasses = sizeComponents();
@@ -12,9 +12,9 @@ export const AnnouncementPage = (props) => {
         <StyleRoot>
             {
                 <div className={`${flexClasses.flexRowSpaceAround} ${sizeClasses.bodyHeight}`}>
-                    <AnnouncementComponent
+                    <OrderComponent
                         setLogged={props.setLogged}
-                        announcementId={props.announcementId !== undefined ? props.announcementId : props.match.params.announcementId}
+                        orderId={props.orderId !== undefined ? props.orderId : props.match.params.orderId}
                     />
                 </div>
             }

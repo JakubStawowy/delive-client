@@ -1,15 +1,15 @@
 import axios from 'axios';
 
 import {
-    ADD_NORMAL_ANNOUNCEMENT_URL,
+    ADD_ORDER_URL,
     CHANGE_DELIVERY_STATE_URL,
-    DELETE_ANNOUNCEMENT_URL, FILTER_ANNOUNCEMENTS_URL,
+    DELETE_ORDER_URL, FILTER_ORDERS_URL,
     FINISH_DELIVERY_URL,
-    GET_ANNOUNCEMENT_URL,
+    GET_ORDER_URL,
     GET_HALFWAY_POINT_URL,
     GET_LOGGED_USER_ID_URL,
     GET_NEXT_ACTION_NAME_URL,
-    GET_NORMAL_ANNOUNCEMENTS_URL, GET_PROPOSED_ADDRESSES_URL,
+    GET_ORDERS_URL, GET_PROPOSED_ADDRESSES_URL,
     LOAD_DELIVERY_BY_DELIVERER_URL,
     LOAD_DELIVERY_BY_PRINCIPAL_URL,
     LOAD_FEEDBACK_URL,
@@ -23,11 +23,11 @@ import {
     REGISTER_USER_URL,
     REPLY_MESSAGE_URL, SEND_FEEDBACK_URL,
     VALIDATE_EMAIL_URL,
-    VALIDATE_NICKNAME_URL
+    VALIDATE_NICKNAME_URL, EDIT_USER_URL
 } from "./urlConsts";
 import {TOKEN} from "../consts/applicationConsts";
 import {
-    PARAM_ANNOUNCEMENT_ID,
+    PARAM_ORDER_ID,
     PARAM_DELIVERY_ID,
     PARAM_FROM_LATITUDE, PARAM_FROM_LONGITUDE,
     PARAM_TO_LATITUDE, PARAM_TO_LONGITUDE,
@@ -40,11 +40,8 @@ export const checkIfEmailExists = (email) => axios.get(VALIDATE_EMAIL_URL.replac
 export const checkIfNicknameExists = (nickname) => axios.get(VALIDATE_NICKNAME_URL.replace(':nickname', nickname));
 export const loginUser = (data) => axios.post(LOGIN_USER_URL.replace(':email', data.email).replace(':password', data.password));
 export const logoutUser = () => axios.put(LOGOUT_USER_URL, null, getConfig());
-export const addNormalAnnouncement = (data) => {
-    console.log(data);
-    return axios.post(ADD_NORMAL_ANNOUNCEMENT_URL, data, getConfig())
-};
-export const getNormalAnnouncements = () => axios.get(GET_NORMAL_ANNOUNCEMENTS_URL, getConfig());
+export const addOrder = (data) => axios.post(ADD_ORDER_URL, data, getConfig())
+export const getOrders = () => axios.get(GET_ORDERS_URL, getConfig());
 export const getHalfwayPoint = (data) => axios.get(
     GET_HALFWAY_POINT_URL
         .replace(PARAM_FROM_LATITUDE, data.fromLatitude)
@@ -82,17 +79,17 @@ export const loadUser = userId => axios.get(LOAD_USER_URL.replace(PARAM_USER_ID,
 export const loadLoggedUser = () => axios.get(LOAD_LOGGED_USER_URL, getConfig());
 export const loadFeedback = userId => axios.get(LOAD_FEEDBACK_URL.replace(PARAM_USER_ID, userId), getConfig());
 export const sendFeedback = data => axios.post(SEND_FEEDBACK_URL, data, getConfig());
-export const getAnnouncementById = announcementId => axios.get(GET_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
+export const getOrderById = orderId => axios.get(GET_ORDER_URL.replace(PARAM_ORDER_ID, orderId), getConfig());
 
-export const getNextActionName = (deliveryState, announcementAuthorId, delivererId) => axios.get(GET_NEXT_ACTION_NAME_URL
+export const getNextActionName = (deliveryState, orderAuthorId, delivererId) => axios.get(GET_NEXT_ACTION_NAME_URL
         .replace(":deliveryState", deliveryState)
-    .replace(":announcementAuthorId", announcementAuthorId)
+    .replace(":orderAuthorId", orderAuthorId)
     .replace(":delivererId", delivererId),
     getConfig());
 
-export const deleteAnnouncement = announcementId => axios.delete(DELETE_ANNOUNCEMENT_URL.replace(PARAM_ANNOUNCEMENT_ID, announcementId), getConfig());
-export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSalary,
-                                         maxWeight, requireTransportWithClient = '', sortBySalary, sortByWeight) => axios.get(FILTER_ANNOUNCEMENTS_URL
+export const deleteOrder = orderId => axios.delete(DELETE_ORDER_URL.replace(PARAM_ORDER_ID, orderId), getConfig());
+export const getFilteredOrders = (initialAddress, finalAddress, minimalSalary,
+                                  maxWeight, requireTransportWithClient = '', sortBySalary, sortByWeight) => axios.get(FILTER_ORDERS_URL
     .replace(':initialAddress', initialAddress)
     .replace(':finalAddress', finalAddress)
     .replace(':minimalSalary', minimalSalary)
@@ -101,6 +98,7 @@ export const getFilteredAnnouncements = (initialAddress, finalAddress, minimalSa
     .replace(':sortBySalary', sortBySalary)
     .replace(':sortByWeight', sortByWeight), getConfig());
 export const getProposedAddresses = address => axios.get(GET_PROPOSED_ADDRESSES_URL.replace(':address', address), getConfig());
+export const editUser = data => axios.put(EDIT_USER_URL, data, getConfig());
 export const getConfig = () => {
     return {
         headers: {

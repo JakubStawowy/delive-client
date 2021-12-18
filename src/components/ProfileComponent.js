@@ -1,4 +1,4 @@
-import {Avatar, Button, Card, List, ListItem, makeStyles, Typography} from "@material-ui/core";
+import {Avatar, Button, Card, List, ListItem, makeStyles, Modal, Typography} from "@material-ui/core";
 import image from "../uploads/user.png";
 import {FeedbackListItem} from "./FeedbackListItem";
 import React, {useEffect, useState} from "react";
@@ -6,6 +6,9 @@ import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "
 import {useHistory} from "react-router";
 import {loadFeedback, loadLoggedUser, loadUser} from "../rest/restActions";
 import {handleError} from "../actions/handlers";
+import {ModalTemplate} from "../templates/ModalTemplate";
+import {EditUserComponent} from "./EditUserComponent";
+import {FeedbackForm} from "./FeedbackForm";
 
 export const ProfileComponent = props => {
 
@@ -14,6 +17,7 @@ export const ProfileComponent = props => {
     const [userData, setUserData] = useState(null);
     const [feedback, setFeedback] = useState([]);
     const [userId, setUserId] = useState(null);
+    const [editUserFormOpened, setEditUserFormOpened] = useState(false);
     const useClasses = makeStyles((theme) => ({
         img: {
             // width: '10vw',
@@ -54,6 +58,7 @@ export const ProfileComponent = props => {
         else {
             loadLoggedUser().then(response => {
                 setUserData(response.data);
+                setUserId(response.data.id);
                 loadFeedback(response.data.id).then(
                     response => setFeedback(response.data)
                 ).catch((error) => handleError(error, history, props.setLogged));
@@ -63,6 +68,22 @@ export const ProfileComponent = props => {
 
     return (
         <div>
+
+            <Modal
+                className={flexClasses.flexRowCenter}
+                centered open={editUserFormOpened}
+                children={
+                    <ModalTemplate
+                        action={setEditUserFormOpened}
+                        child={<EditUserComponent
+                            setLogged={props.setLogged}
+                            userData={userData}
+                            setEditUserFormOpened={setEditUserFormOpened}
+                        />}
+                    />
+                }
+                onClose={()=>setEditUserFormOpened(false)}
+            />
             {
                 userData !== null &&
                 <Card className={`${rwdClasses.singleMobileCard} ${paddingClasses.paddingMedium} ${flexClasses.flexColumnSpaceBetween}`}>
@@ -70,6 +91,14 @@ export const ProfileComponent = props => {
                     <Typography variant={'h3'} gutterBottom={'true'}>
                         {`${userData.name} ${userData.surname}`}
                     </Typography>
+                    {
+                        userData.balance !== null &&
+                        <Button
+                            onClick={() => setEditUserFormOpened(true)}
+                        >
+                            Edit profile
+                        </Button>
+                    }
                     {
                         userData.balance !== null &&
                         <div>
