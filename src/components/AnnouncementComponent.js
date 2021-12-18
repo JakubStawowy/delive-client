@@ -153,10 +153,10 @@ export const AnnouncementComponent = props => {
                             }
                             <div className={classes.listItem}>
                                 <div className={classes.dataElement}>
-                                    from: {`${announcement.destinationFrom.address}, ${announcement.destinationFrom.locality}, ${announcement.destinationFrom.country}`}
+                                    from: {`${announcement.destinationFrom.address}`}
                                 </div>
                                 <div className={classes.dataElement}>
-                                    to: {`${announcement.destinationTo.address}, ${announcement.destinationTo.locality}, ${announcement.destinationTo.country}`}
+                                    to: {`${announcement.destinationTo.address}`}
                                 </div>
                                 <div className={classes.dataElement}>
                                     salary: {`${announcement.amount}`}

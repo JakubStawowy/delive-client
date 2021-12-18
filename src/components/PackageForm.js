@@ -9,13 +9,13 @@ import {CENTIMETER, CM, METER} from "../consts/unitConsts";
 export const PackageForm = (props) => {
 
     const [packageLength, setPackageLength] = useState(null);
-    const [lengthUnit, setLengthUnit] = useState('M');
+    const [lengthUnit, setLengthUnit] = useState(CENTIMETER);
     const [packageLengthValidated, setPackageLengthValidated] = useState(true);
     const [packageWidth, setPackageWidth] = useState(null);
-    const [widthUnit, setWidthUnit] = useState('M');
+    const [widthUnit, setWidthUnit] = useState(CENTIMETER);
     const [packageWidthValidated, setPackageWidthValidated] = useState(true);
     const [packageHeight, setPackageHeight] = useState(null);
-    const [heightUnit, setHeightUnit] = useState('M');
+    const [heightUnit, setHeightUnit] = useState(CENTIMETER);
     const [packageHeightValidated, setPackageHeightValidated] = useState(true);
     const [packageWeight, setPackageWeight] = useState(null);
     const [packageWeightValidated, setPackageWeightValidated] = useState(true);
@@ -81,7 +81,7 @@ export const PackageForm = (props) => {
                             setTimeout(()=>setPackageLengthValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Length [${lengthUnit}]`} />
-                    <Select className={classes.select} onChange={e => setLengthUnit(e.target.value)} defaultValue={METER}>
+                    <Select className={classes.select} onChange={e => setLengthUnit(e.target.value)} defaultValue={CENTIMETER}>
                         <MenuItem value={CENTIMETER}>{CENTIMETER}</MenuItem>
                         <MenuItem value={METER}>{METER}</MenuItem>
                     </Select>
@@ -96,7 +96,7 @@ export const PackageForm = (props) => {
                         }}
                         label={`Width [${widthUnit}]`}
                     />
-                    <Select className={classes.select} onChange={e => setWidthUnit(e.target.value)} defaultValue={METER}>
+                    <Select className={classes.select} onChange={e => setWidthUnit(e.target.value)} defaultValue={CENTIMETER}>
                         <MenuItem value={CENTIMETER}>{CENTIMETER}</MenuItem>
                         <MenuItem value={METER}>{METER}</MenuItem>
                     </Select>
@@ -110,7 +110,7 @@ export const PackageForm = (props) => {
                             setTimeout(()=>setPackageHeightValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Height [${heightUnit}]`} />
-                        <Select className={classes.select} onChange={e => setHeightUnit(e.target.value)} defaultValue={METER}>
+                        <Select className={classes.select} onChange={e => setHeightUnit(e.target.value)} defaultValue={CENTIMETER}>
                             <MenuItem value={CENTIMETER}>{CENTIMETER}</MenuItem>
                             <MenuItem value={METER}>{METER}</MenuItem>
                         </Select>

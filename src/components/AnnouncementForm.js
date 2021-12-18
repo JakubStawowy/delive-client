@@ -120,7 +120,9 @@ export const AnnouncementForm = (props) => {
             border: '.2px solid gray',
             borderBottomRightRadius: '1em',
             borderBottomLeftRadius: '1em',
-            zIndex: 1
+            zIndex: 1,
+            maxHeight: '20vh',
+            overflow: 'auto'
         },
         dropDownItem: {
             '&:hover': {
