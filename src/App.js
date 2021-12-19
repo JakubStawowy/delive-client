@@ -51,28 +51,28 @@ function App() {
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>
-              <Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>
-              {/*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*/}
-              <Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>
-              <Route path={'/editOrder/:orderId'}
-                     component={EditOrderPage}
-                     render={()=><EditOrderPage setLogged={setLogged()}/>}/>
-              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
-              <Route path={'/profile/:userId'}
-                     component={ProfilePage}
-                     render={()=><ProfilePage setLogged={setLogged}/>} />
-              <Route path={'/profile'} component={ProfilePage} render={()=><ProfilePage setLogged={setLogged}/>} />
-              <Route path={'/order/:orderId'}
-                     component={OrderPage}
-                     // connect={connect}
-                     render={()=><OrderPage setLogged={setLogged}/>} />
-              <Route exact path={'/'}>
-                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
-              </Route>
-              <Route exact path={'/*'}>
-                  {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}
-              </Route>
+              {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>*/}
+              {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
+              {/*/!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
+              {/*<Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/editOrder/:orderId'}*/}
+              {/*       component={EditOrderPage}*/}
+              {/*       render={()=><EditOrderPage setLogged={setLogged()}/>}/>*/}
+              {/*<Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>*/}
+              {/*<Route path={'/profile/:userId'}*/}
+              {/*       component={ProfilePage}*/}
+              {/*       render={()=><ProfilePage setLogged={setLogged}/>} />*/}
+              {/*<Route path={'/profile'} component={ProfilePage} render={()=><ProfilePage setLogged={setLogged}/>} />*/}
+              {/*<Route path={'/order/:orderId'}*/}
+              {/*       component={OrderPage}*/}
+              {/*       // connect={connect}*/}
+              {/*       render={()=><OrderPage setLogged={setLogged}/>} />*/}
+              {/*<Route exact path={'/'}>*/}
+              {/*    {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
+              {/*</Route>*/}
+              {/*<Route exact path={'/*'}>*/}
+              {/*    {isLogged() ? <Redirect to={'/home'}/> : <Redirect to={'/login'}/>}*/}
+              {/*</Route>*/}
           </Switch>
         </BrowserRouter>
     );
