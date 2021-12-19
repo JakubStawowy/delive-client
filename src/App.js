@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Switch} from "react-router";
-// import {Home} from "./pages/Home";
+import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
 // import {ProfilePage} from "./pages/ProfilePage";
 // import {Messages} from "./pages/Messages";
@@ -17,10 +17,6 @@ import {isLogged, reconnect} from "./actions/handlers";
 
 function App() {
 
-    const [locale, setLocale] = useState(
-        localStorage.getItem('locale') !== undefined && localStorage.getItem('locale') !== null
-            ? localStorage.getItem('locale') : 'en'
-    );
     const [logged, setLogged] = useState(isLogged());
 
     const useStyles = makeStyles(({
@@ -45,13 +41,11 @@ function App() {
 
     return (
         <BrowserRouter className={classes.container}>
-          <Menu locale={locale} action={setLocale}
-                logged={logged} setLogged={setLogged}
-          />
+          <Menu logged={logged} setLogged={setLogged}/>
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>} locale={locale}/>*/}
+              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
               {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
               {/*/!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
               {/*<Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>*/}
