@@ -4,10 +4,10 @@ import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Switch} from "react-router";
 // import {Home} from "./pages/Home";
-// import {DeliveryPage} from "./pages/DeliveryPage";
+import {DeliveryPage} from "./pages/DeliveryPage";
 import {ProfilePage} from "./pages/ProfilePage";
 // import {Messages} from "./pages/Messages";
-// import {RegisterOrderPage} from "./pages/RegisterOrderPage";
+import {RegisterOrderPage} from "./pages/RegisterOrderPage";
 // import {EditOrderPage} from "./pages/EditOrderPage";
 // import {OrderPage} from "./pages/OrderPage";
 
@@ -48,11 +48,11 @@ function App() {
               {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
               {/*/!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
-              {/*<Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>*/}
+              <Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>
               {/*<Route path={'/editOrder/:orderId'}*/}
               {/*       component={EditOrderPage}*/}
               {/*       render={()=><EditOrderPage setLogged={setLogged()}/>}/>*/}
-              {/*<Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>*/}
+              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
               {/*<Route path={'/profile/:userId'}*/}
               {/*       component={ProfilePage}*/}
               {/*       render={()=><ProfilePage setLogged={setLogged}/>} />*/}
