@@ -3,9 +3,9 @@ import {makeStyles} from "@material-ui/core";
 import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Switch} from "react-router";
-import {Home} from "./pages/Home";
+// import {Home} from "./pages/Home";
 // import {DeliveryPage} from "./pages/DeliveryPage";
-// import {ProfilePage} from "./pages/ProfilePage";
+import {ProfilePage} from "./pages/ProfilePage";
 // import {Messages} from "./pages/Messages";
 // import {RegisterOrderPage} from "./pages/RegisterOrderPage";
 // import {EditOrderPage} from "./pages/EditOrderPage";
@@ -45,7 +45,7 @@ function App() {
           <img src={wallpaper}  alt={''} className={classes.wallpaper}/>
           <Switch>
               <Route path={'/login'} render={()=><LoginRegister setLogged={setLogged} />}/>
-              <Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>
+              {/*<Route path={'/home'} render={()=><Home setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/messages'} render={()=><Messages setLogged={setLogged}/>}/>*/}
               {/*/!*<Route path={'/test'} render={()=><Test/!* connect={connect}*!//>}/>*!/*/}
               {/*<Route path={'/addOrder/normal'} render={()=><RegisterOrderPage setLogged={setLogged}/>}/>*/}
@@ -56,7 +56,7 @@ function App() {
               {/*<Route path={'/profile/:userId'}*/}
               {/*       component={ProfilePage}*/}
               {/*       render={()=><ProfilePage setLogged={setLogged}/>} />*/}
-              {/*<Route path={'/profile'} component={ProfilePage} render={()=><ProfilePage setLogged={setLogged}/>} />*/}
+              <Route path={'/profile'} component={ProfilePage} render={()=><ProfilePage setLogged={setLogged}/>} />
               {/*<Route path={'/order/:orderId'}*/}
               {/*       component={OrderPage}*/}
               {/*       // connect={connect}*/}
