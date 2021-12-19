@@ -41,14 +41,12 @@ export const EditUserComponent = props => {
             !validateConfirmedPassword(newPassword, repeatedNewPassword) && alert('Password and confirmed password must match');
         } else {
             const data = editPassword ? {
-                id: props.userData.id,
                 name,
                 surname,
                 phone,
                 newPassword,
                 oldPassword
             } : {
-                id: props.userData.id,
                 name,
                 surname,
                 phone

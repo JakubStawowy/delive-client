@@ -34,11 +34,14 @@ export const LoginRegister = (props) => {
 
     const history = useHistory();
 
-    const useStyles = makeStyles((()=>({
+    const useStyles = makeStyles(((theme)=>({
         messagePanel: {
             maxWidth: '10vw',
             overflow: 'wrap',
-            fontSize: '.7em'
+            fontSize: '.7em',
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: '80vw'
+            }
         },
         button: {
             marginTop: '1em',

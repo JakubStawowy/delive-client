@@ -22,10 +22,9 @@ export const handleError = (error, history, setLogged) => {
             alert("Server error");
         }
         else if (error.response.status === 403) {
-            alert("Session expired");
             logout(history, setLogged);
         }
-        else alert(error);
+        else alert("Error occured");
     }
     else alert("Error occured");
 }
@@ -56,7 +55,7 @@ export const reconnect = () => {
     const connect = () => {
         const socket = new SockJS(BASE_URL + '/ws');
         stompClient = Stomp.over(socket);
-        stompClient.connect(getConfig(), onConnected, error => alert(error));
+        stompClient.connect(getConfig(), onConnected, () => {});
     }
 
     const onConnected = () => {
@@ -69,7 +68,7 @@ export const reconnect = () => {
                     alert(JSON.parse(message.body).value);
                 }
             });
-        }).catch(() => alert("Error connecting to server"));
+        });
     }
 
     if (stompClient === null) {

@@ -58,6 +58,7 @@ export const OrderForm = (props) => {
 
     const [salary, setSalary] = useState(null);
 
+    const isEdit = props.orderId !== null && props.orderId !== undefined;
     const history = useHistory();
 
     const styles = makeStyles(((theme)=>({
@@ -233,7 +234,7 @@ export const OrderForm = (props) => {
 
     useEffect(() => {
         handleItemAccessAttempt(history);
-        props.orderId !== null && props.orderId !== undefined &&
+        isEdit &&
             getOrderById(props.orderId)
                 .then(response => {
                     const data = response.data;
@@ -245,6 +246,9 @@ export const OrderForm = (props) => {
                     setToLatitude(data.destinationTo.latitude);
                     setToLongitude(data.destinationTo.longitude);
                     setSalary(data.salary);
+                    setFromAddress(data.destinationFrom.address);
+                    setToAddress(data.destinationTo.address);
+                    setWeightUnit(data.weightUnit)
                 })
                 .catch(error => handleError(error, history));
 
@@ -422,7 +426,7 @@ export const OrderForm = (props) => {
                         </div>
                         <div className={`${classes.unitSection}`}>
                             Packages weight unit:
-                            <Select className={classes.weightSelect} onChange={e => setWeightUnit(e.target.value)} defaultValue={KILOGRAM}>
+                            <Select className={classes.weightSelect} onChange={e => setWeightUnit(e.target.value)} defaultValue={weightUnit}>
                                 <MenuItem value={KILOGRAM}>{KILOGRAM}</MenuItem>
                                 <MenuItem value={LBS}>{LBS}</MenuItem>
                             </Select>

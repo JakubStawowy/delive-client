@@ -42,14 +42,23 @@ export const DeliveryTableRow = (props) => {
         if (actionName === 'finish') {
             navigator.geolocation.getCurrentPosition(position => {
                 changeDeliveryState(actionName, props.delivery.id, position.coords.latitude, position.coords.longitude)
-                    .then(() => {
+                    .then(response => {
+                        console.log(response);
+                        if (response.data && response.data.operationSuccess && response.data.message) {
+                            sendMessage(props.delivery.order.authorId, response.data.message);
+                        }
                         alert("Your delivery state has changed");
                         props.refresh();
+
                     }).catch(error => handleError(error, history, props.setLogged));
             }, ()=> {
                 alert('Problems with geolocation occurred');
                 changeDeliveryState(actionName, props.delivery.id, 0, 0)
-                    .then(() => {
+                    .then(response => {
+                        console.log(response);
+                        if (response.data && response.data.operationSuccess && response.data.message) {
+                            sendMessage(props.delivery.order.authorId, response.data.message);
+                        }
                         alert("Your delivery state has changed");
                         props.refresh();
                     }).catch(error => handleError(error, history, props.setLogged));

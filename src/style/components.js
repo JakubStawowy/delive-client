@@ -77,12 +77,12 @@ export const sizeComponents = makeStyles((()=>({
 export const listComponents = makeStyles(((theme)=>({
     verticalList: {
         height: '70vh',
-        overflow: 'auto'
+        overflowY: 'auto'
     },
     horizontalList: {
         maxWidth: '30vw',
         // maxWidth: '100%',
-        overflow: 'auto',
+        overflowX: 'auto',
         [theme.breakpoints.down('xs')]: {
             maxWidth: '100vw',
         },
