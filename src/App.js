@@ -4,7 +4,7 @@ import {LoginRegister} from "./pages/LoginRegister";
 import {BrowserRouter} from "react-router-dom";
 import {Redirect, Route, Switch} from "react-router";
 // import {Home} from "./pages/Home";
-import {DeliveryPage} from "./pages/DeliveryPage";
+// import {DeliveryPage} from "./pages/DeliveryPage";
 import {ProfilePage} from "./pages/ProfilePage";
 // import {Messages} from "./pages/Messages";
 import {RegisterOrderPage} from "./pages/RegisterOrderPage";
