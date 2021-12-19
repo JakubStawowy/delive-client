@@ -7,6 +7,7 @@ import {fadeIn, bounceInDown} from "react-animations";
 import {ANIMATION_TIME, XS_MEDIA_QUERY} from "../data/consts";
 import RoomIcon from '@material-ui/icons/Room';
 import {Button, Card, Checkbox, FormControlLabel, makeStyles, TextField} from "@material-ui/core";
+import {REACT_APP_MAPBOX_ACCESS_TOKEN} from "../consts/applicationConsts";
 
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -107,7 +108,8 @@ export const MapFormModal = (props) => {
                             <div id={'map'} style={bounceInDownAnimationStyles.animation}>
                                 <ReactMapGl
                                     {...viewport}
-                                    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                    // mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                                    mapboxApiAccessToken={REACT_APP_MAPBOX_ACCESS_TOKEN}
                                     onViewportChange={viewport => setViewport(viewport)}
                                     mapStyle={'mapbox://styles/mapbox/streets-v11'}
                                 >

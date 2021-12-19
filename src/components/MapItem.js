@@ -5,7 +5,7 @@ import {makeStyles} from "@material-ui/core";
 import {useEffect, useState} from "react";
 import {XS_MEDIA_QUERY} from "../data/consts";
 import {getHalfwayPoint} from "../rest/restActions";
-
+import {REACT_APP_MAPBOX_ACCESS_TOKEN} from "../consts/applicationConsts";
 export const MapItem = (props) => {
 
     const [viewport, setViewport] = useState(null);
@@ -59,7 +59,8 @@ export const MapItem = (props) => {
                     <div id={'map'}>
                         <ReactMapGl
                             {...viewport}
-                            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                            // mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+                            mapboxApiAccessToken={REACT_APP_MAPBOX_ACCESS_TOKEN}
                             onViewportChange={viewport => setViewport(viewport)}
                             mapStyle={'mapbox://styles/mapbox/streets-v11'}
                         >
