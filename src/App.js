@@ -52,7 +52,7 @@ function App() {
               {/*<Route path={'/editOrder/:orderId'}*/}
               {/*       component={EditOrderPage}*/}
               {/*       render={()=><EditOrderPage setLogged={setLogged()}/>}/>*/}
-              <Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>
+              {/*<Route path={'/delivery'} render={()=><DeliveryPage setLogged={setLogged}/>}/>*/}
               {/*<Route path={'/profile/:userId'}*/}
               {/*       component={ProfilePage}*/}
               {/*       render={()=><ProfilePage setLogged={setLogged}/>} />*/}
