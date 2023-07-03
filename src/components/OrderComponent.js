@@ -8,7 +8,7 @@ import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {deleteOrder, getOrderById, getLoggedUserId} from "../rest/restActions";
-import {handleError} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 
 export const OrderComponent = props => {
 
@@ -44,6 +44,7 @@ export const OrderComponent = props => {
     }
 
     useEffect(() => {
+        handleItemAccessAttempt(history, props.setLogged);
         getLoggedUserId().then(response => setLoggedUserId(response.data))
             .catch(error => handleError(error, history, props.setLogged));
             getOrderById(props.orderId)

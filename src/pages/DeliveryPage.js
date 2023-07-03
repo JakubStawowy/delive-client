@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 import {flexComponents, listComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {loadDeliveriesByDeliverer, loadDeliveriesByPrincipal} from "../rest/restActions";
 // import {USER_ID} from "../consts/applicationConsts";
-import {handleError} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {DeliveryTableRow} from "../components/DeliveryTableRow";
 import {useHistory} from "react-router";
 import LoopIcon from "@material-ui/icons/Loop";
@@ -81,6 +81,7 @@ export const DeliveryPage = (props) => {
     const listClasses = listComponents();
 
     useEffect(()=>{
+        handleItemAccessAttempt(history, props.setLogged);
         loadDeliveries();
     }, []);
 

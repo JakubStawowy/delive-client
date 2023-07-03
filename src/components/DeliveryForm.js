@@ -52,7 +52,7 @@ export const DeliveryForm = (props) => {
     const paddingClasses = paddingComponents();
 
     useEffect(()=> {
-        handleItemAccessAttempt(history);
+        handleItemAccessAttempt(history, props.setLogged);
         loadLoggedUser().then(response => setPhoneNumber(response.data.phone));
     });
 

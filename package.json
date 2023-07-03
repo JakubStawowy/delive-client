@@ -1,6 +1,7 @@
 {
   "name": "rentia-client",
   "version": "0.1.0",
+  "homepage": "https://gitname.github.io/delive-client",
   "private": true,
   "dependencies": {
     "@mapbox/mapbox-gl-directions": "^4.1.0",
@@ -10,6 +11,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
     "mapbox-gl": "^2.4.1",
     "radium": "^0.26.1",
     "react": "^17.0.2",
@@ -26,10 +28,11 @@
     "sockjs": "^0.3.21",
     "sockjs-client": "^1.5.2",
     "stompjs": "^2.3.3",
-    "web-vitals": "^1.1.2",
-    "axios": "^0.21.1"
+    "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -54,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "gh-pages": "^5.0.0"
   }
 }

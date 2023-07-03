@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import {flexComponents, paddingComponents, rwdComponents, sizeComponents} from "../style/components";
 import {useHistory} from "react-router";
 import {loadFeedback, loadLoggedUser, loadUser} from "../rest/restActions";
-import {handleError} from "../actions/handlers";
+import {handleError, handleItemAccessAttempt} from "../actions/handlers";
 import {ModalTemplate} from "../templates/ModalTemplate";
 import {EditUserComponent} from "./EditUserComponent";
 import {FeedbackForm} from "./FeedbackForm";
@@ -45,6 +45,7 @@ export const ProfileComponent = props => {
 
     useEffect(  () => {
 
+        handleItemAccessAttempt(history, props.setLogged);
         if (props.userId !== undefined) {
             setUserId(props.userId);
             loadUser(props.userId).then(response => {

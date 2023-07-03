@@ -14,9 +14,9 @@ import {
     USER_ID
 } from "./parametersConsts";
 
-// export const BASE_URL = 'http://localhost:8080';
+export const BASE_URL = 'http://localhost:8080';
 // export const BASE_URL = 'https://delive-server.herokuapp.com';
-export const BASE_URL = 'https://delive-server-1.herokuapp.com';
+// export const BASE_URL = 'https://delive-server-1.herokuapp.com';
 // export const BASE_URL = "http://192.168.0.115:8080";
 // export const BASE_URL = "http://192.168.2.105:8080";
 const BASE_API_URL = BASE_URL + '/api';

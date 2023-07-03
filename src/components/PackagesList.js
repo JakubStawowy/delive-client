@@ -26,11 +26,11 @@ export const PackagesList = (props) => {
                     <ListItem className={classes.listItem}>
                         <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
                             <div>
-                                {`${deliveryPackage.packageWidth} ${deliveryPackage.widthUnit} x ${deliveryPackage.packageLength} `}
-                                {`${deliveryPackage.lengthUnit} x ${deliveryPackage.packageHeight} ${deliveryPackage.heightUnit}`}
+                                {`${deliveryPackage.width} ${deliveryPackage.widthUnit} x ${deliveryPackage.length} `}
+                                {`${deliveryPackage.lengthUnit} x ${deliveryPackage.height} ${deliveryPackage.heightUnit}`}
                             </div>
                             <div>
-                                {`${deliveryPackage.packageWeight} ${props.weightUnit}`}
+                                {`${deliveryPackage.weight} ${props.weightUnit}`}
                             </div>
                         </Card>
                     </ListItem>

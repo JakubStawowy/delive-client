@@ -30,7 +30,7 @@ export const PackagesModal = (props) => {
                 {
                     props.packages.map(deliveryPackage => <ListItem>
                         <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingSmall} ${classes.package}`}>
-                            {`${deliveryPackage.packageWidth} x ${deliveryPackage.packageLength} x ${deliveryPackage.packageHeight}`}
+                            {`${deliveryPackage.width} x ${deliveryPackage.length} x ${deliveryPackage.height}`}
                         </Card>
                     </ListItem>)
                 }

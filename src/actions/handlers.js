@@ -10,11 +10,11 @@ const logout = (history, setLogged) => {
     history.push('/login');
 }
 
-export const handleItemAccessAttempt = history => {
-    !isLogged() && logout(history);
+export const handleItemAccessAttempt = (history, setLogged) => {
+    !isLogged() && logout(history, setLogged);
 }
 
-export const isLogged = () => localStorage.getItem(TOKEN) !== null && localStorage.getItem(ROLE) !== null;
+export const isLogged = () => localStorage.getItem(TOKEN) !== null;
 
 export const handleError = (error, history, setLogged) => {
     if(error.response) {

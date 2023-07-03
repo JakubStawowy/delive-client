@@ -8,17 +8,17 @@ import {CENTIMETER, CM, METER} from "../consts/unitConsts";
 
 export const PackageForm = (props) => {
 
-    const [packageLength, setPackageLength] = useState(null);
+    const [length, setlength] = useState(null);
     const [lengthUnit, setLengthUnit] = useState(CENTIMETER);
-    const [packageLengthValidated, setPackageLengthValidated] = useState(true);
-    const [packageWidth, setPackageWidth] = useState(null);
+    const [lengthValidated, setlengthValidated] = useState(true);
+    const [width, setwidth] = useState(null);
     const [widthUnit, setWidthUnit] = useState(CENTIMETER);
-    const [packageWidthValidated, setPackageWidthValidated] = useState(true);
-    const [packageHeight, setPackageHeight] = useState(null);
+    const [widthValidated, setwidthValidated] = useState(true);
+    const [height, setheight] = useState(null);
     const [heightUnit, setHeightUnit] = useState(CENTIMETER);
-    const [packageHeightValidated, setPackageHeightValidated] = useState(true);
-    const [packageWeight, setPackageWeight] = useState(null);
-    const [packageWeightValidated, setPackageWeightValidated] = useState(true);
+    const [heightValidated, setheightValidated] = useState(true);
+    const [weight, setweight] = useState(null);
+    const [weightValidated, setweightValidated] = useState(true);
 
     const useStyles = makeStyles((()=>({
         button: {
@@ -49,22 +49,22 @@ export const PackageForm = (props) => {
     }
 
     const handleConfirm = () => {
-        const x = packageLengthValidated && packageLength !== null;
-        const y = packageWidthValidated && packageWidth !== null;
-        const z = packageHeightValidated && packageHeight !== null;
-        const v = packageWeightValidated && packageWeight !== null;
+        const x = lengthValidated && length !== null;
+        const y = widthValidated && width !== null;
+        const z = heightValidated && height !== null;
+        const v = weightValidated && weight !== null;
         const message = (!x ? "Wrong package length value\n" : "") + (!y ? "Wrong package width value\n" : "")
             + (!z ? "Wrong package height value\n" : "") + (!v ? "Wrong package weight value" : "");
         x && y && z && v ?
             props.addPackage({
                 id: props.packagesLength,
-                packageLength,
+                length,
                 lengthUnit,
-                packageWidth,
+                width,
                 widthUnit,
-                packageHeight,
+                height,
                 heightUnit,
-                packageWeight
+                weight
             }) :
         alert(message);
     }
@@ -74,11 +74,11 @@ export const PackageForm = (props) => {
             <Card className={`${flexClasses.flexColumnSpaceAround} ${paddingClasses.paddingMedium}`}>
                 <div className={`${classes.section} ${flexClasses.flexRowSpaceBetween}`}>
                     <TextField
-                        className={!packageLengthValidated && validationClasses.wrongTextField}
-                        value={packageLength}
+                        className={!lengthValidated && validationClasses.wrongTextField}
+                        value={length}
                         onChange={(e)=> {
-                            setPackageLength(e.target.value);
-                            setTimeout(()=>setPackageLengthValidated(validateNumberFormat(e.target.value)), 500);
+                            setlength(e.target.value);
+                            setTimeout(()=>setlengthValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Length [${lengthUnit}]`} />
                     <Select className={classes.select} onChange={e => setLengthUnit(e.target.value)} defaultValue={CENTIMETER}>
@@ -88,11 +88,11 @@ export const PackageForm = (props) => {
                 </div>
                 <div className={`${classes.section} ${flexClasses.flexRowSpaceBetween}`}>
                     <TextField
-                        className={!packageWidthValidated && validationClasses.wrongTextField}
-                        value={packageWidth}
+                        className={!widthValidated && validationClasses.wrongTextField}
+                        value={width}
                         onChange={(e)=> {
-                            setPackageWidth(e.target.value);
-                            setTimeout(()=>setPackageWidthValidated(validateNumberFormat(e.target.value)), 500);
+                            setwidth(e.target.value);
+                            setTimeout(()=>setwidthValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Width [${widthUnit}]`}
                     />
@@ -103,11 +103,11 @@ export const PackageForm = (props) => {
                 </div>
                 <div className={`${classes.section} ${flexClasses.flexRowSpaceBetween}`}>
                     <TextField
-                        className={!packageHeightValidated && validationClasses.wrongTextField}
-                        value={packageHeight}
+                        className={!heightValidated && validationClasses.wrongTextField}
+                        value={height}
                         onChange={(e)=> {
-                            setPackageHeight(e.target.value);
-                            setTimeout(()=>setPackageHeightValidated(validateNumberFormat(e.target.value)), 500);
+                            setheight(e.target.value);
+                            setTimeout(()=>setheightValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Height [${heightUnit}]`} />
                         <Select className={classes.select} onChange={e => setHeightUnit(e.target.value)} defaultValue={CENTIMETER}>
@@ -117,11 +117,11 @@ export const PackageForm = (props) => {
                 </div>
                 <div className={`${classes.section} ${flexClasses.flexRowSpaceBetween}`}>
                     <TextField
-                        className={!packageWeightValidated && validationClasses.wrongTextField}
-                        value={packageWeight}
+                        className={!weightValidated && validationClasses.wrongTextField}
+                        value={weight}
                         onChange={(e)=> {
-                            setPackageWeight(e.target.value);
-                            setTimeout(()=>setPackageWeightValidated(validateNumberFormat(e.target.value)), 500);
+                            setweight(e.target.value);
+                            setTimeout(()=>setweightValidated(validateNumberFormat(e.target.value)), 500);
                         }}
                         label={`Weight [${props.weightUnit}]`} />
                 </div>

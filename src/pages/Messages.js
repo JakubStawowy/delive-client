@@ -46,7 +46,7 @@ export const Messages = (props) => {
     const fadeOutStyles = useAnimationStyles(fadeOutLeft, ANIMATION_TIME / 2);
 
     useEffect(()=>{
-        handleItemAccessAttempt(history);
+        handleItemAccessAttempt(history, props.setLogged);
         loadMessages();
     }, []);
 

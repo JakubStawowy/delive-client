@@ -233,7 +233,7 @@ export const OrderForm = (props) => {
     };
 
     useEffect(() => {
-        handleItemAccessAttempt(history);
+        handleItemAccessAttempt(history, props.setLogged);
         isEdit &&
             getOrderById(props.orderId)
                 .then(response => {
@@ -406,11 +406,11 @@ export const OrderForm = (props) => {
                                                 <IndeterminateCheckBoxSharpIcon />
                                             </Button>
                                             <div>
-                                                {`${deliveryPackage.packageWidth} ${deliveryPackage.widthUnit} x ${deliveryPackage.packageLength} `}
-                                                {`${deliveryPackage.lengthUnit} x ${deliveryPackage.packageHeight} ${deliveryPackage.heightUnit}`}
+                                                {`${deliveryPackage.width} ${deliveryPackage.widthUnit} x ${deliveryPackage.length} `}
+                                                {`${deliveryPackage.lengthUnit} x ${deliveryPackage.height} ${deliveryPackage.heightUnit}`}
                                             </div>
                                             <div>
-                                                {`${deliveryPackage.packageWeight} ${weightUnit}`}
+                                                {`${deliveryPackage.weight} ${weightUnit}`}
                                             </div>
                                         </Card>
                                     </ListItem>

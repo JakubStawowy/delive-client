@@ -47,7 +47,7 @@ export const Home = (props) => {
     const fadeOutStyles = useAnimationStyles(fadeOutLeft, ANIMATION_TIME / 2);
 
     useEffect(()=>{
-        handleItemAccessAttempt(history);
+        handleItemAccessAttempt(history, props.setLogged);
         loadOrders();
     }, []);
 
